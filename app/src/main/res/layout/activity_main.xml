@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        style="@style/TextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/app_name"/>
+    <ImageView
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/progress"
+        />
+    <ImageView
+        android:id="@+id/lamp"
+        android:src="@drawable/lamp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"/>
+    <include layout="@layout/buttons"
+        android:layout_width="match_parent" android:layout_height="60dp"
+        ></include>
+</LinearLayout>
