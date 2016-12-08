@@ -2,4 +2,18 @@
     <string name="app_name">ProcessOfLearning</string>
     <string name="on">打开</string>
     <string name="off">关闭</string>
+    <string name="city">城市</string>
+    <string name="refresh">刷新</string>
+    <string name="setting">设置</string>
+    <string name="hefei">合肥</string>
+    <string name="wuhan">武汉</string>
+    <string name="suizhou">随州</string>
+    <string name="shenzhen">深圳</string>
+
+    <string-array name="cities" >
+        <item>@string/hefei</item>
+        <item>@string/wuhan</item>
+        <item>@string/suizhou</item>
+        <item>@string/shenzhen</item>
+    </string-array>
 </resources>

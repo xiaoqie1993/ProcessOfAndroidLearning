@@ -6,4 +6,7 @@
     <dimen name="linewidth">6dp</dimen>
     <dimen name="cornersize">15dp</dimen>
     <dimen name="padding">5dp</dimen>
+    <dimen name="titleTextSize">10sp</dimen>
+    <dimen name="leftBtnTextSize">5sp</dimen>
+    <dimen name="rightBtnTextSize">5sp</dimen>
 </resources>
