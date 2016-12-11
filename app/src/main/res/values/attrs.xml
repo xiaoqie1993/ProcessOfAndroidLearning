@@ -17,4 +17,8 @@
         <attr name="rightBtnBackground" format="reference"/>
         <attr name="rightBtnVisiable" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="CircleView">
+        <attr name="defultSize" format="dimension"></attr>
+    </declare-styleable>
 </resources>

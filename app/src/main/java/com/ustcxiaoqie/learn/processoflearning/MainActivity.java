@@ -17,6 +17,7 @@ import com.ustcxiaoqie.learn.processoflearning.views.TopBarOnclickListener;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ProgressListener {
     private static final String TAG = "MainActivity";
     private final static int PROGRESS_ORIGINAL = 0;
+    private final static int PROGRESS_MAX = 10000;
     private ImageView image_progress;
     private ImageView image_lamp;
     private ClipDrawable drawable;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void loadProgress() {
         ProgressThread thread = new ProgressThread.Builder(this)
-                .setMaxProgress(10000)
+                .setMaxProgress(PROGRESS_MAX)
                 .setProgress(PROGRESS_ORIGINAL)
                 .build();
         thread.start();
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void setImageProgress(int progress) {
         drawable.setLevel(progress);
-        if(progress==10000||progress==0){
+        if(progress==PROGRESS_MAX||progress==PROGRESS_ORIGINAL){
             image_progress.setVisibility(View.INVISIBLE);
 
         }else {

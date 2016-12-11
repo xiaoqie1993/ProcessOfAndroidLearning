@@ -10,10 +10,16 @@
     <string name="suizhou">随州</string>
     <string name="shenzhen">深圳</string>
 
+
+
     <string-array name="cities" >
         <item>@string/hefei</item>
         <item>@string/wuhan</item>
         <item>@string/suizhou</item>
         <item>@string/shenzhen</item>
+    </string-array>
+
+    <string-array name="others">
+        <item>date20161209---Do some Sth what I should do</item>
     </string-array>
 </resources>
