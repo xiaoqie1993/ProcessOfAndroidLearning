@@ -20,5 +20,6 @@
 
     <declare-styleable name="CircleView">
         <attr name="defultSize" format="dimension"></attr>
+        <attr name="textOnCircle" format="string"></attr>
     </declare-styleable>
 </resources>

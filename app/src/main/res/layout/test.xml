@@ -5,8 +5,10 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
         <com.ustcxiaoqie.learn.processoflearning.views.CircleView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_width="100dp"
+            android:layout_height="200dp"
             app:defultSize="100dp"
+            app:textOnCircle="哈哈大笑起来吧？"
             />
 </LinearLayout>
