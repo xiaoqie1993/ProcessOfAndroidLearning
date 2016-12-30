@@ -10,7 +10,16 @@
     <string name="suizhou">随州</string>
     <string name="shenzhen">深圳</string>
 
-
+    <string name="na">未知天气</string>
+    <string name="sun">晴</string>
+    <string name="snow">雪</string>
+    <string name="cloud">多云</string>
+    <string name="cloudy">阴</string>
+    <string name="rain_small">小雨</string>
+    <string name="rain">雨</string>
+    <string name="rain_hearvy">大雨</string>
+    <string name="rain_thunder">雷雨</string>
+    <string name="fog">雾</string>
 
     <string-array name="cities" >
         <item>@string/hefei</item>
@@ -19,7 +28,30 @@
         <item>@string/shenzhen</item>
     </string-array>
 
+    <string-array name="weatherdescribe">
+        <item>@string/na</item>
+        <item>@string/sun</item>
+        <item>@string/snow</item>
+        <item>@string/rain_small</item>
+        <item>@string/rain</item>
+        <item>@string/rain_hearvy</item>
+        <item>@string/rain_thunder</item>
+        <item>@string/cloud</item>
+        <item>@string/cloudy</item>
+        <item>@string/fog</item>
+    </string-array>
+
     <string-array name="others">
         <item>date20161209---Do some Sth what I should do</item>
     </string-array>
+
+    <integer-array name="cityIds">
+        <item name ="beijing">2038349</item>
+        <item name ="hefei">1808722</item>
+        <item name ="wuhan">1791247</item>
+        <item name ="suizhou">1793879</item>
+        <item name ="shenzhen">1795565</item>
+        <item name ="shanghai">1796231</item>
+        <item name ="guangzhou">1809858</item>
+    </integer-array>
 </resources>
