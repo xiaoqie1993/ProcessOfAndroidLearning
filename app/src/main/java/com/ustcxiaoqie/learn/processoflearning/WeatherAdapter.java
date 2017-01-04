@@ -61,8 +61,11 @@ public class WeatherAdapter extends BaseAdapter {
 
         public ViewHolder(View view){
             mCityname = (TextView) view.findViewById(R.id.list_item_cityname);
+            mCityname.setTag("tv1");
             mIcon = (ImageView) view.findViewById(R.id.list_item_icon);
+            mIcon.setTag("iv");
             mDetail = (TextView) view.findViewById(R.id.list_item_detail);
+            mDetail.setTag("tv2");
         }
     }
 }

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, ProgressListener,PostInterface {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemClickListener, ProgressListener,PostInterface {
     private static final String TAG = "MainActivity";
     private final static int PROGRESS_ORIGINAL = 0;
     private final static int PROGRESS_MAX = 10000;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private WeatherAdapter mWeatherAdapter;
     private List<WeatherInfo> mInfoArrayList = new ArrayList<WeatherInfo>();  //保存所有城市的天气信息
     private List<HashMap<String,Object>> mHashMapList;
+    private TopBar topBar;
     private ClipDrawable drawable;
     private String[] cities ;
     private int[] cityids ;
@@ -92,7 +94,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mListView = (ListView) findViewById(R.id.weatherlists);
         mWeatherAdapter= new WeatherAdapter(this,mHashMapList);
         mListView.setAdapter(mWeatherAdapter);
-        TopBar topBar = (TopBar)findViewById(R.id.TopBarId);
+
+        mListView.setOnItemClickListener(this);
+        topBar = (TopBar)findViewById(R.id.TopBarId);
         topBar.onTopBarClickListener(new TopBarOnclickListener() {
             @Override
             public void onLeftBtnClicked(Button leftBtn) {
@@ -160,6 +164,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        /**
+         * parent:listview
+         * view : item view
+         * position : 当前item在listview的位置
+         * id :
+         */
+        weather_icon.setImageDrawable(((ImageView)view.findViewWithTag("iv")).getDrawable());
+        Weather_describe.setText(((TextView)view.findViewWithTag("tv2")).getText());
+        topBar.getmTitle().setText(((TextView)view.findViewWithTag("tv1")).getText());
+    }
+
     private class BackgroundDataHandler extends Handler{
         @Override
         public void handleMessage(Message msg) {
@@ -167,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case 0:
                     mHashMapList.clear();
                     for(int s= 0;s<mInfoArrayList.size();s++) {
+
                         WeatherInfo info = mInfoArrayList.get(s);
                         Log.d(TAG,"tool:"+info.toString());
                         HashMap<String, Object> map = new HashMap<String,Object>();
