@@ -37,7 +37,7 @@ public class WeatherHttpPost {
         this.cityid = cityid;
     }
     public void getWeatherInfo(PostInterface i){
-        String postUrl = Constant.getUrl;
+        String postUrl = Constant.getUrl+cityid;
         HttpAsyncTask task = new HttpAsyncTask(postUrl,i);
         task.execute("");
     }

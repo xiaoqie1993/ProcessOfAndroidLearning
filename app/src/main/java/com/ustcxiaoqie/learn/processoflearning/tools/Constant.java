@@ -7,9 +7,10 @@ package com.ustcxiaoqie.learn.processoflearning.tools;
 
 
 public class Constant {
-    public final static String myAPIKey = "f24a08d984e87e536ac6595b4e841819";
-    public final static String getUrl0 = "http://api.openweathermap.org/data/2.5/weather?&appid=f24a08d984e87e536ac6595b4e841819?id=";
-    public final static String getUrl = "http://www.weather.com.cn/data/cityinfo/101010100.html";
+    public final static String myAPIKey = "bca92c96087fb0d353a55aaf8dcda512";
+    public final static String getUrl0 = "http://api.openweathermap.org/data/2.5/weather?&appid=bca92c96087fb0d353a55aaf8dcda512?id=";
+    public final static String getUrl1 = "http://api.openweathermap.org/data/2.5/forecast/daily?APPID=bca92c96087fb0d353a55aaf8dcda512&units=metric&cnt=3&id=1796989";
+    public final static String getUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?APPID=bca92c96087fb0d353a55aaf8dcda512&units=metric&cnt=3&id=";
     public final static String postUrl = "http://api.openweathermap.org/data/2.5/weather";
     public final static String APP_ID = "101372267";
 
