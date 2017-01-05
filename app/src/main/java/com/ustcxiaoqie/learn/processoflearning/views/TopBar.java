@@ -47,7 +47,7 @@ public class TopBar extends LinearLayout implements View.OnClickListener{
         mTitle.setTextSize(typedArray.getDimension(R.styleable.TopBar_titleTextSize,16));
         mTitle.setTextColor(typedArray.getColor(R.styleable.TopBar_titleTextColor,0000));
         mTitle.setOnClickListener(this);
-        LinearLayout.LayoutParams titleParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,4);
+        LinearLayout.LayoutParams titleParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,8);
         titleParams.gravity = Gravity.CENTER;
         addView(mTitle ,titleParams);
     }
@@ -61,8 +61,8 @@ public class TopBar extends LinearLayout implements View.OnClickListener{
         mRightBtn .setVisibility(typedArray.getBoolean(R.styleable.TopBar_rightBtnVisiable,true)?View.VISIBLE:View.INVISIBLE);
         mRightBtn.setBackgroundColor(Color.TRANSPARENT);
         mRightBtn .setOnClickListener(this);
-        LinearLayout.LayoutParams rightBtnParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,1);
-        rightBtnParams.gravity = Gravity.CENTER_VERTICAL;
+        LinearLayout.LayoutParams rightBtnParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,3);
+        rightBtnParams.gravity = Gravity.CENTER;
         addView(mRightBtn ,rightBtnParams);
     }
 
@@ -76,7 +76,7 @@ public class TopBar extends LinearLayout implements View.OnClickListener{
         mLeftBtn.setVisibility(typedArray.getBoolean(R.styleable.TopBar_leftBtnVisiable,true)?View.VISIBLE:View.INVISIBLE);
         // mLeftBtn.setBackground(R.styleable.TopBar_leftBtnBackground);
         mLeftBtn.setOnClickListener(this);
-        LinearLayout.LayoutParams leftBtnParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,1);
+        LinearLayout.LayoutParams leftBtnParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,3);
         addView(mLeftBtn,leftBtnParams);
     }
     @Override

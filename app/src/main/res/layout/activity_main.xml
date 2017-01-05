@@ -19,7 +19,7 @@
         app:leftBtnVisiable="true"
         app:leftBtnTextSize="@dimen/leftBtnTextSize"
         app:leftBtnBackground="@drawable/lamp"
-        app:rightBtnText="@string/setting"
+        app:rightBtnText="@string/add"
         app:rightBtnTextColor="@android:color/holo_blue_bright"
         app:rightBtnVisiable="true"
         app:rightBtnTextSize="@dimen/rightBtnTextSize"
@@ -29,7 +29,8 @@
     <ImageView
         android:id="@+id/progress"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="10dp"
+        android:scaleType="fitXY"
         android:src="@drawable/progress"
         />
     <RelativeLayout

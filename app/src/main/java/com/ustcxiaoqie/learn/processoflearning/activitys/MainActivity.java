@@ -1,14 +1,13 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.ClipDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -22,6 +21,7 @@ import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.WeatherAdapter;
 import com.ustcxiaoqie.learn.processoflearning.http.PostInterface;
 import com.ustcxiaoqie.learn.processoflearning.http.WeatherHttpPost;
+import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
 import com.ustcxiaoqie.learn.processoflearning.tools.DataTransferTool;
 import com.ustcxiaoqie.learn.processoflearning.tools.LA;
 import com.ustcxiaoqie.learn.processoflearning.tools.Temp;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "MainActivity";
     private final static int PROGRESS_ORIGINAL = 0;
     private final static int PROGRESS_MAX = 10000;
-    private SharedPreferences sharedpreferences;
+    private LocalBroadcastManager mLocalBroadcastManager;
     private ImageView image_progress;
     private ImageView weather_icon;
     private TextView Weather_describe;
@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<HashMap<String,Object>> mHashMapList;
     private TopBar topBar;
     private ClipDrawable drawable;
-    private String[] cities ;
     private int[] cityids ;
     private int iconOrder = 0;
     @Override
@@ -61,10 +60,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initDatas();
         initViews();
-        startActivity(new Intent(MainActivity.this,DialogActivity.class));
+
+        getAllWeathers();
+
+    }
+
+    private void getAllWeathers() {
+        drawable.setLevel(PROGRESS_ORIGINAL);
+        mInfoArrayList.clear();
         for(int id:cityids) {
             getWeather(id);
         }
+        startActivity(new Intent(MainActivity.this,DialogActivity.class));
+
     }
 
     private void getWeather(int cityid) {
@@ -73,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initDatas() {
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
         mHashMapList = new ArrayList<>();
         //初始配置
         HashMap<String,Object> map = new HashMap<>();
@@ -88,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         image_progress = (ImageView)findViewById(R.id.progress);
         drawable= (ClipDrawable) image_progress.getDrawable();
         drawable.setLevel(PROGRESS_ORIGINAL);//进度条初始值
+
         weather_icon = (ImageView) findViewById(R.id.weathericon);
         weather_icon.setImageDrawable(resources.getDrawable(R.drawable.na));
 
@@ -104,7 +114,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         topBar.onTopBarClickListener(new TopBarOnclickListener() {
             @Override
             public void onLeftBtnClicked(Button leftBtn) {
-                LA.d(TAG,"LeftBtnClicked");
+                //刷新
+                leftBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getAllWeathers();
+                        LA.d(TAG,"laa");
+                    }
+                });
             }
 
             @Override
@@ -117,7 +134,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 LA.d(TAG,"TitleClicked");
             }
         });
-        cities = resources.getStringArray(R.array.cities);
         cityids = resources.getIntArray(R.array.cityIds);
     }
 
@@ -139,18 +155,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void getResponse(final String json) {
-        Log.d(TAG,json==null?"fail":json);
+        if(null != json) drawable.setLevel(PROGRESS_MAX/2);
         final BackgroundDataHandler handler = new BackgroundDataHandler();
         final WeatherJsonParseTool tool = new WeatherJsonParseTool(json);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Message message = Message.obtain();
-
                 try {
                    WeatherInfo info = tool.parseDataToJSon();
                     mInfoArrayList.add(info);
-                    if(mInfoArrayList.size() == cityids.length) {
+                    if(mInfoArrayList.size()%cityids.length == 0) {
                         //全部加载完毕，开始通知更新UI
                         message.what = 0;
                         handler.sendMessage(message);
@@ -159,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.e(TAG,"Error!");
+                    LA.e(TAG,"Error!");
                     message.what =1;
                     handler.sendMessage(message);
                 }
@@ -177,6 +192,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          * id :
          */
         //获取当前项的所有天气信息
+        setAboveViews(position);
+    }
+
+    private void setAboveViews(int position) {
         WeatherInfo weatherInfo = mInfoArrayList.get(position);
         List<WeatherDetail> mDetailList = weatherInfo.getList();
         String city = weatherInfo.getCity().getName();
@@ -203,13 +222,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private class BackgroundDataHandler extends Handler{
         @Override
         public void handleMessage(Message msg) {
+            Intent intent =new Intent(Constant.DIALOG_ACTIVITY_FINISH);
             switch (msg.what){
                 case 0:
+                    Intent i =new Intent(Constant.DIALOG_ACTIVITY_FINISH);
+                    i.putExtra(Constant.PROGRESS,Constant.PROGRESS_HALF);
+                    mLocalBroadcastManager.sendBroadcast(i);
                     mHashMapList.clear();
                     for(int s= 0;s<mInfoArrayList.size();s++) {
 
                         WeatherInfo info = mInfoArrayList.get(s);
-                        Log.d(TAG,"tool:"+info.toString());
+                        LA.d(TAG,"tool:"+info.toString());
                         HashMap<String, Object> map = new HashMap<String,Object>();
                         map.put("cityname", info.getCity().getName());
                         map.put("icon", DataTransferTool.getIconFromWeatherDetail(info.getList().get(0).getWeather().getDesciption()));
@@ -217,16 +240,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         mHashMapList.add(map);
                     }
                     mWeatherAdapter.notifyDataSetChanged();
+                    //默认上面显示合肥
+                    setAboveViews(1);
+                    intent.putExtra(Constant.PROGRESS,Constant.PROGRESS_FINISH);
                     break;
                 case 1:
+                    intent.putExtra(Constant.PROGRESS,Constant.PROGRESS_FAILED);
                     break;
             }
+            drawable.setLevel(PROGRESS_MAX);
+            mLocalBroadcastManager.sendBroadcast(intent);
+            drawable.setLevel(PROGRESS_ORIGINAL);
+
         }
     }
-
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        Log.d(TAG,"finalized!");
+        LA.d(TAG,"finalized!");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(null != mLocalBroadcastManager){
+            mLocalBroadcastManager = null;
+        }
     }
 }

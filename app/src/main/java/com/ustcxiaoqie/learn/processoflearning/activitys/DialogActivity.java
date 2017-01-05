@@ -1,30 +1,76 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ustcxiaoqie.learn.processoflearning.R;
+import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
 
 /**
  * Created by Xiaoqie on 2017/1/5.
  */
 
 public class DialogActivity extends Activity {
+    private LocalBroadcastManager mLocalBroadcastManager;
+    private CloseThisByBroadCastReceiver mReceiver;
+    private TextView mTextView;  //进度提示文字
+    private ProgressBar mProgressBar;   //进度
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_activity);
-        // 这里你可以进行一些等待时的操作，我这里用8秒后显示Toast代理等待操作
-        new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run(){
-
-                DialogActivity.this.finish();
-                Toast.makeText(getApplicationContext(), "获取成功", Toast.LENGTH_SHORT).show();
+        mTextView = (TextView) findViewById(R.id.progress_text);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mTextView.setText("正在加载...\n");
+        IntentFilter filter = new IntentFilter(Constant.DIALOG_ACTIVITY_FINISH);
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(DialogActivity.this);
+        mReceiver = new CloseThisByBroadCastReceiver();
+        mLocalBroadcastManager.registerReceiver(mReceiver,filter);
+    }
+    private class CloseThisByBroadCastReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int progress = intent.getIntExtra(Constant.PROGRESS,0);
+            Log.d("MainActivity",progress+"");
+            switch (progress){
+                case Constant.PROGRESS_START:
+                    break;
+                case Constant.PROGRESS_HALF:
+                    mTextView.setText("获取数据成功！解析中...");
+                    break;
+                case Constant.PROGRESS_FINISH:
+                    mTextView.setText("解析完成！\n");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            DialogActivity.this.finish();
+                        }
+                    },500);
+                    break;
+                case Constant.PROGRESS_FAILED:
+                    Toast.makeText(DialogActivity.this, "加载失败\n请稍后重试!", Toast.LENGTH_SHORT).show();
+                    DialogActivity.this.finish();
+                    break;
             }
-        }, 8000);
+
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(null != mLocalBroadcastManager){
+            mLocalBroadcastManager.unregisterReceiver(mReceiver);
+        }
     }
 }

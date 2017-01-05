@@ -13,5 +13,13 @@ public class Constant {
     public final static String getUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?APPID=bca92c96087fb0d353a55aaf8dcda512&units=metric&cnt=3&id=";
     public final static String postUrl = "http://api.openweathermap.org/data/2.5/weather";
     public final static String APP_ID = "101372267";
+    public final static String DIALOG_ACTIVITY_FINISH = "START_OR_FINISH";
+    public final static String PROGRESS = "PROGRESS";
+    public final static int PROGRESS_START = 0;
+    public final static int PROGRESS_HALF = 50;
+    public final static int PROGRESS_FINISH = 100;
+    public final static int PROGRESS_FAILED = -1;
+
+
 
 }
