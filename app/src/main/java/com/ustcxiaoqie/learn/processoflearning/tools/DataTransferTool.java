@@ -1,6 +1,10 @@
 package com.ustcxiaoqie.learn.processoflearning.tools;
 
 import com.ustcxiaoqie.learn.processoflearning.R;
+import com.ustcxiaoqie.learn.processoflearning.javabeans.QQCallbackMsg;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Xiaoqie on 2017/1/5.
@@ -34,5 +38,21 @@ public class DataTransferTool {
             return icons[9];
         }
         return icons[0];
+    }
+
+    public static QQCallbackMsg getQQMag(JSONObject jsonObject) throws JSONException {
+        QQCallbackMsg callbackMsg = new QQCallbackMsg();
+        callbackMsg.setRet(jsonObject.getInt("ret"));
+        callbackMsg.setAccess_token(jsonObject.getString("access_token"));
+        callbackMsg.setAuthority_cost(jsonObject.getInt("authority_cost"));
+        callbackMsg.setExpires_in(jsonObject.getInt("expires_in"));
+        callbackMsg.setLogin_cost(jsonObject.getInt("login_cost"));
+        callbackMsg.setMsg(jsonObject.getString("msg"));
+        callbackMsg.setOpenid(jsonObject.getString("openid"));
+        callbackMsg.setPay_token(jsonObject.getString("pay_token"));
+        callbackMsg.setPf(jsonObject.getString("pf"));
+        callbackMsg.setPfkey(jsonObject.getString("pfkey"));
+        callbackMsg.setQuery_authority_cost(jsonObject.getInt("query_authority_cost"));
+        return callbackMsg;
     }
 }

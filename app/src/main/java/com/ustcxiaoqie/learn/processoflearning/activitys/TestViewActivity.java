@@ -8,6 +8,7 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 import com.ustcxiaoqie.learn.processoflearning.R;
+import com.ustcxiaoqie.learn.processoflearning.javabeans.QQCallbackMsg;
 import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
 
 
@@ -24,6 +25,7 @@ public class TestViewActivity extends Activity{
         setContentView(R.layout.test);
         mTencent = Tencent.createInstance(Constant.APP_ID,getApplicationContext());
         listener= new BaseUiListener();
+        mTencent.login(TestViewActivity.this,"all",listener);
     }
 
     /**
@@ -35,6 +37,7 @@ public class TestViewActivity extends Activity{
     private  class BaseUiListener implements IUiListener {
         @Override
         public void onComplete(Object o) {
+            QQCallbackMsg callbackMsg = new QQCallbackMsg();
 
         }
 

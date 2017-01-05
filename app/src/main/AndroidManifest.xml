@@ -12,12 +12,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activitys.MainActivity">
+         <!--   <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>-->
+        </activity>
+        <activity android:name=".activitys.MoreWeatherActivity"
+            android:theme="@android:style/Animation.Dialog"/>
+        <activity android:name=".activitys.DialogActivity"
+            android:theme="@style/MyDialogStyle"/>
+        <activity android:name=".activitys.QQLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activitys.TestViewActivity">
+
+
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:screenOrientation="behind"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden">
         </activity>
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -30,12 +46,7 @@
                 <data android:scheme="tencent101372267" />
             </intent-filter>
         </activity>
-        <activity android:name=".activitys.MoreWeatherActivity"
-            android:theme="@android:style/Animation.Dialog"
-            />
-        <activity android:name=".activitys.DialogActivity"
-            android:theme="@style/MyDialogStyle"
-            ></activity>
     </application>
+
 
 </manifest>
