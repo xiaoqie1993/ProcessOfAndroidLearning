@@ -41,14 +41,14 @@ public class WeatherJsonParseTool {
 
         //
         JSONArray weatherList = jsonObject.getJSONArray("list");
-        List<WeatherDatail> list = new ArrayList<>();
+        List<WeatherDetail> list = new ArrayList<>();
         for(int i=0;i<3;i++) {
-            WeatherDatail weatherDatail = new WeatherDatail();
+            WeatherDetail weatherDetail = new WeatherDetail();
             JSONObject detail = weatherList.getJSONObject(i);
-            weatherDatail.setDt(detail.getInt("dt"));
-            weatherDatail.setHumidity(detail.getInt("humidity"));
-            weatherDatail.setPressure(detail.getDouble("pressure"));
-            weatherDatail.setSpeed((float) detail.getDouble("speed"));
+            weatherDetail.setDt(detail.getInt("dt"));
+            weatherDetail.setHumidity(detail.getInt("humidity"));
+            weatherDetail.setPressure(detail.getDouble("pressure"));
+            weatherDetail.setSpeed((float) detail.getDouble("speed"));
 
             Temp temp = new Temp();
             JSONObject tempJSon = detail.getJSONObject("temp");
@@ -56,7 +56,7 @@ public class WeatherJsonParseTool {
             temp.setMax((float) tempJSon.getDouble("max"));
             temp.setMin((float) tempJSon.getDouble("min"));
             temp.setNight((float) tempJSon.getDouble("night"));
-            weatherDatail.setTemp(temp);
+            weatherDetail.setTemp(temp);
 
             Weather weather = new Weather();
             JSONArray weatherArray = detail.getJSONArray("weather");
@@ -65,9 +65,9 @@ public class WeatherJsonParseTool {
             weather.setDesciption(weatherJSon.getString("description"));
             weather.setMain(weatherJSon.getString("main"));
             weather.setIcon(weatherJSon.getString("icon"));
-            weatherDatail.setWeather(weather);
+            weatherDetail.setWeather(weather);
 
-            list.add(weatherDatail);
+            list.add(weatherDetail);
         }
         weatherInfo.setList(list);
         Log.d(TAG,"listsize"+list.size());
