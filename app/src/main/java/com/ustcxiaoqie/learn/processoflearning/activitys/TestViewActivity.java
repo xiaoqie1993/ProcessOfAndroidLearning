@@ -1,4 +1,4 @@
-package com.ustcxiaoqie.learn.processoflearning.tools;
+package com.ustcxiaoqie.learn.processoflearning.activitys;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 import com.ustcxiaoqie.learn.processoflearning.R;
+import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
 
 
 /**

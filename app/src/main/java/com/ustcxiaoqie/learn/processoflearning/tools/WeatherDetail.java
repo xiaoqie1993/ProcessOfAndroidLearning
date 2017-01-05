@@ -6,7 +6,7 @@ package com.ustcxiaoqie.learn.processoflearning.tools;
  */
 
 
-public class WeatherDatail {
+public class WeatherDetail {
     private long dt; //时间
     private Temp mTemp; //温度
     private double pressure; //压强

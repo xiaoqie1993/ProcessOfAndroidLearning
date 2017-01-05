@@ -13,7 +13,7 @@ public class WeatherInfo {
     private int code;
     private float message;
     private int cmt;
-    private List<WeatherDatail> mList;
+    private List<WeatherDetail> mList;
 
 
     public City getCity() {
@@ -48,11 +48,11 @@ public class WeatherInfo {
         this.cmt = cmt;
     }
 
-    public List<WeatherDatail> getList() {
+    public List<WeatherDetail> getList() {
         return mList;
     }
 
-    public void setList(List<WeatherDatail> list) {
+    public void setList(List<WeatherDetail> list) {
         mList = list;
     }
 
