@@ -9,4 +9,9 @@
         android:layout_width="240dp"
         android:background="@drawable/qqlogin"
         android:layout_height="184dp"/>
+    <Button
+        android:id="@+id/qqShareBtn"
+        android:layout_width="240dp"
+        android:background="@drawable/qqshare"
+        android:layout_height="184dp"/>
 </LinearLayout>
