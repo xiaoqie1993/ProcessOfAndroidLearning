@@ -16,7 +16,7 @@ public class DataTransferTool {
             R.drawable.rain_thunder,R.drawable.cloud,R.drawable.cloudy,R.drawable.fog};
     public static int getIconFromWeatherDetail(String weatherDetail){
         if(null == weatherDetail) return icons[0];
-        if(weatherDetail.contains("sun")){
+        if(weatherDetail.contains("sun")||weatherDetail.contains("clear sky")){
             return icons[1];
         }else if(weatherDetail.contains("rain")){
             if(weatherDetail.contains("thunder")){
@@ -43,7 +43,7 @@ public class DataTransferTool {
     public static QQCallbackMsg getQQMag(JSONObject jsonObject) throws JSONException {
         QQCallbackMsg callbackMsg = new QQCallbackMsg();
         callbackMsg.setRet(jsonObject.getInt("ret"));
-        callbackMsg.setAccess_token(jsonObject.getString("access_token"));
+    //    callbackMsg.setAccess_token(jsonObject.getString("access_token"));
         callbackMsg.setAuthority_cost(jsonObject.getInt("authority_cost"));
         callbackMsg.setExpires_in(jsonObject.getInt("expires_in"));
         callbackMsg.setLogin_cost(jsonObject.getInt("login_cost"));

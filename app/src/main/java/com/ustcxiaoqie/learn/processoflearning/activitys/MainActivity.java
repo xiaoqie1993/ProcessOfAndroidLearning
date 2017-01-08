@@ -83,15 +83,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mHashMapList = new ArrayList<>();
         //初始配置
         HashMap<String,Object> map = new HashMap<>();
-        map.put("cityname","合肥");
+        map.put("cityname","Hefei");
         map.put("icon",R.drawable.na);
-        map.put("detail","未知");
+        map.put("detail","NA");
         mHashMapList.add(map);
     }
 
 
     private void initViews() {
         Resources resources = getResources();
+        findViewById(R.id.about_app).setOnClickListener(this);
         image_progress = (ImageView)findViewById(R.id.progress);
         drawable= (ClipDrawable) image_progress.getDrawable();
         drawable.setLevel(PROGRESS_ORIGINAL);//进度条初始值
@@ -140,7 +141,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()){
+            case R.id.about_app:
+                startActivity(new Intent(MainActivity.this,AboutActivity.class));
+                break;
+        }
     }
 
     @Override
@@ -217,7 +222,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        return false;
+        WeatherInfo weatherInfo = mInfoArrayList.get(position);
+        Intent i = new Intent();
+        i.setClass(MainActivity.this,ShareActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("weather",weatherInfo);
+        i.putExtras(bundle);
+        startActivity(i);
+        this.overridePendingTransition(R.anim.activity_open,0);
+        return true;
     }
 
     private class BackgroundDataHandler extends Handler{

@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ustcxiaoqie.learn.processoflearning">
+
+          package="com.ustcxiaoqie.learn.processoflearning"
+    >
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission-sdk-23 android:name="android.permission.INTERNET"></uses-permission-sdk-23>
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission-sdk-23>
     <application
+
         android:allowBackup="true"
         android:icon="@drawable/sun"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activitys.MainActivity">
-           <!-- <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>-->
+            </intent-filter>
         </activity>
+        <activity android:name=".activitys.ShareActivity"
+                  android:theme="@android:style/Theme.Panel"/>
+        <activity android:name=".activitys.AboutActivity"
+         />
         <activity android:name=".activitys.MoreWeatherActivity"
             android:theme="@android:style/Animation.Dialog"/>
         <activity android:name=".activitys.DialogActivity"
@@ -28,12 +35,8 @@
             </intent-filter>-->
         </activity>
 
-        <activity android:name=".activitys.TestViewActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+        <activity android:name=".activitys.TestViewActivity"/>
+
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:screenOrientation="behind"

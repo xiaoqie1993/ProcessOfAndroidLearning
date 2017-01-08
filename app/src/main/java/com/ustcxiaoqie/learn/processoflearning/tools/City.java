@@ -1,12 +1,14 @@
 package com.ustcxiaoqie.learn.processoflearning.tools;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/1/4 19:37.
  * Copyright (c) 2017-01-04 Bryant1993 All rights reserved.
  */
 
 
-public class City {
+public class City implements Serializable{
     private int id;     //城市id
     private String name; //名称
     private Coord mCoord; //经纬度

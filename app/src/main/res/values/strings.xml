@@ -21,6 +21,8 @@
     <string name="rain_hearvy">大雨</string>
     <string name="rain_thunder">雷雨</string>
     <string name="fog">雾</string>
+    <string name="version_2">1.01</string>
+    <string name="about">关于</string>
 
     <string-array name="cities" >
         <item>@string/hefei</item>

@@ -73,4 +73,13 @@
             android:layout_marginBottom="10dp"
            />
     </RelativeLayout>
+    <TextView
+        android:id="@+id/about_app"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="@string/about"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/textview_textsize"
+        />
 </LinearLayout>

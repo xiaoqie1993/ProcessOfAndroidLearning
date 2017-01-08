@@ -1,12 +1,14 @@
 package com.ustcxiaoqie.learn.processoflearning.tools;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/1/4 19:45.
  * Copyright (c) 2017-01-04 Bryant1993 All rights reserved.
  */
 
 
-public class Temp {
+public class Temp implements Serializable{
     private float day;  //白天
     private float min;  //最低
     private float max; //最高
