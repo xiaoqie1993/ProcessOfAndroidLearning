@@ -7,12 +7,12 @@
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission-sdk-23>
     <application
         android:allowBackup="true"
-        android:icon="@drawable/rain"
+        android:icon="@drawable/sun"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activitys.MainActivity">
-         <!--   <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>-->
@@ -22,13 +22,18 @@
         <activity android:name=".activitys.DialogActivity"
             android:theme="@style/MyDialogStyle"/>
         <activity android:name=".activitys.QQLoginActivity">
+          <!--  <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".activitys.TestViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:screenOrientation="behind"

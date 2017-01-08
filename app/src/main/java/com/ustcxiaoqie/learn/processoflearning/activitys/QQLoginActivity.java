@@ -41,9 +41,9 @@ public class QQLoginActivity extends Activity {
         (findViewById(R.id.qqShareBtn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   share2QQ();
-            //    share2Qzone();
-                getUserInfo();
+               share2QQ();
+            // share2Qzone();
+            //    getUserInfo();
             }
         });
     }
