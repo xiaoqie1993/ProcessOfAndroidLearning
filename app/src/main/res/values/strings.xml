@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Weather Spirit</string>
+    <string name="app_name">Weather</string>
     <string name="on">打开</string>
     <string name="off">关闭</string>
     <string name="city">城市</string>

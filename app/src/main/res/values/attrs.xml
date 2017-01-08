@@ -22,4 +22,9 @@
         <attr name="defultSize" format="dimension"></attr>
         <attr name="textOnCircle" format="string"></attr>
     </declare-styleable>
+
+    <declare-styleable name="MyHorizontalScollerView">
+        <attr name="menuPadding" format="dimension"></attr>
+        <attr name="menuLeft" format="boolean"></attr>
+    </declare-styleable>
 </resources>
