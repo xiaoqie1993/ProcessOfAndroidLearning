@@ -28,7 +28,6 @@ import com.ustcxiaoqie.learn.processoflearning.tools.WeatherDetail;
 import com.ustcxiaoqie.learn.processoflearning.tools.WeatherInfo;
 import com.ustcxiaoqie.learn.processoflearning.tools.WeatherJsonParseTool;
 import com.ustcxiaoqie.learn.processoflearning.views.TopBar;
-import com.ustcxiaoqie.learn.processoflearning.views.TopBarOnclickListener;
 
 import org.json.JSONException;
 
@@ -41,6 +40,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final static int PROGRESS_ORIGINAL = 0;
     private final static int PROGRESS_MAX = 10000;
     private LocalBroadcastManager mLocalBroadcastManager;
+    private TopBar topBar;
+    private Button topBar_LeftBtn;
+    private Button topBar_rightBtn;
+    private TextView topBar_titleTv;
+
     private ImageView image_progress;
     private ImageView weather_icon;
     private TextView Weather_describe;
@@ -48,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private WeatherAdapter mWeatherAdapter;
     private List<WeatherInfo> mInfoArrayList = new ArrayList<WeatherInfo>();  //保存所有城市的天气信息
     private List<HashMap<String,Object>> mHashMapList;
-    private TopBar topBar;
+
     private ClipDrawable drawable;
     private int[] cityids ;
     private int iconOrder = 0;
@@ -110,38 +114,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mListView.setOnItemLongClickListener(this);
 
         topBar = (TopBar)findViewById(R.id.TopBarId);
-        topBar.onTopBarClickListener(new TopBarOnclickListener() {
-            @Override
-            public void onLeftBtnClicked(Button leftBtn) {
-                //刷新
-                leftBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getAllWeathers();
-                    }
-                });
-            }
-            @Override
-            public void onRightBtnClicked(Button rightBtn) {
-                rightBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onTitleClicked(TextView title) {
-                LA.d(TAG,"TitleClicked");
-            }
-        });
+        topBar_LeftBtn  = (Button) findViewById(R.id.TopBarLeftBtnId);
+        topBar_rightBtn  = (Button) findViewById(R.id.TopBarRightBtnId);
+        topBar_titleTv  = (TextView) findViewById(R.id.TopBarTitleId);
+        topBar_LeftBtn.setOnClickListener(this);
+        topBar_rightBtn.setOnClickListener(this);
+        topBar_titleTv.setOnClickListener(this);
         cityids = resources.getIntArray(R.array.cityIds);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.TopBarLeftBtnId:
+                getAllWeathers();
+                break;
+            case R.id.TopBarRightBtnId:
+                startActivity(new Intent(MainActivity.this,SearchActivity.class));
+                break;
+            case R.id.TopBarTitleId:
+                break;
             case R.id.about_app:
                 startActivity(new Intent(MainActivity.this,AboutActivity.class));
                 break;
@@ -171,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                    WeatherInfo info = tool.parseDataToJSon();
                     mInfoArrayList.add(info);
-                    if(mInfoArrayList.size()%cityids.length == 0) {
+                    if(mInfoArrayList.size()% cityids.length == 0) {
                         //全部加载完毕，开始通知更新UI
                         message.what = 0;
                         handler.sendMessage(message);
@@ -216,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         weather_icon.setImageDrawable(
                 getResources().getDrawable(DataTransferTool.getIconFromWeatherDetail(weather_describe)));
         Weather_describe.setText(tv2);
-        topBar.getmTitle().setText(city);
+        topBar_titleTv.setText(city);
     }
 
 

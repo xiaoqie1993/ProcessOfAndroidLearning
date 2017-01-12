@@ -95,7 +95,7 @@ public class ShareActivity extends Activity implements View.OnClickListener{
         WeatherDetail detail = mWeatherInfo.getList().get(0);
         Weather weather = detail.getWeather();
         Bundle bundle = new Bundle();
-        bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL,"http://openweathermap.org/city/"+mWeatherInfo.getCity().getId());
+        bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL,Constant.GET_WEATHER_BY_CITYID+mWeatherInfo.getCity().getId());
         bundle.putString(QQShare.SHARE_TO_QQ_TITLE,mWeatherInfo.getCity().getName()+"     "+"天气");
         //      bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL,"http://img1.gtimg.com/ninja/2/2017/01/ninja148366831425404.jpg");
         bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,"http://wiki.connect.qq.com/%E5%88%86%E4%BA%AB%E6%B6%88%E6%81%AF%E5%88%B0qq%EF%BC%88%E5%AE%9A%E5%90%91%E5%88%86%E4%BA%AB%EF%BC%89_android_sdk");
@@ -108,7 +108,7 @@ public class ShareActivity extends Activity implements View.OnClickListener{
         Bundle bundle = new Bundle();
         WeatherDetail detail = mWeatherInfo.getList().get(0);
         Weather weather = detail.getWeather();
-        bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL,"http://openweathermap.org/city/"+mWeatherInfo.getCity().getId());
+        bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL,Constant.GET_WEATHER_BY_CITYID+mWeatherInfo.getCity().getId());
         bundle.putString(QQShare.SHARE_TO_QQ_TITLE,mWeatherInfo.getCity().getName()+"     "+"天气");
         //      bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL,"http://img1.gtimg.com/ninja/2/2017/01/ninja148366831425404.jpg");
         bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,"http://wiki.connect.qq.com/%E5%88%86%E4%BA%AB%E6%B6%88%E6%81%AF%E5%88%B0qq%EF%BC%88%E5%AE%9A%E5%90%91%E5%88%86%E4%BA%AB%EF%BC%89_android_sdk");
