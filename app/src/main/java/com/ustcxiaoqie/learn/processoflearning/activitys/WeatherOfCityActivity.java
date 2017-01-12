@@ -1,8 +1,13 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -11,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ustcxiaoqie.learn.processoflearning.R;
+import com.ustcxiaoqie.learn.processoflearning.database.DataBaseHelper;
 import com.ustcxiaoqie.learn.processoflearning.http.PostInterface;
 import com.ustcxiaoqie.learn.processoflearning.http.WeatherHttpPost;
 import com.ustcxiaoqie.learn.processoflearning.tools.AvailableCity;
@@ -30,36 +36,46 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
     private static final int LEVEL_NOT_STARED = 0;
     private AvailableCity mCity;
     private WeatherInfo info;
-
+    private DataBaseHelper helper = new DataBaseHelper(WeatherOfCityActivity.this, DataBaseHelper.DB_NAME);
     private TextView mTilte;
     private Button refreshBtn;
     private Button starBtn;
+    private SQLiteDatabase mSQLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_weatherofcity);
-        initViews();
         Intent intent = getIntent();
         if (null != intent) {
             mCity = (AvailableCity) intent.getSerializableExtra(Constant.KEY_BUNDLE_CITY_OBJECT);
         }
         if (null == mCity) return;
-        mTilte.setText(mCity.getName());
+
+        initViews();
         initDatas();
     }
 
     private void initViews() {
         mTilte = (TextView) findViewById(R.id.TopBarTitleId);
-
+        mTilte.setText(mCity.getName());
         refreshBtn = (Button) findViewById(R.id.TopBarLeftBtnId);
         starBtn = (Button) findViewById(R.id.TopBarRightBtnId);
-        (starBtn.getBackground()).setLevel(LEVEL_NOT_STARED);
+
 
         mTilte.setOnClickListener(this);
         refreshBtn.setOnClickListener(this);
         starBtn.setOnClickListener(this);
+        mSQLiteDatabase = helper.getWritableDatabase();
+        Cursor cursor = helper.queryFromFavoriteCity(mSQLiteDatabase,null,"city_name=?",new String[]{mCity.getName()},null,null,null);
+        if(cursor.moveToNext()){
+            (starBtn.getBackground()).setLevel(LEVEL_STARED);
+        }else{
+            (starBtn.getBackground()).setLevel(LEVEL_NOT_STARED);
+        }
+        cursor.close();
+        mSQLiteDatabase.close();
     }
 
     private void initDatas() {
@@ -82,27 +98,79 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
         });
     }
 
+
     private void setDataToViews() {
         mTilte.setText(info.getCity().getName());
     }
 
     @Override
     public void onClick(View view) {
-        Toast toast = Toast.makeText(WeatherOfCityActivity.this, "", Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
         switch (view.getId()) {
             case R.id.TopBarRightBtnId:
                 int level = starBtn.getBackground().getLevel();
                 if (level == 0) {
                     (starBtn.getBackground()).setLevel(LEVEL_STARED);
-                    toast.setText("收藏成功");
+                    insertCityToFavorate(mCity);
                 } else {
                     starBtn.getBackground().setLevel(LEVEL_NOT_STARED);
-                    toast.setText("取消收藏");
+                    deleteCityFromFavorate(mCity);
                 }
                 break;
         }
-        toast.show();
+    }
+
+    private void deleteCityFromFavorate(final AvailableCity city) {
+        mSQLiteDatabase = helper.getWritableDatabase();
+        final DataHandler handler1 = new DataHandler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mSQLiteDatabase.delete(DataBaseHelper.TABLE_FAVORATE_CITIES,"city_name=?",new String[]{mCity.getName()});
+                mSQLiteDatabase.close();
+                Message message = Message.obtain();
+                message.what = 0;
+                handler1.sendMessage(message);
+            }
+        }).start();
+    }
+
+    private void insertCityToFavorate(final AvailableCity city) {
+        mSQLiteDatabase = helper.getWritableDatabase();
+        final DataHandler handler = new DataHandler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ContentValues values = new ContentValues();
+                values.put("city_name", city.getName());
+                values.put("city_id", city.get_id());
+
+                LA.d(TAG,"values:"+values.getAsString("city_name"));
+
+                helper.insertIntoFavoriteCity(mSQLiteDatabase,null,values,true);
+    //            mSQLiteDatabase.insert(DataBaseHelper.TABLE_FAVORATE_CITIES,null,values);
+                mSQLiteDatabase.close();
+                Message message = Message.obtain();
+                message.what = 1;
+                handler.sendMessage(message);
+            }
+        }).start();
+    }
+
+    private class DataHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            Toast toast = Toast.makeText(WeatherOfCityActivity.this, "", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            switch (msg.what) {
+                case 0:
+                    toast.setText("取消收藏");
+                    break;
+                case 1:
+                    toast.setText("收藏成功");
+                    break;
+            }
+            toast.show();
+        }
     }
 
 

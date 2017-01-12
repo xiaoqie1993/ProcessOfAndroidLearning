@@ -3,10 +3,13 @@
 
           package="com.ustcxiaoqie.learn.processoflearning"
     >
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <uses-permission-sdk-23 android:name="android.permission.INTERNET"></uses-permission-sdk-23>
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission-sdk-23>
+
     <application
 
         android:allowBackup="true"
@@ -15,45 +18,53 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activitys.MainActivity">
+
+        </activity>
+        <activity
+            android:name=".activitys.ShareActivity"
+            android:theme="@android:style/Theme.Panel"/>
+        <activity android:name=".activitys.AboutActivity"
+            />
+        <activity
+            android:name=".activitys.MoreWeatherActivity"
+            android:theme="@android:style/Animation.Dialog"/>
+        <activity
+            android:name=".activitys.DialogActivity"
+            android:theme="@style/MyDialogStyle"/>
+        <activity android:name=".activitys.QQLoginActivity">
+            <!--  <intent-filter>
+                  <action android:name="android.intent.action.MAIN"/>
+                  <category android:name="android.intent.category.LAUNCHER"/>
+              </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".activitys.SearchActivity"
+            android:theme="@style/Transpanrent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activitys.ShareActivity"
-                  android:theme="@android:style/Theme.Panel"/>
-        <activity android:name=".activitys.AboutActivity"
-         />
-        <activity android:name=".activitys.MoreWeatherActivity"
-            android:theme="@android:style/Animation.Dialog"/>
-        <activity android:name=".activitys.DialogActivity"
-            android:theme="@style/MyDialogStyle"/>
-        <activity android:name=".activitys.QQLoginActivity">
-          <!--  <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>-->
-        </activity>
-        <activity android:name=".activitys.SearchActivity"
-                  android:theme="@style/Transpanrent"/>
         <activity android:name=".activitys.WeatherOfCityActivity"/>
         <activity android:name=".activitys.TestViewActivity"/>
 
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
         <activity
             android:name="com.tencent.tauth.AuthActivity"
-            android:noHistory="true"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:noHistory="true">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tencent101372267" />
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="tencent101372267"/>
             </intent-filter>
         </activity>
     </application>
