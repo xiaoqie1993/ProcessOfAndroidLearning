@@ -11,7 +11,7 @@ public class MySQLiteDataBase {
     private SQLiteDatabase mSQLiteDatabase;
 
     public static SQLiteDatabase openDatabase(){
-        return MySQLiteDataBase.openDatabase();
+        return MySQLiteDataBase.openDatabase(                                                                                                                              );
     }
 
 }
