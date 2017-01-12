@@ -1,12 +1,14 @@
 package com.ustcxiaoqie.learn.processoflearning.tools;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/1/4 19:40.
  * Copyright (c) 2017-01-04 Bryant1993 All rights reserved.
  */
 
 
-public class WeatherDetail {
+public class WeatherDetail implements Serializable{
     private long dt; //时间
     private Temp mTemp; //温度
     private double pressure; //压强

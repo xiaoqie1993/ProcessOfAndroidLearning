@@ -1,5 +1,6 @@
 package com.ustcxiaoqie.learn.processoflearning.tools;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  */
 
 
-public class WeatherInfo {
+public class WeatherInfo implements Serializable{
     private City city;
     private int code;
     private float message;

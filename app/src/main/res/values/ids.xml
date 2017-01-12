@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="TopBarId" type="id">topbar</item>
+    <item name="TopBarLeftBtnId" type="id">topbar_leftBtn</item>
+    <item name="TopBarRightBtnId" type="id">topbar_rightBtn</item>
+    <item name="TopBarTitleId" type="id">topbar_titleTv</item>
 </resources>

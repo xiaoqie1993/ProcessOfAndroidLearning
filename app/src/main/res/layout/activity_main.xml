@@ -14,16 +14,14 @@
         app:titleText="@string/hefei"
         app:titleTextColor="@color/colorPrimaryDark"
         app:titleTextSize="@dimen/titleTextSize"
-        app:leftBtnText="@string/refresh"
+        app:leftBtnText="@string/refresh_en"
         app:leftBtnTextColor="@color/endColor"
         app:leftBtnVisiable="true"
         app:leftBtnTextSize="@dimen/leftBtnTextSize"
-        app:leftBtnBackground="@drawable/lamp"
-        app:rightBtnText="@string/add"
+        app:rightBtnText="@string/more"
         app:rightBtnTextColor="@android:color/holo_blue_bright"
         app:rightBtnVisiable="true"
         app:rightBtnTextSize="@dimen/rightBtnTextSize"
-        app:rightBtnBackground="@drawable/loading"
         >
     </com.ustcxiaoqie.learn.processoflearning.views.TopBar>
     <ImageView
@@ -73,4 +71,13 @@
             android:layout_marginBottom="10dp"
            />
     </RelativeLayout>
+    <TextView
+        android:id="@+id/about_app"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="@string/about"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/textview_textsize"
+        />
 </LinearLayout>

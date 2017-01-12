@@ -2,12 +2,12 @@ package com.ustcxiaoqie.learn.processoflearning.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,19 +19,16 @@ import com.ustcxiaoqie.learn.processoflearning.R;
  */
 
 
-public class TopBar extends LinearLayout implements View.OnClickListener{
+public class TopBar extends LinearLayout{
 
 
     private Button mLeftBtn;
     private Button mRightBtn;
     private TextView mTitle;
-    private TopBarOnclickListener mListener;
-    public void onTopBarClickListener(TopBarOnclickListener mListener){
-        this.mListener = mListener;
-    }
     public TopBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setOrientation(HORIZONTAL);
+        this.setId(R.id.TopBarId);
         this.setPadding(2,1,2,0);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TopBar);
         initLeftBtn(context,typedArray);
@@ -46,7 +43,7 @@ public class TopBar extends LinearLayout implements View.OnClickListener{
         mTitle.setGravity(Gravity.CENTER);
         mTitle.setTextSize(typedArray.getDimension(R.styleable.TopBar_titleTextSize,16));
         mTitle.setTextColor(typedArray.getColor(R.styleable.TopBar_titleTextColor,0000));
-        mTitle.setOnClickListener(this);
+        mTitle.setId(R.id.TopBarTitleId);
         LinearLayout.LayoutParams titleParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,8);
         titleParams.gravity = Gravity.CENTER;
         addView(mTitle ,titleParams);
@@ -59,8 +56,8 @@ public class TopBar extends LinearLayout implements View.OnClickListener{
         mRightBtn .setTextColor(typedArray.getColor(R.styleable.TopBar_rightBtnTextColor,0000));
         mRightBtn .setTextSize(typedArray.getDimension(R.styleable.TopBar_rightBtnTextSize,16));
         mRightBtn .setVisibility(typedArray.getBoolean(R.styleable.TopBar_rightBtnVisiable,true)?View.VISIBLE:View.INVISIBLE);
-        mRightBtn.setBackgroundColor(Color.TRANSPARENT);
-        mRightBtn .setOnClickListener(this);
+        mRightBtn.setBackground(typedArray.getDrawable(R.styleable.TopBar_rightBtnBackground));
+        mRightBtn.setId(R.id.TopBarRightBtnId);
         LinearLayout.LayoutParams rightBtnParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,3);
         rightBtnParams.gravity = Gravity.CENTER;
         addView(mRightBtn ,rightBtnParams);
@@ -70,34 +67,12 @@ public class TopBar extends LinearLayout implements View.OnClickListener{
         mLeftBtn = new Button(context);
         mLeftBtn.setText(typedArray.getText(R.styleable.TopBar_leftBtnText));
         mLeftBtn.setGravity(Gravity.CENTER);
-        mLeftBtn.setBackgroundColor(Color.TRANSPARENT);
         mLeftBtn.setTextColor(typedArray.getColor(R.styleable.TopBar_leftBtnTextColor,0000));
         mLeftBtn.setTextSize(typedArray.getDimension(R.styleable.TopBar_leftBtnTextSize,16));
         mLeftBtn.setVisibility(typedArray.getBoolean(R.styleable.TopBar_leftBtnVisiable,true)?View.VISIBLE:View.INVISIBLE);
-        // mLeftBtn.setBackground(R.styleable.TopBar_leftBtnBackground);
-        mLeftBtn.setOnClickListener(this);
+        mLeftBtn.setBackground(typedArray.getDrawable(R.styleable.TopBar_leftBtnBackground));
+        mLeftBtn.setId(R.id.TopBarLeftBtnId);
         LinearLayout.LayoutParams leftBtnParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,3);
         addView(mLeftBtn,leftBtnParams);
-    }
-    @Override
-    public void onClick(View view) {
-        if(view==mLeftBtn){
-            mListener.onLeftBtnClicked(mLeftBtn);
-        }else if(view == mRightBtn){
-            mListener.onRightBtnClicked(mRightBtn);
-        }else if(view == mTitle){
-            mListener.onTitleClicked(mTitle);
-        }
-    }
-    public Button getmRightBtn() {
-        return mRightBtn;
-    }
-
-    public TextView getmTitle() {
-        return mTitle;
-    }
-
-    public Button getmLeftBtn() {
-        return mLeftBtn;
     }
 }

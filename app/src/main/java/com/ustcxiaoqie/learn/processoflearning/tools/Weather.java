@@ -1,12 +1,14 @@
 package com.ustcxiaoqie.learn.processoflearning.tools;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/1/4 19:43.
  * Copyright (c) 2017-01-04 Bryant1993 All rights reserved.
  */
 
 
-public class Weather {
+public class Weather implements Serializable{
     private int id;  //天气代号
     private String main; //主要天气
     private String desciption; //描述

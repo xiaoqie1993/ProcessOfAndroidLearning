@@ -33,6 +33,7 @@ public class WeatherJsonParseTool {
         City city = new City();
         JSONObject cityJSOnObject = jsonObject.getJSONObject("city");
         city.setName(cityJSOnObject.getString("name"));
+        city.setId(cityJSOnObject.getInt("id"));
         //设置City,Code,Cmt,Message参数
         weatherInfo.setCity(city);
         weatherInfo.setCode(jsonObject.getInt("cod"));

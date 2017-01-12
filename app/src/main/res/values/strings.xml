@@ -4,8 +4,10 @@
     <string name="off">关闭</string>
     <string name="city">城市</string>
     <string name="refresh">刷新</string>
+    <string name="refresh_en">Refresh</string>
     <string name="setting">设置</string>
     <string name="add">+</string>
+    <string name="more">More</string>
     <string name="hefei">合肥</string>
     <string name="wuhan">武汉</string>
     <string name="suizhou">随州</string>
@@ -21,6 +23,8 @@
     <string name="rain_hearvy">大雨</string>
     <string name="rain_thunder">雷雨</string>
     <string name="fog">雾</string>
+    <string name="version_2">1.01</string>
+    <string name="about">关于</string>
 
     <string-array name="cities" >
         <item>@string/hefei</item>
