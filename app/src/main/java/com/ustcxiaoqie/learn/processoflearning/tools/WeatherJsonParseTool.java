@@ -80,6 +80,8 @@ public class WeatherJsonParseTool {
              jsonObject= new JSONObject(dataString);
         }catch (JSONException e){
             e.printStackTrace();
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
         return jsonObject;
     }

@@ -1,6 +1,7 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,6 +33,8 @@ public class SearchActivity extends Activity {
     private List<AvailableCity> AllCitiesList;
     private List<AvailableCity> PossiableCitiesList;
     private ListView possible_city_lv;
+
+    private SQLiteDatabase mSQLiteDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +90,7 @@ public class SearchActivity extends Activity {
 
     private void initData() {
         PossiableCitiesList = new ArrayList<>();
+
         try {
             AllCitiesList = DataTransferTool.getAvailableCityList(this);
         } catch (IOException e) {
@@ -108,4 +112,5 @@ public class SearchActivity extends Activity {
         super.finalize();
         LA.d(TAG,"huishou");
     }
+
 }
