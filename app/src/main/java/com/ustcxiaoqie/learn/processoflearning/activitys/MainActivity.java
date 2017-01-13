@@ -2,45 +2,49 @@ package com.ustcxiaoqie.learn.processoflearning.activitys;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ClipDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ustcxiaoqie.learn.processoflearning.ProgressListener;
 import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.WeatherAdapter;
+import com.ustcxiaoqie.learn.processoflearning.database.DataBaseHelper;
 import com.ustcxiaoqie.learn.processoflearning.http.PostInterface;
 import com.ustcxiaoqie.learn.processoflearning.http.WeatherHttpPost;
+import com.ustcxiaoqie.learn.processoflearning.tools.City;
 import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
 import com.ustcxiaoqie.learn.processoflearning.tools.DataTransferTool;
 import com.ustcxiaoqie.learn.processoflearning.tools.LA;
 import com.ustcxiaoqie.learn.processoflearning.tools.Temp;
 import com.ustcxiaoqie.learn.processoflearning.tools.WeatherDetail;
 import com.ustcxiaoqie.learn.processoflearning.tools.WeatherInfo;
-import com.ustcxiaoqie.learn.processoflearning.tools.WeatherJsonParseTool;
-import com.ustcxiaoqie.learn.processoflearning.views.TopBar;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener, ProgressListener,PostInterface {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener,
+        PostInterface {
     private static final String TAG = "MainActivity";
     private final static int PROGRESS_ORIGINAL = 0;
     private final static int PROGRESS_MAX = 10000;
+    private static boolean flag_fristInt = true;
     private LocalBroadcastManager mLocalBroadcastManager;
-    private TopBar topBar;
+
+
     private Button topBar_LeftBtn;
     private Button topBar_rightBtn;
     private TextView topBar_titleTv;
@@ -50,55 +54,74 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView Weather_describe;
     private ListView mListView;
     private WeatherAdapter mWeatherAdapter;
-    private List<WeatherInfo> mInfoArrayList = new ArrayList<WeatherInfo>();  //保存所有城市的天气信息
-    private List<HashMap<String,Object>> mHashMapList;
+
+    private List<WeatherInfo> mInfoArrayList = new ArrayList<>();  //保存所有城市的天气信息
+    private List<HashMap<String, Object>> mHashMapList;    //适配器天气源
+    private List<City> mFavoriteList;
 
     private ClipDrawable drawable;
-    private int[] cityids ;
     private int iconOrder = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initDatas();
         initViews();
-
         getAllWeathers();
-
     }
 
     private void getAllWeathers() {
-        drawable.setLevel(PROGRESS_ORIGINAL);
-        mInfoArrayList.clear();
-        for(int id:cityids) {
-            getWeather(id);
+        mFavoriteList.clear();
+        //获取收藏城市
+        DataBaseHelper helper = new DataBaseHelper(MainActivity.this);
+        SQLiteDatabase database = helper.getWritableDatabase();
+        Cursor cursor = helper.queryFromFavoriteCity(database, new String[]{"city_name", "city_id"}, null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            City city = new City();
+            city.setName(cursor.getString(0));
+            city.setId(cursor.getInt(1));
+            mFavoriteList.add(city);
         }
-        startActivity(new Intent(MainActivity.this,DialogActivity.class));
+        cursor.close();
+        helper.close();
 
+        if (mFavoriteList.size() == 0) {
+            mHashMapList.clear();
+            topBar_titleTv.setText("请添加城市");
+            mWeatherAdapter.notifyDataSetChanged();
+            Toast toast = Toast.makeText(MainActivity.this,"请添加城市",Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER,0,0);
+            toast.show();
+            return; //再次判断，若仍为0则直接返回
+        }
+        LA.d(TAG,"aaaaaaaaaaaaaaaaaaaaaa    "+mFavoriteList.size());
+        getWeather(mFavoriteList);
+        startActivity(new Intent(MainActivity.this, DialogActivity.class));
     }
 
-    private void getWeather(int cityid) {
-        WeatherHttpPost post = new WeatherHttpPost(cityid);
-        post.getWeatherInfo(this);
+    private void getWeather(List<City> city) {
+        WeatherHttpPost post = new WeatherHttpPost(city);
+        post.getWeatherInfo(this, new ProgressListener() {
+            @Override
+            public void setImageProgress(int progress) {
+                drawable.setLevel((progress / mFavoriteList.size()) * PROGRESS_MAX);
+            }
+        });
     }
 
     private void initDatas() {
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
         mHashMapList = new ArrayList<>();
-        //初始配置
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("cityname","Hefei");
-        map.put("icon",R.drawable.na);
-        map.put("detail","NA");
-        mHashMapList.add(map);
+        mFavoriteList = new ArrayList<>();
     }
 
 
     private void initViews() {
         Resources resources = getResources();
         findViewById(R.id.about_app).setOnClickListener(this);
-        image_progress = (ImageView)findViewById(R.id.progress);
-        drawable= (ClipDrawable) image_progress.getDrawable();
+        image_progress = (ImageView) findViewById(R.id.progress);
+        drawable = (ClipDrawable) image_progress.getDrawable();
         drawable.setLevel(PROGRESS_ORIGINAL);//进度条初始值
 
         weather_icon = (ImageView) findViewById(R.id.weathericon);
@@ -108,77 +131,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Weather_describe.setText(resources.getStringArray(R.array.weatherdescribe)[iconOrder]);
 
         mListView = (ListView) findViewById(R.id.weatherlists);
-        mWeatherAdapter= new WeatherAdapter(this,mHashMapList);
+        mWeatherAdapter = new WeatherAdapter(this, mHashMapList);
         mListView.setAdapter(mWeatherAdapter);
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
 
-        topBar = (TopBar)findViewById(R.id.TopBarId);
-        topBar_LeftBtn  = (Button) findViewById(R.id.TopBarLeftBtnId);
-        topBar_rightBtn  = (Button) findViewById(R.id.TopBarRightBtnId);
-        topBar_titleTv  = (TextView) findViewById(R.id.TopBarTitleId);
+        topBar_LeftBtn = (Button) findViewById(R.id.TopBarLeftBtnId);
+        topBar_rightBtn = (Button) findViewById(R.id.TopBarRightBtnId);
+        topBar_titleTv = (TextView) findViewById(R.id.TopBarTitleId);
         topBar_LeftBtn.setOnClickListener(this);
         topBar_rightBtn.setOnClickListener(this);
         topBar_titleTv.setOnClickListener(this);
-        cityids = resources.getIntArray(R.array.cityIds);
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.TopBarLeftBtnId:
                 getAllWeathers();
                 break;
             case R.id.TopBarRightBtnId:
-                startActivity(new Intent(MainActivity.this,SearchActivity.class));
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 break;
             case R.id.TopBarTitleId:
                 break;
             case R.id.about_app:
-                startActivity(new Intent(MainActivity.this,AboutActivity.class));
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
         }
     }
 
     @Override
-    public void setImageProgress(int progress) {
-        drawable.setLevel(progress);
-        if(progress==PROGRESS_MAX||progress==PROGRESS_ORIGINAL){
-            image_progress.setVisibility(View.INVISIBLE);
-
-        }else {
-            image_progress.setVisibility(View.VISIBLE);
+    public void getResponse(List<WeatherInfo> list) {
+        if (null == list) return;
+        LA.d(TAG,"liszt "+list.size()+"");
+        mInfoArrayList = list;
+        //设置上面显示内容
+        setAboveViews();
+        Intent intent = new Intent(Constant.DIALOG_ACTIVITY_FINISH);
+        mHashMapList.clear();
+        for (int s = 0; s < list.size(); s++) {
+            WeatherInfo info = list.get(s);
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("cityname", info.getCity().getName());
+            map.put("icon", DataTransferTool.getIconFromWeatherDetail(info.getList().get(0).getWeather().getDesciption()));
+            map.put("detail", info.getList().get(0).getWeather().getDesciption());
+            mHashMapList.add(map);
         }
-    }
+        LA.d(TAG,mHashMapList.size()+"aaa");
+        mWeatherAdapter.notifyDataSetChanged();
 
-    @Override
-    public void getResponse(final String json) {
-        if(null != json) drawable.setLevel(PROGRESS_MAX/2);
-        final BackgroundDataHandler handler = new BackgroundDataHandler();
-        final WeatherJsonParseTool tool = new WeatherJsonParseTool(json);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Message message = Message.obtain();
-                try {
-                   WeatherInfo info = tool.parseDataToJSon();
-                    mInfoArrayList.add(info);
-                    if(mInfoArrayList.size()% cityids.length == 0) {
-                        //全部加载完毕，开始通知更新UI
-                        message.what = 0;
-                        handler.sendMessage(message);
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    LA.e(TAG,"Error!");
-                    message.what =1;
-                    handler.sendMessage(message);
-                }
-            }
-        }).start();
-
+        intent.putExtra(Constant.PROGRESS, Constant.PROGRESS_FINISH);
+        mLocalBroadcastManager.sendBroadcast(intent);
+        drawable.setLevel(PROGRESS_ORIGINAL);
     }
 
     @Override
@@ -190,11 +195,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          * id :
          */
         //获取当前项的所有天气信息
-        setAboveViews(position);
+
+        City city = mInfoArrayList.get(position).getCity();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constant.KEY_BUNDLE_CITY_OBJECT, city);
+        Intent intent = new Intent();
+        intent.putExtras(bundle);
+        intent.setClass(MainActivity.this, WeatherOfCityActivity.class);
+        startActivity(intent);
     }
 
-    private void setAboveViews(int position) {
-        WeatherInfo weatherInfo = mInfoArrayList.get(position);
+    private void setAboveViews() {
+        WeatherInfo weatherInfo = mInfoArrayList.get(0);
         List<WeatherDetail> mDetailList = weatherInfo.getList();
         String city = weatherInfo.getCity().getName();
         WeatherDetail detail = mDetailList.get(0); //今天的天气信息
@@ -203,8 +216,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         float temp_min = temp.getMin();
         float temp_max = temp.getMax();
         String weather_describe = detail.getWeather().getDesciption();
-        String tv2 = weather_describe+"\n"+"Current:"+temp_day+"℃"
-                +"\n"+"Range:"+temp_min+"℃"+"~"+temp_max+"℃";
+        String tv2 = weather_describe + "\n" + "Current:" + temp_day + "℃"
+                + "\n" + "Range:" + temp_min + "℃" + "~" + temp_max + "℃";
         weather_icon.setImageDrawable(
                 getResources().getDrawable(DataTransferTool.getIconFromWeatherDetail(weather_describe)));
         Weather_describe.setText(tv2);
@@ -216,60 +229,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         WeatherInfo weatherInfo = mInfoArrayList.get(position);
         Intent i = new Intent();
-        i.setClass(MainActivity.this,ShareActivity.class);
+        i.setClass(MainActivity.this, ShareActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("weather",weatherInfo);
+        bundle.putSerializable("weather", weatherInfo);
         i.putExtras(bundle);
         startActivity(i);
-        this.overridePendingTransition(R.anim.activity_open,0);
+        this.overridePendingTransition(R.anim.activity_open, 0);
         return true;
     }
 
-    private class BackgroundDataHandler extends Handler{
-        @Override
-        public void handleMessage(Message msg) {
-            Intent intent =new Intent(Constant.DIALOG_ACTIVITY_FINISH);
-            switch (msg.what){
-                case 0:
-                    Intent i =new Intent(Constant.DIALOG_ACTIVITY_FINISH);
-                    i.putExtra(Constant.PROGRESS,Constant.PROGRESS_HALF);
-                    mLocalBroadcastManager.sendBroadcast(i);
-                    mHashMapList.clear();
-                    for(int s= 0;s<mInfoArrayList.size();s++) {
-
-                        WeatherInfo info = mInfoArrayList.get(s);
-                        LA.d(TAG,"tool:"+info.toString());
-                        HashMap<String, Object> map = new HashMap<String,Object>();
-                        map.put("cityname", info.getCity().getName());
-                        map.put("icon", DataTransferTool.getIconFromWeatherDetail(info.getList().get(0).getWeather().getDesciption()));
-                        map.put("detail", info.getList().get(0).getWeather().getDesciption());
-                        mHashMapList.add(map);
-                    }
-                    mWeatherAdapter.notifyDataSetChanged();
-                    //默认上面显示合肥
-                    setAboveViews(1);
-                    intent.putExtra(Constant.PROGRESS,Constant.PROGRESS_FINISH);
-                    break;
-                case 1:
-                    intent.putExtra(Constant.PROGRESS,Constant.PROGRESS_FAILED);
-                    break;
-            }
-            drawable.setLevel(PROGRESS_MAX);
-            mLocalBroadcastManager.sendBroadcast(intent);
-            drawable.setLevel(PROGRESS_ORIGINAL);
-
-        }
-    }
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        LA.d(TAG,"finalized!");
+        LA.d(TAG, "finalized!");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(null != mLocalBroadcastManager){
+        if (null != mLocalBroadcastManager) {
             mLocalBroadcastManager = null;
         }
     }

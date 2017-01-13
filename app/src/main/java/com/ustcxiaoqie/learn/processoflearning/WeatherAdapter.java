@@ -25,6 +25,7 @@ public class WeatherAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         return mapList.size();
+
     }
 
     @Override
@@ -48,7 +49,14 @@ public class WeatherAdapter extends BaseAdapter {
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.mCityname.setText((CharSequence) mapList.get(position).get("cityname"));
+
+        if(null == mapList.get(position).get("cityname")){
+            //For WeatherOfCityActivity
+            viewHolder.mCityname.setText((CharSequence) mapList.get(position).get("temp"));
+        }else{
+            //For MainActivity cityname
+            viewHolder.mCityname.setText((CharSequence) mapList.get(position).get("cityname"));
+        }
         viewHolder.mIcon.setImageDrawable(mContext.getResources().getDrawable((Integer) mapList.get(position).get("icon")));
         viewHolder.mDetail.setText((CharSequence) mapList.get(position).get("detail"));
         return convertView;
@@ -61,11 +69,8 @@ public class WeatherAdapter extends BaseAdapter {
 
         public ViewHolder(View view){
             mCityname = (TextView) view.findViewById(R.id.list_item_cityname);
-            mCityname.setTag("tv1");
             mIcon = (ImageView) view.findViewById(R.id.list_item_icon);
-            mIcon.setTag("iv");
             mDetail = (TextView) view.findViewById(R.id.list_item_detail);
-            mDetail.setTag("tv2");
         }
     }
 }

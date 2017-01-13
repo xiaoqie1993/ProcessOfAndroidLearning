@@ -33,28 +33,29 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     public DataBaseHelper(Context context, String name) {
         this(context, name, version);
     }
+    public DataBaseHelper(Context context){
+        this(context,DB_NAME);
+    }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-      /*  String sql = "";
-        if(db_name.equals(TABLE_FAVORATE_CITIES)){
-            sql = "create table "+TABLE_FAVORATE_CITIES+"(_id integer primary key autoincrement, city_name, city_id)";
-        }else if(db_name.equals(TABLE_CITIES)){
-            sql = "create table "+TABLE_FAVORATE_CITIES+"(_id integer primary key autoincrement, city_name, city_id,city_country,city_population)";
-        }else{
-            throw new IllegalArgumentException();
-        }*/
-        sqLiteDatabase.execSQL("create table "+TABLE_FAVORATE_CITIES+"(_id integer primary key autoincrement, city_name, city_id)");
-    //    sqLiteDatabase.execSQL("create table "+TABLE_CITIES+ "(_id integer primary key autoincrement, city_name, city_id,city_country,city_population)");
-    }
+        sqLiteDatabase.execSQL("create table "+TABLE_FAVORATE_CITIES+" (_id integer primary key autoincrement, city_name, city_id)");
+        ContentValues values = new ContentValues();
+        values.put("city_name","Hefei");
+        values.put("city_id",1808722);
+        insertIntoFavoriteCity(sqLiteDatabase,null,values,true);
 
+        ContentValues values0 = new ContentValues();
+        values0.put("city_name","Wuhan");
+        values0.put("city_id",1791247);
+        insertIntoFavoriteCity(sqLiteDatabase,null,values0,true);
+    }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         if(i1 != i){
             LA.d(TAG,"onUpgrade");
         }
     }
-
     public void insertIntoFavoriteCity(SQLiteDatabase db,String nullcolomnHack,ContentValues values,@NonNull boolean isOverWrite){
         //  isOverWrite 是否覆盖之前的城市数据
         if(isOverWrite){
@@ -77,5 +78,10 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     }
     public void updateToFavoriteCity(SQLiteDatabase sb,ContentValues values,String whereClause,String[] whereArgs){
         sb.update(TABLE_FAVORATE_CITIES,values,whereClause,whereArgs);
+    }
+
+    public void clearDataBase(SQLiteDatabase db,boolean confime){
+        if(confime){
+        }
     }
 }

@@ -17,12 +17,11 @@ import java.util.List;
 
 public class WeatherJsonParseTool {
     private static final String TAG = "WeatherJsonParseTool";
-    private String dataString;
-    public WeatherJsonParseTool(String dataString){
-        this.dataString = dataString;
+    public WeatherJsonParseTool(){
     }
-    public WeatherInfo parseDataToJSon() throws JSONException {
-        JSONObject jsonObject = getJsonFromString();
+
+    public WeatherInfo parseDataToJSon(String dataString) throws JSONException {
+        JSONObject jsonObject = getJsonFromString(dataString);
         if(null == jsonObject) return null;
 
         WeatherInfo weatherInfo = new WeatherInfo();
@@ -74,7 +73,7 @@ public class WeatherJsonParseTool {
         Log.d(TAG,"listsize"+list.size());
         return weatherInfo;
     }
-    private JSONObject getJsonFromString(){
+    private JSONObject getJsonFromString(String dataString){
         JSONObject jsonObject = null;
         try{
              jsonObject= new JSONObject(dataString);

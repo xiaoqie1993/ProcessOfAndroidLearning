@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-
           package="com.ustcxiaoqie.learn.processoflearning"
     >
 
@@ -18,7 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activitys.MainActivity">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".activitys.ShareActivity"
@@ -40,10 +42,7 @@
         <activity
             android:name=".activitys.SearchActivity"
             android:theme="@style/Transpanrent">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+
         </activity>
         <activity android:name=".activitys.WeatherOfCityActivity"/>
         <activity android:name=".activitys.TestViewActivity"/>
@@ -60,10 +59,8 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-
                 <data android:scheme="tencent101372267"/>
             </intent-filter>
         </activity>

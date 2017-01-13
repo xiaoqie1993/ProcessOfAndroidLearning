@@ -3,7 +3,11 @@ package com.ustcxiaoqie.learn.processoflearning.http;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.ustcxiaoqie.learn.processoflearning.ProgressListener;
+import com.ustcxiaoqie.learn.processoflearning.tools.City;
 import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
+import com.ustcxiaoqie.learn.processoflearning.tools.WeatherInfo;
+import com.ustcxiaoqie.learn.processoflearning.tools.WeatherJsonParseTool;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -13,11 +17,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/12/29 19:28.
@@ -27,67 +34,65 @@ import java.net.URISyntaxException;
 
 public class WeatherHttpPost {
     private static final String TAG = "WeatherHttpPost";
-    private int cityid ;
-    private final static int PROGRESS_START = 0;
-    private final static int PROGRESS_MIDDLE = 50;
-    private final static int PROGRESS_END = 100;
-    private final static int PROGRESS_FAILED = -1;
+    private List<City> mCityList;
 
-    public WeatherHttpPost(int cityid){
-        this.cityid = cityid;
+    public WeatherHttpPost(List<City> cityList){
+        this.mCityList = cityList;
     }
-    public void getWeatherInfo(PostInterface i){
-        String postUrl = Constant.getUrl+cityid;
-        HttpAsyncTask task = new HttpAsyncTask(postUrl,i);
+    public void getWeatherInfo(PostInterface i, ProgressListener progressListener){
+        String hostUrl = Constant.getUrl;
+        HttpAsyncTask task = new HttpAsyncTask(hostUrl,i,progressListener);
         task.execute("");
     }
 
-    private class HttpAsyncTask extends AsyncTask<String,Integer,String> {
-        private String postUrl;
+    private class HttpAsyncTask extends AsyncTask<String,Integer,List<WeatherInfo>> {
+        private String hostUrl;
         private PostInterface i;
-        public HttpAsyncTask(String postUrl,PostInterface i) {
-            this.postUrl = postUrl;
+        private List<WeatherInfo> mWeatherInfoList;  //返回的天气数据集合
+        private ProgressListener mProgressListener;
+        public HttpAsyncTask(String hostUrl,PostInterface i,ProgressListener progressListener) {
+            this.hostUrl = hostUrl;
             this.i = i;
+            this.mProgressListener = progressListener;
         }
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mWeatherInfoList = new ArrayList<>();
         }
         @Override
-        protected String doInBackground(String... params) {
-            try {
-                publishProgress(PROGRESS_START);
-                URI uri = new URI(postUrl);
-                HttpGet get = new HttpGet(uri);
-/*                HttpPost post = new HttpPost(uri);
-                List<NameValuePair> list = new ArrayList<>();
-                BasicNameValuePair pair = new BasicNameValuePair("appkey",Constant.myAPIKey);
-                BasicNameValuePair pair1 = new BasicNameValuePair("id",String.valueOf(cityid));
-                list.add(pair);
-                list.add(pair1);
-                post.setEntity(new UrlEncodedFormEntity(list, HTTP.UTF_8));
- */
-                HttpClient client = getClient();
-                HttpResponse response = client.execute(get);
-                publishProgress(PROGRESS_MIDDLE);
-                if(response.getStatusLine().getStatusCode() == 200){
-                    publishProgress(PROGRESS_END);
-                    return EntityUtils.toString(response.getEntity());
-                }else{
-                   Log.d(TAG,"  "+response.getStatusLine().getStatusCode());
+        protected List<WeatherInfo> doInBackground(String... params) {
+            WeatherJsonParseTool tool = new WeatherJsonParseTool();
+            for (int i = 0 ; i< mCityList.size();i++){
+                try {
+                    URI uri = new URI(hostUrl+mCityList.get(i).getId());
+                    HttpGet get = new HttpGet(uri);
+                    HttpClient client = getClient();
+                    HttpResponse response = client.execute(get);
+                    if(response.getStatusLine().getStatusCode() == 200){
+                        try {
+                            WeatherInfo info = tool.parseDataToJSon(EntityUtils.toString(response.getEntity()));
+                            mWeatherInfoList.add(info);
+                            publishProgress(i+1);
+                            continue;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        Log.d(TAG,"  "+response.getStatusLine().getStatusCode());
+                    }
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-            publishProgress(PROGRESS_FAILED);
-            return null;
+
+            return mWeatherInfoList;
         }
 
         private HttpClient getClient() {
@@ -98,25 +103,15 @@ public class WeatherHttpPost {
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            i.getResponse(s);
+        protected void onPostExecute(List<WeatherInfo> list) {
+            super.onPostExecute(list);
+            i.getResponse(list);
         }
 
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            Log.d(TAG,values[0]+"");
-            switch (values[0]){
-                case PROGRESS_START:
-                    break;
-                case PROGRESS_MIDDLE:
-                    break;
-                case PROGRESS_END:
-                    break;
-                case PROGRESS_FAILED:
-                    break;
-            }
+            mProgressListener.setImageProgress(values[0]);
         }
 
 

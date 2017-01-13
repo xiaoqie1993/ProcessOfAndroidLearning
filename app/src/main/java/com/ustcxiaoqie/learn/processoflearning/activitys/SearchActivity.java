@@ -1,7 +1,6 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,7 +10,7 @@ import android.widget.ListView;
 
 import com.ustcxiaoqie.learn.processoflearning.PossiableCityAdapter;
 import com.ustcxiaoqie.learn.processoflearning.R;
-import com.ustcxiaoqie.learn.processoflearning.tools.AvailableCity;
+import com.ustcxiaoqie.learn.processoflearning.tools.City;
 import com.ustcxiaoqie.learn.processoflearning.tools.DataTransferTool;
 import com.ustcxiaoqie.learn.processoflearning.tools.LA;
 
@@ -30,11 +29,9 @@ import static android.view.View.GONE;
 public class SearchActivity extends Activity {
     private static final String TAG = "SearchActivity";
     private EditText mSearchEditText;
-    private List<AvailableCity> AllCitiesList;
-    private List<AvailableCity> PossiableCitiesList;
+    private List<City> AllCitiesList;
+    private List<City> PossiableCitiesList;
     private ListView possible_city_lv;
-
-    private SQLiteDatabase mSQLiteDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +77,6 @@ public class SearchActivity extends Activity {
         PossiableCitiesList.clear();
         for(int i = 0 ; i< AllCitiesList.size();i++) {
             if(AllCitiesList.get(i).getName().toLowerCase().contains(s.toLowerCase())){
-
                 PossiableCitiesList.add(AllCitiesList.get(i));
                 if(PossiableCitiesList.size()>3) break;  //只保留4个待选项
             }

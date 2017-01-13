@@ -16,6 +16,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -68,11 +69,10 @@ public class DataTransferTool {
         return callbackMsg;
     }
 
-    public static List<AvailableCity> getAvailableCityList(Context context) throws IOException, JSONException {
-        List<AvailableCity> list = new ArrayList<>();
+    public static List<City> getAvailableCityList(Context context) throws IOException, JSONException {
+        List<City> list = new ArrayList<>();
         AssetManager manager = context.getAssets();
         InputStream is = manager.open("cities.txt");
-        int length = is.available();
         BufferedInputStream bis = new BufferedInputStream(is);
         StringBuffer sb = new StringBuffer();
         byte[] buffer = new byte[1024];
@@ -86,12 +86,34 @@ public class DataTransferTool {
         JSONArray array =new JSONArray(sb.toString());
 
         for(int p = 0 ;p<array.length() ; p++){
-            AvailableCity city = new AvailableCity();
+            City city = new City();
             JSONObject object = array.getJSONObject(p);
             city.setName(object.getString("name"));
-            city.set_id(object.getInt("_id"));
+            city.setId(object.getInt("_id"));
             list.add(city);
             }
         return list;
+    }
+
+
+    /**
+     *
+     * @param list  多个城市的天气数据列表
+     * @return  用于WeatherAdapter的MapList
+     */
+    public static List<HashMap<String,Object>> transferListToListMap(List<WeatherInfo> list){
+        if (null == list) return null;
+        List<HashMap<String,Object>> mapList = new ArrayList<>();
+        WeatherInfo info = list.get(0);
+        List<WeatherDetail> list_detail = info.getList();
+        for (int s = 0; s < list_detail.size(); s++) {
+            WeatherDetail detail = list_detail.get(s);
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("temp", detail.getTemp().getDay()+"℃"+"\n"+detail.getTemp().getMin()+"℃"+"`"+detail.getTemp().getMax()+"℃");
+            map.put("icon", DataTransferTool.getIconFromWeatherDetail(detail.getWeather().getDesciption()));
+            map.put("detail", detail.getWeather().getDesciption());
+            mapList.add(map);
+        }
+      return mapList;
     }
 }

@@ -10,7 +10,7 @@ import android.util.Log;
 
 
 public class LA {
-    private static boolean isDebug = true;
+    private static boolean isDebug = false;
     private LA(){
     }
     public static void i(String TAG,String msg) {

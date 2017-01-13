@@ -7,7 +7,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,10 +40,10 @@ public class TopBar extends LinearLayout{
         mTitle = new TextView(context);
         mTitle.setText(typedArray.getText(R.styleable.TopBar_titleText));
         mTitle.setGravity(Gravity.CENTER);
-        mTitle.setTextSize(typedArray.getDimension(R.styleable.TopBar_titleTextSize,16));
+        mTitle.setTextSize(typedArray.getDimension(R.styleable.TopBar_titleTextSize,12));
         mTitle.setTextColor(typedArray.getColor(R.styleable.TopBar_titleTextColor,0000));
         mTitle.setId(R.id.TopBarTitleId);
-        LinearLayout.LayoutParams titleParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,8);
+        LinearLayout.LayoutParams titleParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,6);
         titleParams.gravity = Gravity.CENTER;
         addView(mTitle ,titleParams);
     }

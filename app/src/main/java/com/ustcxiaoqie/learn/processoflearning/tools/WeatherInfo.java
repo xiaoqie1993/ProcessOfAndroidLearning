@@ -16,7 +16,6 @@ public class WeatherInfo implements Serializable{
     private int cmt;
     private List<WeatherDetail> mList;
 
-
     public City getCity() {
         return city;
     }

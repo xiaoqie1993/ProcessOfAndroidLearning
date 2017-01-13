@@ -12,8 +12,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ustcxiaoqie.learn.processoflearning.activitys.WeatherOfCityActivity;
-import com.ustcxiaoqie.learn.processoflearning.tools.AvailableCity;
+import com.ustcxiaoqie.learn.processoflearning.tools.City;
 import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
+import com.ustcxiaoqie.learn.processoflearning.tools.LA;
 
 import java.util.List;
 
@@ -22,8 +23,9 @@ import java.util.List;
  */
 
 public class PossiableCityAdapter extends BaseAdapter {
+    private static final String TAG = "PossiableCityAdapter";
     private Context mContext;
-    private List<AvailableCity> mList;
+    private List<City> mList;
 
     public PossiableCityAdapter(Context context, List list) {
         mContext = context;
@@ -65,6 +67,7 @@ public class PossiableCityAdapter extends BaseAdapter {
                 Intent intent = new Intent(mContext,WeatherOfCityActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Constant.KEY_BUNDLE_CITY_OBJECT,mList.get(i));
+                LA.d(TAG,mList.get(i).toString());
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
                 ((Activity)mContext).finish();

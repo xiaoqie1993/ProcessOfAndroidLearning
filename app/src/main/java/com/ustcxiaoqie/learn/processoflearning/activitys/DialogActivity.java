@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +40,6 @@ public class DialogActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             int progress = intent.getIntExtra(Constant.PROGRESS,0);
-            Log.d("MainActivity",progress+"");
             switch (progress){
                 case Constant.PROGRESS_START:
                     break;
