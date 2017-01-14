@@ -21,7 +21,7 @@ public class AboutActivity extends Activity {
         StringBuffer sb = new StringBuffer();
         sb.append("<font size = 12 color = '#000000'>当前软件版本:</font>");
         sb.append("<br>");
-        sb.append("<font size = 12 color = '#0000FF'>V1.0.2</font>");
+        sb.append("<font size = 12 color = '#0000FF'>V1.0.3</font>");
         sb.append("<br>");
         sb.append("<font size = 12 color = '#000000'>天气数据来源:</font>");
         sb.append("<br>");

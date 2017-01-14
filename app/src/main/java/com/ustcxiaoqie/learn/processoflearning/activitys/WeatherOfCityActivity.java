@@ -27,6 +27,7 @@ import com.ustcxiaoqie.learn.processoflearning.tools.LA;
 import com.ustcxiaoqie.learn.processoflearning.tools.WeatherInfo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
     private static final int LEVEL_NOT_STARED = 0;
     private City mCity;
     private WeatherInfo info;
-    private DataBaseHelper helper = new DataBaseHelper(WeatherOfCityActivity.this);
+    private DataBaseHelper helper = new DataBaseHelper(WeatherOfCityActivity.this,Constant.DATABASE_VERSION);
     private TextView mTilte;
     private Button refreshBtn;
     private Button starBtn;
@@ -154,6 +155,7 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
         ContentValues values = new ContentValues();
         values.put("city_name", city.getName());
         values.put("city_id", city.getId());
+        values.put("time_favorite", new Date().toString());
         helper.insertIntoFavoriteCity(mSQLiteDatabase, null, values, true);
         helper.close();
         (starBtn.getBackground()).setLevel(LEVEL_STARED);

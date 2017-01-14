@@ -74,13 +74,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getAllWeathers() {
         mFavoriteList.clear();
         //获取收藏城市
-        DataBaseHelper helper = new DataBaseHelper(MainActivity.this);
+        DataBaseHelper helper = new DataBaseHelper(MainActivity.this,Constant.DATABASE_VERSION);
         SQLiteDatabase database = helper.getWritableDatabase();
-        Cursor cursor = helper.queryFromFavoriteCity(database, new String[]{"city_name", "city_id"}, null, null, null, null, null);
+        Cursor cursor = helper.queryFromFavoriteCity(database, new String[]{"city_name", "city_id","time_favorite"}, null, null, null, null, null);
         while (cursor.moveToNext()) {
             City city = new City();
             city.setName(cursor.getString(0));
             city.setId(cursor.getInt(1));
+            LA.d(TAG,(cursor.getString(0))+"    "+(cursor.getInt(1))+"  "+(cursor.getString(2)));
             mFavoriteList.add(city);
         }
         cursor.close();
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             toast.show();
             return; //再次判断，若仍为0则直接返回
         }
-        LA.d(TAG,"aaaaaaaaaaaaaaaaaaaaaa    "+mFavoriteList.size());
+
         getWeather(mFavoriteList);
         startActivity(new Intent(MainActivity.this, DialogActivity.class));
     }

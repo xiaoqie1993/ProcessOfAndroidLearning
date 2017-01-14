@@ -1,0 +1,32 @@
+package com.ustcxiaoqie.learn.processoflearning.database;
+
+/**
+ * Created by Administrator on 2017/1/12 18:27.
+ * Copyright (c) 2017-01-12 Bryant1993 All rights reserved.
+ */
+
+
+public class Table_Structure {
+    //数据表 TABLE_FAVORATE_CITIES 字段名
+
+    private class TABLE_FAVORATE_CITIES_Version_2 {
+        private int _id;   //自动递增
+        private String city_name; //城市名称
+        private int city_id;      //城市id
+        private int time_favorite;  //收藏时间
+    }
+
+    private class TABLE_FAVORATE_CITIES_Version_1 {
+        private int _id;   //自动递增
+        private String city_name; //城市名称
+        private int city_id;      //城市id
+    }
+
+
+    //**********************************************************************************
+    private class TABLE_CITIES_Version_1 {
+
+        private String city_name;
+        private int city_id;
+    }
+}

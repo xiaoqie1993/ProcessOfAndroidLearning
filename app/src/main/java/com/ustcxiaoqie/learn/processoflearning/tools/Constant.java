@@ -25,6 +25,8 @@ public class Constant {
     public final static int PROGRESS_FINISH = 100;
     public final static int PROGRESS_FAILED = -1;
 
+    public static final int DATABASE_VERSION = 2;
+
 
 
 }
