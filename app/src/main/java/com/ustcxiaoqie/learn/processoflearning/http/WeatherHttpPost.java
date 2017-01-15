@@ -111,7 +111,7 @@ public class WeatherHttpPost {
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            mProgressListener.setImageProgress(values[0]);
+            mProgressListener.setLoadProgress(values[0]);
         }
 
 

@@ -16,11 +16,18 @@ import java.util.List;
  */
 
 public class WeatherAdapter extends BaseAdapter {
+    public static final int FLAG_MAIN_ACTITY = 0;
+    public static final int FLAG_WEATHER_OF_CITY_ACTIVITY = 1;
     private Context mContext;
+    private int flag_Activiy = -1; //这个Adapter适配的Activity页面id
     private List<HashMap<String,Object>> mapList;
-    public WeatherAdapter(Context context, List<HashMap<String,Object>> mapList){
+    public WeatherAdapter(Context context, List<HashMap<String,Object>> mapList,int flag_Activiy){
         this.mContext = context;
         this.mapList = mapList;
+        this.flag_Activiy = flag_Activiy;
+        if(flag_Activiy < 0){
+            throw new IllegalArgumentException("选择的Activity没有进行适配！");
+        }
     }
     @Override
     public int getCount() {
@@ -50,15 +57,20 @@ public class WeatherAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        if(null == mapList.get(position).get("cityname")){
-            //For WeatherOfCityActivity
-            viewHolder.mCityname.setText((CharSequence) mapList.get(position).get("temp"));
-        }else{
-            //For MainActivity cityname
-            viewHolder.mCityname.setText((CharSequence) mapList.get(position).get("cityname"));
+        switch (flag_Activiy){
+            case FLAG_MAIN_ACTITY:
+                viewHolder.mCityname.setText((CharSequence) mapList.get(position).get("cityname"));
+                viewHolder.mIcon.setImageDrawable(mContext.getResources().getDrawable((Integer) mapList.get(position).get("icon")));
+                viewHolder.mDetail.setText((CharSequence) mapList.get(position).get("detail"));
+                break;
+            case FLAG_WEATHER_OF_CITY_ACTIVITY:
+                viewHolder.mCityname.setText((CharSequence) mapList.get(position).get("temp"));
+                viewHolder.mIcon.setImageDrawable(mContext.getResources().getDrawable((Integer) mapList.get(position).get("icon")));
+                viewHolder.mDetail.setText((CharSequence) mapList.get(position).get("detail"));
+                break;
+            default:
+                throw  new IllegalArgumentException("选择的Activity没有进行适配！");
         }
-        viewHolder.mIcon.setImageDrawable(mContext.getResources().getDrawable((Integer) mapList.get(position).get("icon")));
-        viewHolder.mDetail.setText((CharSequence) mapList.get(position).get("detail"));
         return convertView;
     }
 

@@ -9,14 +9,23 @@ package com.ustcxiaoqie.learn.processoflearning.database;
 public class Table_Structure {
     //数据表 TABLE_FAVORATE_CITIES 字段名
 
-    private class TABLE_FAVORATE_CITIES_Version_2 {
-        private int _id;   //自动递增
-        private String city_name; //城市名称
-        private int city_id;      //城市id
-        private int time_favorite;  //收藏时间
+    public static class TABLE_FAVORATE_CITIES{
+        public static int _id;   //自动递增
+        public static String city_name = "city_name"; //城市名称
+        public static String city_id = "city_id";      //城市id
+        public static String time_favorite = "time_favorite";  //收藏时间
     }
 
-    private class TABLE_FAVORATE_CITIES_Version_1 {
+
+
+    private class TABLE_FAVORATE_CITIES_Version_2 {
+        private int _id;   //自动递增
+        private String city_name = "city_name"; //城市名称
+        private String city_id = "city_id";      //城市id
+        private String time_favorite = "time_favorite";  //收藏时间
+    }
+
+    private  class TABLE_FAVORATE_CITIES_Version_1 {
         private int _id;   //自动递增
         private String city_name; //城市名称
         private int city_id;      //城市id
@@ -24,7 +33,7 @@ public class Table_Structure {
 
 
     //**********************************************************************************
-    private class TABLE_CITIES_Version_1 {
+    private  class TABLE_CITIES_Version_1 {
 
         private String city_name;
         private int city_id;

@@ -21,4 +21,15 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="200dp"/>
+    <Button
+        android:onClick="click"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@android:color/holo_green_light"
+        android:text="查看作者信息\n（将会跳转到系统默认浏览器）"/>
+    <WebView
+        android:id="@+id/about_author_wv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 </LinearLayout>

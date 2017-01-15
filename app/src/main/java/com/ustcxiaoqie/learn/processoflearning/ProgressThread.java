@@ -51,7 +51,7 @@ public class ProgressThread extends Thread {
             Log.d(TAG,"shoudao"+(int)msg.obj);
             switch (msg.what){
                 case UPDATE_PROGRESS:
-                    listener.setImageProgress((Integer) msg.obj);
+                    listener.setLoadProgress((Integer) msg.obj);
                     break;
             }
         }

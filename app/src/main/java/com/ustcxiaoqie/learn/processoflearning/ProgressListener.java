@@ -8,5 +8,5 @@ package com.ustcxiaoqie.learn.processoflearning;
 
 public interface ProgressListener {
     //设置进度
-    void setImageProgress(int progress);
+    void setLoadProgress(int progress);
 }

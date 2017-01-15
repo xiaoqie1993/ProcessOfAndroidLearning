@@ -18,7 +18,7 @@ import java.util.Date;
 public class DataBaseHelper extends SQLiteOpenHelper{
     private static final String TAG = "DataBaseHelper";
     public final static String DB_NAME = "weather.db";
-    public final static String TABLE_FAVORATE_CITIES = "CITY_FAVORITE";
+    public final static String TABLE_NAME_FAVORATE_CITIES = "CITY_FAVORITE";
     public final static String TABLE_CITIES = "CITIES";
     private final static int version = 1;
 
@@ -58,24 +58,54 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         insertIntoFavoriteCity(sqLiteDatabase,null,values0,true);*/
 
         //Version 2
-        sqLiteDatabase.execSQL("create table "+TABLE_FAVORATE_CITIES+" (_id integer primary key autoincrement, city_name, city_id,time_favorite))");
+   /*     sqLiteDatabase.execSQL("create table "+TABLE_NAME_FAVORATE_CITIES+
+                " (_id integer primary key autoincrement, " +
+                Table_Structure.TABLE_FAVORATE_CITIES.city_name
+                +","+ Table_Structure.TABLE_FAVORATE_CITIES.city_id+","
+                + Table_Structure.TABLE_FAVORATE_CITIES.time_favorite+")");
         ContentValues values = new ContentValues();
-        values.put("city_name","Hefei");
-        values.put("city_id",1808722);
-        values.put("city_id",new Date().toString());
+        values.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name,"Hefei");
+        values.put(city_id,1808722);
+        values.put(time_favorite,new Date().toString());
         insertIntoFavoriteCity(sqLiteDatabase,null,values,true);
 
         ContentValues values0 = new ContentValues();
-        values0.put("city_name","Wuhan");
-        values0.put("city_id",1791247);
-        values0.put("city_id",new Date().toString());
+        values0.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name,"Wuhan");
+        values0.put(city_id,1791247);
+        values0.put(time_favorite,new Date().toString());
         insertIntoFavoriteCity(sqLiteDatabase,null,values0,true);
 
         ContentValues values1 = new ContentValues();
-        values1.put("city_name","Wuhan");
-        values1.put("city_id",1791247);
-        values1.put("city_id",new Date().toString());
+        values1.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name,"Wuhan");
+        values1.put(city_id,1791247);
+        values1.put(time_favorite,new Date().toString());
         insertIntoFavoriteCity(sqLiteDatabase,null,values1,true);
+        */
+        //Version 3
+
+        sqLiteDatabase.execSQL("create table "+TABLE_NAME_FAVORATE_CITIES+
+                " (_id integer primary key autoincrement, " +
+                Table_Structure.TABLE_FAVORATE_CITIES.city_name
+                +","+ Table_Structure.TABLE_FAVORATE_CITIES.city_id+","
+                + Table_Structure.TABLE_FAVORATE_CITIES.time_favorite+")");
+        ContentValues values = new ContentValues();
+        values.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name,"Hefei");
+        values.put(Table_Structure.TABLE_FAVORATE_CITIES.city_id,1808722);
+        values.put(Table_Structure.TABLE_FAVORATE_CITIES.time_favorite,new Date().toString());
+        insertIntoFavoriteCity(sqLiteDatabase,null,values,true);
+
+        ContentValues values0 = new ContentValues();
+        values0.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name,"Wuhan");
+        values0.put(Table_Structure.TABLE_FAVORATE_CITIES.city_id,1791247);
+        values0.put(Table_Structure.TABLE_FAVORATE_CITIES.time_favorite,new Date().toString());
+        insertIntoFavoriteCity(sqLiteDatabase,null,values0,true);
+
+        ContentValues values1 = new ContentValues();
+        values1.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name,"Wuhan");
+        values1.put(Table_Structure.TABLE_FAVORATE_CITIES.city_id,1791247);
+        values1.put(Table_Structure.TABLE_FAVORATE_CITIES.time_favorite,new Date().toString());
+        insertIntoFavoriteCity(sqLiteDatabase,null,values1,true);
+
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
@@ -87,13 +117,20 @@ public class DataBaseHelper extends SQLiteOpenHelper{
        for(int j = oldVersion ; j <newVersion ; j++){
             switch (j){
                 case 1 :
-                    //负责版本1升到2
-                    String sql = "alter table "+TABLE_FAVORATE_CITIES +" add column time_favorite default '2017-1-14'";
-
+                    /*
+                    *负责版本1升到2
+                    * 更新内容  表 TABLE_NAME_FAVORATE_CITIES 添加列 time_favorite（收藏时间）
+                    * 并指定其默认值为 2017-1-14
+                    */
+                    String sql = "alter table "+TABLE_NAME_FAVORATE_CITIES +" add column"+
+                            Table_Structure.TABLE_FAVORATE_CITIES.time_favorite+
+                            " default '2017-1-14'";
                     sqLiteDatabase.execSQL(sql);
                     break;
                 case 2:
                     //负责版本2升到3
+                    String sql2 = "";
+                    sqLiteDatabase.execSQL(sql2);
                     break;
             }
        }
@@ -105,22 +142,22 @@ public class DataBaseHelper extends SQLiteOpenHelper{
             Cursor cursor = queryFromFavoriteCity(db,null,"city_name=?",new String[]{values.getAsString("city_name")},null,null,null);
             if(!cursor.moveToNext()) {
                 //数据库之前不存在这个城市
-                db.insert(TABLE_FAVORATE_CITIES,null,values);
+                db.insert(TABLE_NAME_FAVORATE_CITIES,null,values);
             }else{
-                db.update(TABLE_FAVORATE_CITIES,values,"city_name=?",new String[]{values.getAsString("city_name")});
+                db.update(TABLE_NAME_FAVORATE_CITIES,values,"city_name=?",new String[]{values.getAsString("city_name")});
             }
             cursor.close();
         }else{
-            db.insert(TABLE_FAVORATE_CITIES,null,values);
+            db.insert(TABLE_NAME_FAVORATE_CITIES,null,values);
         }
 
     }
 
     public Cursor queryFromFavoriteCity(SQLiteDatabase db,String[] columns,String selection,String[] selectionArgs,String groupBy,String having,String orderBy){
-        return db.query(TABLE_FAVORATE_CITIES,columns,selection,selectionArgs,groupBy,having,orderBy);
+        return db.query(TABLE_NAME_FAVORATE_CITIES,columns,selection,selectionArgs,groupBy,having,orderBy);
     }
     public void updateToFavoriteCity(SQLiteDatabase sb,ContentValues values,String whereClause,String[] whereArgs){
-        sb.update(TABLE_FAVORATE_CITIES,values,whereClause,whereArgs);
+        sb.update(TABLE_NAME_FAVORATE_CITIES,values,whereClause,whereArgs);
     }
 
     public void clearDataBase(SQLiteDatabase db,boolean confime){

@@ -21,6 +21,7 @@ import com.ustcxiaoqie.learn.processoflearning.ProgressListener;
 import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.WeatherAdapter;
 import com.ustcxiaoqie.learn.processoflearning.database.DataBaseHelper;
+import com.ustcxiaoqie.learn.processoflearning.database.Table_Structure;
 import com.ustcxiaoqie.learn.processoflearning.http.PostInterface;
 import com.ustcxiaoqie.learn.processoflearning.http.WeatherHttpPost;
 import com.ustcxiaoqie.learn.processoflearning.tools.City;
@@ -76,7 +77,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //获取收藏城市
         DataBaseHelper helper = new DataBaseHelper(MainActivity.this,Constant.DATABASE_VERSION);
         SQLiteDatabase database = helper.getWritableDatabase();
-        Cursor cursor = helper.queryFromFavoriteCity(database, new String[]{"city_name", "city_id","time_favorite"}, null, null, null, null, null);
+        Cursor cursor = helper.queryFromFavoriteCity(database,
+                new String[]{Table_Structure.TABLE_FAVORATE_CITIES.city_name,
+                        Table_Structure.TABLE_FAVORATE_CITIES.city_id,
+                        Table_Structure.TABLE_FAVORATE_CITIES.time_favorite}, null, null, null, null, null);
         while (cursor.moveToNext()) {
             City city = new City();
             city.setName(cursor.getString(0));
@@ -105,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         WeatherHttpPost post = new WeatherHttpPost(city);
         post.getWeatherInfo(this, new ProgressListener() {
             @Override
-            public void setImageProgress(int progress) {
+            public void setLoadProgress(int progress) {
                 drawable.setLevel((progress / mFavoriteList.size()) * PROGRESS_MAX);
             }
         });
@@ -132,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Weather_describe.setText(resources.getStringArray(R.array.weatherdescribe)[iconOrder]);
 
         mListView = (ListView) findViewById(R.id.weatherlists);
-        mWeatherAdapter = new WeatherAdapter(this, mHashMapList);
+        mWeatherAdapter = new WeatherAdapter(this, mHashMapList,WeatherAdapter.FLAG_MAIN_ACTITY);
         mListView.setAdapter(mWeatherAdapter);
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);

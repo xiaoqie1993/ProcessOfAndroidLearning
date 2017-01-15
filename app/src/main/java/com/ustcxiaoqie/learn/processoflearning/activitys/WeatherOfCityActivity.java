@@ -18,6 +18,7 @@ import com.ustcxiaoqie.learn.processoflearning.ProgressListener;
 import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.WeatherAdapter;
 import com.ustcxiaoqie.learn.processoflearning.database.DataBaseHelper;
+import com.ustcxiaoqie.learn.processoflearning.database.Table_Structure;
 import com.ustcxiaoqie.learn.processoflearning.http.PostInterface;
 import com.ustcxiaoqie.learn.processoflearning.http.WeatherHttpPost;
 import com.ustcxiaoqie.learn.processoflearning.tools.City;
@@ -77,7 +78,9 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
         refreshBtn.setOnClickListener(this);
         starBtn.setOnClickListener(this);
         mSQLiteDatabase = helper.getWritableDatabase();
-        Cursor cursor = helper.queryFromFavoriteCity(mSQLiteDatabase,new String[]{"city_name","city_id"},null,null,null,null,null);
+        Cursor cursor = helper.queryFromFavoriteCity(mSQLiteDatabase,
+                new String[]{Table_Structure.TABLE_FAVORATE_CITIES.city_name,
+                        Table_Structure.TABLE_FAVORATE_CITIES.city_id},null,null,null,null,null);
         while(cursor.moveToNext()) {
             if(cursor.getString(0).equals(mCity.getName())){
                 starBtn.getBackground().setLevel(LEVEL_STARED);
@@ -89,7 +92,7 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
         helper.close();
         mHashMapList = new ArrayList<>();
         mListView = (ListView) findViewById(R.id.moreweather_lv);
-        mAdapter = new WeatherAdapter(WeatherOfCityActivity.this,mHashMapList);
+        mAdapter = new WeatherAdapter(WeatherOfCityActivity.this,mHashMapList,WeatherAdapter.FLAG_WEATHER_OF_CITY_ACTIVITY);
         mListView.setAdapter(mAdapter);
     }
 
@@ -106,7 +109,7 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
                 mAdapter.notifyDataSetChanged();
             }},new ProgressListener() {
             @Override
-            public void setImageProgress(int progress) {
+            public void setLoadProgress(int progress) {
 
             }
         });
@@ -135,11 +138,13 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
         Toast toast = Toast.makeText(WeatherOfCityActivity.this, "", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         mSQLiteDatabase = helper.getWritableDatabase();
-        mSQLiteDatabase.delete(DataBaseHelper.TABLE_FAVORATE_CITIES,"city_name=?",new String[]{city.getName()});
+        mSQLiteDatabase.delete(DataBaseHelper.TABLE_NAME_FAVORATE_CITIES,
+                Table_Structure.TABLE_FAVORATE_CITIES.city_name+"=?",new String[]{city.getName()});
         helper.close();
         (starBtn.getBackground()).setLevel(LEVEL_NOT_STARED);
         toast.setText("取消收藏");
-        Cursor cursor = helper.queryFromFavoriteCity(helper.getWritableDatabase(),new String[]{"city_name"},null,null,null,null,null);
+        Cursor cursor = helper.queryFromFavoriteCity(helper.getWritableDatabase(),
+                new String[]{Table_Structure.TABLE_FAVORATE_CITIES.city_name},null,null,null,null,null);
         while(cursor.moveToNext()){
             LA.d(TAG,"cursor1   "+cursor.getString(0));
         }
@@ -153,15 +158,16 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
         toast.setGravity(Gravity.CENTER, 0, 0);
         mSQLiteDatabase = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("city_name", city.getName());
-        values.put("city_id", city.getId());
-        values.put("time_favorite", new Date().toString());
+        values.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name, city.getName());
+        values.put(Table_Structure.TABLE_FAVORATE_CITIES.city_id, city.getId());
+        values.put(Table_Structure.TABLE_FAVORATE_CITIES.time_favorite, new Date().toString());
         helper.insertIntoFavoriteCity(mSQLiteDatabase, null, values, true);
         helper.close();
         (starBtn.getBackground()).setLevel(LEVEL_STARED);
         toast.setText("收藏成功");
 
-        Cursor cursor = helper.queryFromFavoriteCity(helper.getWritableDatabase(),new String[]{"city_name"},null,null,null,null,null);
+        Cursor cursor = helper.queryFromFavoriteCity(helper.getWritableDatabase(),
+                new String[]{Table_Structure.TABLE_FAVORATE_CITIES.city_name},null,null,null,null,null);
         while(cursor.moveToNext()){
             LA.d(TAG,"cursor0   "+cursor.getString(0));
         }
