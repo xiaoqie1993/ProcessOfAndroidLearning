@@ -4,6 +4,12 @@
               android:gravity="center"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/bannerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" >
+    </FrameLayout>
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -21,12 +27,14 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="200dp"/>
-    <Button
-        android:onClick="click"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textSize="@dimen/textview_textsize"
         android:background="@android:color/holo_green_light"
-        android:text="查看作者信息\n（将会跳转到系统默认浏览器）"/>
+        android:text="关于作者"/>
+
     <WebView
         android:id="@+id/about_author_wv"
         android:layout_width="match_parent"

@@ -15,8 +15,8 @@ android {
         applicationId "com.ustcxiaoqie.learn.processoflearning"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 5
-        versionName "1.0.4"
+        versionCode 6
+        versionName "1.1 Beta"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
     }
@@ -58,4 +58,5 @@ dependencies {
     compile files('libs/httpcore-4.0.jar')
     compile files('libs/mta-sdk-1.6.2.jar')
     compile files('libs/open_sdk_r5778.jar')
+    compile files('libs/GDTUnionSDK.4.9.542.min.jar')
 }

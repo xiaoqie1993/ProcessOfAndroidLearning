@@ -64,6 +64,8 @@ public class WeatherAdapter extends BaseAdapter {
                 viewHolder.mDetail.setText((CharSequence) mapList.get(position).get("detail"));
                 break;
             case FLAG_WEATHER_OF_CITY_ACTIVITY:
+//                //只显示当前温度
+//                viewHolder.mCityname.setSingleLine();
                 viewHolder.mCityname.setText((CharSequence) mapList.get(position).get("temp"));
                 viewHolder.mIcon.setImageDrawable(mContext.getResources().getDrawable((Integer) mapList.get(position).get("icon")));
                 viewHolder.mDetail.setText((CharSequence) mapList.get(position).get("detail"));

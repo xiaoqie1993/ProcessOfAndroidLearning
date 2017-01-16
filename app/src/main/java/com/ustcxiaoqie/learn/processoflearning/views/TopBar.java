@@ -43,7 +43,7 @@ public class TopBar extends LinearLayout{
         mTitle.setTextSize(typedArray.getDimension(R.styleable.TopBar_titleTextSize,12));
         mTitle.setTextColor(typedArray.getColor(R.styleable.TopBar_titleTextColor,0000));
         mTitle.setId(R.id.TopBarTitleId);
-        LinearLayout.LayoutParams titleParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,6);
+        LinearLayout.LayoutParams titleParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,8);
         titleParams.gravity = Gravity.CENTER;
         addView(mTitle ,titleParams);
     }

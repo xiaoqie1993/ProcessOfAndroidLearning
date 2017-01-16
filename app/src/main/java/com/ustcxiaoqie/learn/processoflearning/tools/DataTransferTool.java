@@ -109,7 +109,7 @@ public class DataTransferTool {
         for (int s = 0; s < list_detail.size(); s++) {
             WeatherDetail detail = list_detail.get(s);
             HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("temp", detail.getTemp().getDay()+"℃"+"\n"+detail.getTemp().getMin()+"℃"+"`"+detail.getTemp().getMax()+"℃");
+            map.put("temp", detail.getTemp().getDay()+"℃");
             map.put("icon", DataTransferTool.getIconFromWeatherDetail(detail.getWeather().getDesciption()));
             map.put("detail", detail.getWeather().getDesciption());
             mapList.add(map);

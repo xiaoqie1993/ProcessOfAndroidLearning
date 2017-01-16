@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,9 @@ public class PossiableCityAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         holder.mTextView.setText(mList.get(i).getName());
+        int[] bgColor = new int[]{Color.parseColor("#B4CDCD"),Color.parseColor("#B2DFEE")
+                ,Color.parseColor("#B0E0E6"),Color.parseColor("#AEEEEE")};
+        holder.mTextView.setBackgroundColor(bgColor[i%4]);
         holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +83,9 @@ public class PossiableCityAdapter extends BaseAdapter {
         private TextView mTextView;
         public ViewHolder(View view){
             mTextView = (TextView) view.findViewById(R.id.city_adapter_city);
+            mTextView.setGravity(Gravity.CENTER_VERTICAL);
+            mTextView.setTextSize(20);
+            mTextView.setTextColor(Color.BLUE);
         }
     }
 }

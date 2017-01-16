@@ -2,10 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
+              android:background="@drawable/shapecolor"
               android:layout_height="70dp">
     <TextView
         android:id="@+id/list_item_cityname"
-        android:layout_width="60dp"
+        android:layout_width="0dp"
+        android:layout_weight="2"
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/hefei"
@@ -16,13 +18,14 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:id="@+id/list_item_icon"
         android:scaleType="fitXY"
-        android:layout_width="70dp"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:src="@drawable/na"
         android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/list_item_detail"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight="3"
         android:layout_height="match_parent"
         android:gravity="center"
         android:textSize="@dimen/textview_textsize"

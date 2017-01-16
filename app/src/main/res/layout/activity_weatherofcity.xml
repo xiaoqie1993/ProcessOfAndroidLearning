@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
+                android:layout_margin="10dp"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <com.ustcxiaoqie.learn.processoflearning.views.TopBar
+        android:id="@+id/weatherofcity_topbar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         app:rightBtnBackground="@drawable/starornot"
         app:titleTextColor="@color/colorPrimaryDark"
         app:titleTextSize="@dimen/titleTextSize"
@@ -15,13 +19,47 @@
         app:rightBtnVisiable="true"
         app:rightBtnTextSize="@dimen/rightBtnTextSize"
         />
-
     <ListView
         android:id="@+id/moreweather_lv"
+        android:layout_centerInParent="true"
         android:layout_width="match_parent"
-        android:divider="@color/colorAccent"
-        android:layout_height="0dp"
+        android:divider="#00000000"
+        android:dividerHeight="28dp"
+        android:layout_height="300dp"
         android:layout_weight="1"
         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_above="@id/moreweather_lv"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:textSize="@dimen/textview_textsize"
+            android:gravity="center"
+            android:text= "当前温度"
+            android:textColor="#20B2AA"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="@dimen/textview_textsize"
+            android:gravity="center"
+            android:text= "当前天气"
+            android:textColor="#1874CD"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:textSize="@dimen/textview_textsize"
+            android:gravity="center"
+            android:text= "天气详情"
+            android:textColor="#96CDCD"
+            android:layout_height="match_parent"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>
