@@ -2,10 +2,12 @@ package com.ustcxiaoqie.learn.processoflearning.activitys;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -20,21 +22,25 @@ import com.qq.e.ads.banner.AbstractBannerADListener;
 import com.qq.e.ads.banner.BannerView;
 import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.tools.ADsConstants;
+import com.ustcxiaoqie.learn.processoflearning.views.CustomDialog;
 
 /**
  * Created by Xiaoqie on 2017/1/8.
  */
 
-public class AboutActivity extends Activity {
+public class AboutActivity extends Activity implements View.OnClickListener{
     private FrameLayout fl;
     private WebView mWebView;
     private BannerView bv;
+    private TextView mTextView;  //检查更新
     private long time; //计算时间差，按一次webview回退，连按（2s内）返回
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         fl = (FrameLayout) findViewById(R.id.bannerContainer);
+        mTextView = (TextView) findViewById(R.id.checkUpdate);
+        mTextView.setOnClickListener(this);
         TextView textView = (TextView) findViewById(R.id.tv_about_app);
         StringBuffer sb = new StringBuffer();
         sb.append("<font size = 12 color = '#000000'>当前软件版本:</font>");
@@ -103,5 +109,34 @@ public class AboutActivity extends Activity {
                 break;
         }
         return  true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.checkUpdate:
+                showUpdateDialog(AboutActivity.this);
+                break;
+        }
+    }
+
+    private void showUpdateDialog(Context context) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("由于当前缺乏稳定的服务器来存放apk安装包和后台下载程序,");
+        sb.append("目前更新依赖于【应用宝】更新接口,");
+        sb.append("请下载应用宝点击软件更新来下载,");
+        sb.append("或点击\n");
+        CustomDialog.Builder builder = new CustomDialog.Builder(context);
+        CustomDialog dialog = builder.setTitle("检查更新")
+                .setMessage(sb.toString()+Html.fromHtml("<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.ustcxiaoqie.learn.processoflearning'></a>")+"\n进行下载")
+                .setPositiveButton("朕知道了", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(null,null)
+                .create();
+        dialog.show();
     }
 }

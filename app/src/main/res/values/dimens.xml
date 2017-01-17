@@ -9,4 +9,6 @@
     <dimen name="titleTextSize">10sp</dimen>
     <dimen name="leftBtnTextSize">10sp</dimen>
     <dimen name="rightBtnTextSize">10sp</dimen>
+
+    <dimen name="bbuton_rounded_corner_radius">5dp</dimen>
 </resources>
