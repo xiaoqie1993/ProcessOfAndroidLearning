@@ -31,7 +31,7 @@ import com.ustcxiaoqie.learn.processoflearning.views.CustomDialog;
  * Created by Xiaoqie on 2017/1/8.
  */
 
-public class AboutActivity extends Activity implements View.OnClickListener{
+public class AboutActivity extends Activity implements View.OnClickListener {
     private FrameLayout fl;
     private WebView mWebView;
     private BannerView bv;
@@ -45,6 +45,7 @@ public class AboutActivity extends Activity implements View.OnClickListener{
         mTextView = (TextView) findViewById(R.id.checkUpdate);
         mTextView.setOnClickListener(this);
         TextView textView = (TextView) findViewById(R.id.tv_about_app);
+        textView.setOnClickListener(this);
         StringBuffer sb = new StringBuffer();
         sb.append("<font size = 12 color = '#000000'>当前软件版本:</font>");
         sb.append("<br>");
@@ -120,6 +121,9 @@ public class AboutActivity extends Activity implements View.OnClickListener{
             case R.id.checkUpdate:
                 showUpdateDialog(AboutActivity.this);
                 break;
+            case R.id.tv_about_app:
+                mWebView.loadUrl("http://openweathermap.org");
+                break;
         }
     }
 
@@ -136,6 +140,7 @@ public class AboutActivity extends Activity implements View.OnClickListener{
                 .setPositiveButton("前去下载", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                         String url = "http://a.app.qq.com/o/simple.jsp?pkgname=com.ustcxiaoqie.learn.processoflearning";
                         Uri uri = Uri.parse(url);
                         Intent intent = new Intent();
