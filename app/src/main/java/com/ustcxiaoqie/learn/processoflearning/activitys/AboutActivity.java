@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -32,6 +33,7 @@ import com.ustcxiaoqie.learn.processoflearning.views.CustomDialog;
  */
 
 public class AboutActivity extends Activity implements View.OnClickListener {
+    private static final String TAG = "AboutActivity";
     private FrameLayout fl;
     private WebView mWebView;
     private BannerView bv;
@@ -46,6 +48,8 @@ public class AboutActivity extends Activity implements View.OnClickListener {
         mTextView.setOnClickListener(this);
         TextView textView = (TextView) findViewById(R.id.tv_about_app);
         textView.setOnClickListener(this);
+        TextView callback = (TextView) findViewById(R.id.callback_activity_tv);
+        callback.setOnClickListener(this);
         StringBuffer sb = new StringBuffer();
         sb.append("<font size = 12 color = '#000000'>当前软件版本:</font>");
         sb.append("<br>");
@@ -75,21 +79,20 @@ public class AboutActivity extends Activity implements View.OnClickListener {
         settings.setBuiltInZoomControls(true);// support zoom
         settings.setLoadWithOverviewMode(true);
         mWebView.loadUrl("http://home.ustc.edu.cn/~zt9307");
-        LoadADs(AboutActivity.this);
+        this.bv = new BannerView(this, ADSize.BANNER, ADsConstants.APPID,ADsConstants.BannerPosID_BOTTOM);
+        LoadADs();
     }
 
-    private void LoadADs(Context context) {
-        this.bv = new BannerView((Activity)context, ADSize.BANNER, ADsConstants.APPID,ADsConstants.BannerPosID_BOTTOM);
+    private void LoadADs() {
+        Log.d(TAG,"loading");
         bv.setRefresh(20);
         bv.setADListener(new AbstractBannerADListener() {
             @Override
             public void onNoAD(int i) {
-
             }
-
             @Override
             public void onADReceiv() {
-
+                Log.d(TAG,"onADReceiv    "     );
             }
         });
         fl.addView(bv);
@@ -124,6 +127,9 @@ public class AboutActivity extends Activity implements View.OnClickListener {
             case R.id.tv_about_app:
                 mWebView.loadUrl("http://openweathermap.org");
                 break;
+            case R.id.callback_activity_tv:
+                startActivity(new Intent(AboutActivity.this,CallBackActivity.class));
+                break;
         }
     }
 
@@ -149,7 +155,7 @@ public class AboutActivity extends Activity implements View.OnClickListener {
                         startActivity(intent);
                     }
                 })
-                .setNegativeButton("朕知道了", new DialogInterface.OnClickListener() {
+                .setNegativeButton("我知道了", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
                         dialog.dismiss();

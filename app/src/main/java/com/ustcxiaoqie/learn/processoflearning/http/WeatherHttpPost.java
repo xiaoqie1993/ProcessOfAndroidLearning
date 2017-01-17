@@ -80,6 +80,7 @@ public class WeatherHttpPost {
                         }
                     }else{
                         Log.d(TAG,"  "+response.getStatusLine().getStatusCode());
+                        return mWeatherInfoList;
                     }
                 } catch (URISyntaxException e) {
                     e.printStackTrace();

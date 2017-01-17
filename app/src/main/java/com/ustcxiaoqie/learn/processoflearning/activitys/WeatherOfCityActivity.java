@@ -10,10 +10,14 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.qq.e.ads.banner.ADSize;
+import com.qq.e.ads.banner.AbstractBannerADListener;
+import com.qq.e.ads.banner.BannerView;
 import com.ustcxiaoqie.learn.processoflearning.ProgressListener;
 import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.WeatherAdapter;
@@ -21,6 +25,7 @@ import com.ustcxiaoqie.learn.processoflearning.database.DataBaseHelper;
 import com.ustcxiaoqie.learn.processoflearning.database.Table_Structure;
 import com.ustcxiaoqie.learn.processoflearning.http.PostInterface;
 import com.ustcxiaoqie.learn.processoflearning.http.WeatherHttpPost;
+import com.ustcxiaoqie.learn.processoflearning.tools.ADsConstants;
 import com.ustcxiaoqie.learn.processoflearning.tools.City;
 import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
 import com.ustcxiaoqie.learn.processoflearning.tools.DataTransferTool;
@@ -50,6 +55,8 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
     private List<HashMap<String,Object>> mHashMapList;
     private WeatherAdapter mAdapter;
     private SQLiteDatabase mSQLiteDatabase;
+    private BannerView bv;
+    private FrameLayout fl; //广告位
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +68,40 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
             mCity = (City) intent.getSerializableExtra(Constant.KEY_BUNDLE_CITY_OBJECT);
         }
         if (null == mCity) return;
-
         initViews();
         initDatas();
+        initBannerView();
+        loadBanner();
     }
+
+    private void loadBanner() {
+        if(null == bv){
+            initBannerView();
+        }
+        bv.loadAD();
+    }
+
+    private void initBannerView() {
+        bv = new BannerView(this, ADSize.BANNER, ADsConstants.APPID,ADsConstants.BannerPosID_BOTTOM);
+        bv.setADListener(new AbstractBannerADListener() {
+            @Override
+            public void onNoAD(int i) {
+
+            }
+
+            @Override
+            public void onADReceiv() {
+
+            }
+        });
+        bv.setRefresh(20);
+        fl.addView(bv);
+    }
+
 
     private void initViews() {
 
+        fl = (FrameLayout) findViewById(R.id.weatherofcity_banner);
         mTilte = (TextView) findViewById(R.id.TopBarTitleId);
         mTilte.setText(mCity.getName());
         refreshBtn = (Button) findViewById(R.id.TopBarLeftBtnId);
@@ -176,5 +210,12 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(null != bv){
+            bv.destroy();
+            bv = null;
+        }
+    }
 }

@@ -58,8 +58,11 @@
             android:text= "天气详情"
             android:textColor="#96CDCD"
             android:layout_height="match_parent"/>
-
     </LinearLayout>
-
+    <FrameLayout
+        android:id="@+id/weatherofcity_banner"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
 
 </RelativeLayout>

@@ -59,6 +59,7 @@
         </activity>
         <activity android:name=".activitys.WeatherOfCityActivity"/>
         <activity android:name=".activitys.TestViewActivity"/>
+        <activity android:name=".activitys.CallBackActivity"></activity>
 
         <activity
             android:name="com.tencent.connect.common.AssistActivity"

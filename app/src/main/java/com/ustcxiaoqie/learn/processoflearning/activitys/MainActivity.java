@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ClipDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initDatas();
         initViews();
         getAllWeathers();
+
+        LA.d(TAG, Build.MODEL+"\n"+ Build.VERSION.SDK+"\n"+Build.VERSION.RELEASE);
     }
 
     private void getAllWeathers() {
@@ -168,12 +171,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void getResponse(List<WeatherInfo> list) {
-        if (null == list) return;
+        Intent intent = new Intent(Constant.DIALOG_ACTIVITY_FINISH);
+        if (null == list || list.size() == 0){
+            Toast.makeText(MainActivity.this,"无网络连接",Toast.LENGTH_SHORT).show();
+            intent.putExtra(Constant.PROGRESS, Constant.PROGRESS_FINISH);
+            mLocalBroadcastManager.sendBroadcast(intent);
+            drawable.setLevel(PROGRESS_ORIGINAL);
+            return;
+        }
         LA.d(TAG,"liszt "+list.size()+"");
         mInfoArrayList = list;
         //设置上面显示内容
         setAboveViews();
-        Intent intent = new Intent(Constant.DIALOG_ACTIVITY_FINISH);
         mHashMapList.clear();
         for (int s = 0; s < list.size(); s++) {
             WeatherInfo info = list.get(s);
@@ -185,7 +194,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         LA.d(TAG,mHashMapList.size()+"aaa");
         mWeatherAdapter.notifyDataSetChanged();
-
         intent.putExtra(Constant.PROGRESS, Constant.PROGRESS_FINISH);
         mLocalBroadcastManager.sendBroadcast(intent);
         drawable.setLevel(PROGRESS_ORIGINAL);
