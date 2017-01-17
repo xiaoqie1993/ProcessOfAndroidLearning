@@ -28,5 +28,5 @@ public class Constant {
     public static final int DATABASE_VERSION = 2;
 
 
-
+    public static final String APP_VERSION = "v1.1";
 }

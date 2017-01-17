@@ -3,6 +3,8 @@ package com.ustcxiaoqie.learn.processoflearning.activitys;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -22,6 +24,7 @@ import com.qq.e.ads.banner.AbstractBannerADListener;
 import com.qq.e.ads.banner.BannerView;
 import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.tools.ADsConstants;
+import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
 import com.ustcxiaoqie.learn.processoflearning.views.CustomDialog;
 
 /**
@@ -45,7 +48,7 @@ public class AboutActivity extends Activity implements View.OnClickListener{
         StringBuffer sb = new StringBuffer();
         sb.append("<font size = 12 color = '#000000'>当前软件版本:</font>");
         sb.append("<br>");
-        sb.append("<font size = 12 color = '#0000FF'>V1.1 Beta </font>");
+        sb.append("<font size = 12 color = '#0000FF'>"+ Constant.APP_VERSION+" </font>");
         sb.append("<br><br>");
         sb.append("<font size = 12 color = '#000000'>天气数据来源:</font>");
         sb.append("<br>");
@@ -124,18 +127,29 @@ public class AboutActivity extends Activity implements View.OnClickListener{
         StringBuilder sb = new StringBuilder();
         sb.append("由于当前缺乏稳定的服务器来存放apk安装包和后台下载程序,");
         sb.append("目前更新依赖于【应用宝】更新接口,");
-        sb.append("请下载应用宝点击软件更新来下载,");
-        sb.append("或点击\n");
+        sb.append("请下载应用宝点击软件更新来下载(推荐)\n");
+        sb.append("或者(不推荐)跳转到浏览器下载。\n");
+        sb.append("当前版本: "+ Constant.APP_VERSION);
         CustomDialog.Builder builder = new CustomDialog.Builder(context);
         CustomDialog dialog = builder.setTitle("检查更新")
-                .setMessage(sb.toString()+Html.fromHtml("<a href='http://a.app.qq.com/o/simple.jsp?pkgname=com.ustcxiaoqie.learn.processoflearning'></a>")+"\n进行下载")
-                .setPositiveButton("朕知道了", new DialogInterface.OnClickListener() {
+                .setMessage(sb.toString())
+                .setPositiveButton("前去下载", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        String url = "http://a.app.qq.com/o/simple.jsp?pkgname=com.ustcxiaoqie.learn.processoflearning";
+                        Uri uri = Uri.parse(url);
+                        Intent intent = new Intent();
+                        intent.setAction("android.intent.action.VIEW");
+                        intent.setData(uri);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("朕知道了", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton(null,null)
                 .create();
         dialog.show();
     }

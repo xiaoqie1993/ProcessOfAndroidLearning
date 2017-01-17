@@ -44,7 +44,6 @@ public class CustomDialog extends Dialog {
         private String positiveButtonText;
         private String negativeButtonText;
         private View contentView;
-        private boolean negativeButtonVisiable = true;
 
         private OnClickListener
                         positiveButtonClickListener,
@@ -159,15 +158,6 @@ public class CustomDialog extends Dialog {
         }
 
 
-        public boolean isNegativeButtonVisiable() {
-            return negativeButtonVisiable;
-        }
-
-        public Builder setNegativeButtonVisiable(boolean negativeButtonVisiable) {
-            this.negativeButtonVisiable = negativeButtonVisiable;
-            return this;
-        }
-
         /**
          * Create the custom dialog
          */
@@ -176,7 +166,7 @@ public class CustomDialog extends Dialog {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             // instantiate the dialog with the custom Theme
             final CustomDialog dialog = new CustomDialog(context,
-            		R.style.Dialog);
+            		R.style.MyDialog);
             dialog.setCanceledOnTouchOutside(false);
             View layout = inflater.inflate(R.layout.custom_dialog_layout, null);
             dialog.addContentView(layout, new LayoutParams(
@@ -210,7 +200,7 @@ public class CustomDialog extends Dialog {
                     ((Button) layout.findViewById(R.id.negativeButton))
                             .setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
-                                    positiveButtonClickListener.onClick(
+                                    negativeButtonClickListener.onClick(
                                     		dialog,
                                             DialogInterface.BUTTON_NEGATIVE);
                                 }
