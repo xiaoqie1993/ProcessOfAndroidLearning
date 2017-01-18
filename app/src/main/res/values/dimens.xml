@@ -11,4 +11,5 @@
     <dimen name="rightBtnTextSize">10sp</dimen>
 
     <dimen name="bbuton_rounded_corner_radius">5dp</dimen>
+    <dimen name="textview_rounded_corner_radius">3dp</dimen>
 </resources>
