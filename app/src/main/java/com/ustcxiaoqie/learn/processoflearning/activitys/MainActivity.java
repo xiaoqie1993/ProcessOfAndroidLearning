@@ -1,5 +1,6 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -8,7 +9,6 @@ import android.graphics.drawable.ClipDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener,
+public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener,
         PostInterface {
     private static final String TAG = "MainActivity";
@@ -45,11 +45,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final static int PROGRESS_MAX = 10000;
     private static boolean flag_fristInt = true;
     private LocalBroadcastManager mLocalBroadcastManager;
+    private boolean isResume = true;
 
-
-    private Button topBar_LeftBtn;
+   /* private Button topBar_LeftBtn;
     private Button topBar_rightBtn;
-    private TextView topBar_titleTv;
+    private TextView topBar_titleTv;*/
 
     private ImageView image_progress;
     private ImageView weather_icon;
@@ -67,18 +67,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //去掉标题栏
+   //     this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //全屏
+       /*     getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
+
         setContentView(R.layout.activity_main);
         initDatas();
         initViews();
-        getAllWeathers();
+   //     getAllWeathers();
 
-        LA.d(TAG, Build.MODEL+"\n"+ Build.VERSION.SDK+"\n"+Build.VERSION.RELEASE);
+        LA.d(TAG, Build.MODEL + "\n" + Build.VERSION.SDK + "\n" + Build.VERSION.RELEASE);
     }
 
     private void getAllWeathers() {
         mFavoriteList.clear();
         //获取收藏城市
-        DataBaseHelper helper = new DataBaseHelper(MainActivity.this,Constant.DATABASE_VERSION);
+        DataBaseHelper helper = new DataBaseHelper(MainActivity.this, Constant.DATABASE_VERSION);
         SQLiteDatabase database = helper.getWritableDatabase();
         Cursor cursor = helper.queryFromFavoriteCity(database,
                 new String[]{Table_Structure.TABLE_FAVORATE_CITIES.city_name,
@@ -88,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             City city = new City();
             city.setName(cursor.getString(0));
             city.setId(cursor.getInt(1));
-            LA.d(TAG,(cursor.getString(0))+"    "+(cursor.getInt(1))+"  "+(cursor.getString(2)));
+            LA.d(TAG, (cursor.getString(0)) + "    " + (cursor.getInt(1)) + "  " + (cursor.getString(2)));
             mFavoriteList.add(city);
         }
         cursor.close();
@@ -98,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mHashMapList.clear();
             topBar_titleTv.setText("请添加城市");
             mWeatherAdapter.notifyDataSetChanged();
-            Toast toast = Toast.makeText(MainActivity.this,"请添加城市",Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER,0,0);
+            Toast toast = Toast.makeText(MainActivity.this, "请添加城市", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
             return; //再次判断，若仍为0则直接返回
         }
@@ -139,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Weather_describe.setText(resources.getStringArray(R.array.weatherdescribe)[iconOrder]);
 
         mListView = (ListView) findViewById(R.id.weatherlists);
-        mWeatherAdapter = new WeatherAdapter(this, mHashMapList,WeatherAdapter.FLAG_MAIN_ACTITY);
+        mWeatherAdapter = new WeatherAdapter(this, mHashMapList, WeatherAdapter.FLAG_MAIN_ACTITY);
         mListView.setAdapter(mWeatherAdapter);
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
@@ -172,14 +178,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void getResponse(List<WeatherInfo> list) {
         Intent intent = new Intent(Constant.DIALOG_ACTIVITY_FINISH);
-        if (null == list || list.size() == 0){
-            Toast.makeText(MainActivity.this,"无网络连接",Toast.LENGTH_SHORT).show();
+        if (null == list || list.size() == 0) {
+            Toast.makeText(MainActivity.this, "无网络连接", Toast.LENGTH_SHORT).show();
             intent.putExtra(Constant.PROGRESS, Constant.PROGRESS_FINISH);
             mLocalBroadcastManager.sendBroadcast(intent);
             drawable.setLevel(PROGRESS_ORIGINAL);
             return;
         }
-        LA.d(TAG,"liszt "+list.size()+"");
+        LA.d(TAG, "liszt " + list.size() + "");
         mInfoArrayList = list;
         //设置上面显示内容
         setAboveViews();
@@ -192,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             map.put("detail", info.getList().get(0).getWeather().getDesciption());
             mHashMapList.add(map);
         }
-        LA.d(TAG,mHashMapList.size()+"aaa");
+        LA.d(TAG, mHashMapList.size() + "aaa");
         mWeatherAdapter.notifyDataSetChanged();
         intent.putExtra(Constant.PROGRESS, Constant.PROGRESS_FINISH);
         mLocalBroadcastManager.sendBroadcast(intent);
@@ -249,6 +255,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(i);
         this.overridePendingTransition(R.anim.activity_open, 0);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isResume) {
+            getAllWeathers();
+            isResume = false;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+     //   isResume = true;
     }
 
     @Override
