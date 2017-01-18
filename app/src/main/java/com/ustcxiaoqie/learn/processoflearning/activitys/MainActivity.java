@@ -8,7 +8,6 @@ import android.graphics.drawable.ClipDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,7 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener,
+public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener,
         PostInterface {
     private static final String TAG = "MainActivity";
