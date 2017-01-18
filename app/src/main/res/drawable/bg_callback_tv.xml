@@ -7,7 +7,9 @@
         </shape>
     </item>
     <item android:state_pressed="true">
+        <shape>
         <corners android:radius="@dimen/textview_rounded_corner_radius"/>
         <solid android:color="#98FB98"/>
+        </shape>
     </item>
 </selector>
