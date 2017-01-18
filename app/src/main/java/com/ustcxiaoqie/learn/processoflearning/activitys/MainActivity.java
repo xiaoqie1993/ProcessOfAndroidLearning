@@ -4,16 +4,19 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.drawable.ClipDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,7 @@ import com.ustcxiaoqie.learn.processoflearning.tools.LA;
 import com.ustcxiaoqie.learn.processoflearning.tools.Temp;
 import com.ustcxiaoqie.learn.processoflearning.tools.WeatherDetail;
 import com.ustcxiaoqie.learn.processoflearning.tools.WeatherInfo;
+import com.ustcxiaoqie.learn.processoflearning.views.TitleView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,36 +46,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private static final String TAG = "MainActivity";
     private final static int PROGRESS_ORIGINAL = 0;
     private final static int PROGRESS_MAX = 10000;
-    private static boolean flag_fristInt = true;
     private LocalBroadcastManager mLocalBroadcastManager;
+    private LinearLayout rootLinearLayout;
 
-
-    private Button topBar_LeftBtn;
-    private Button topBar_rightBtn;
-    private TextView topBar_titleTv;
+    private TitleView mTitleView;
+    private TextView titleTv_left;
+    private TextView titleTv_center;
+    private TextView titleTv_right;
+    private PopupMenu mPopupMenu; //右上角点击弹出的菜单
 
     private ImageView image_progress;
     private ImageView weather_icon;
     private TextView Weather_describe;
     private ListView mListView;
-    private WeatherAdapter mWeatherAdapter;
 
+    private WeatherAdapter mWeatherAdapter;
     private List<WeatherInfo> mInfoArrayList = new ArrayList<>();  //保存所有城市的天气信息
     private List<HashMap<String, Object>> mHashMapList;    //适配器天气源
     private List<City> mFavoriteList;
-
     private ClipDrawable drawable;
     private int iconOrder = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        rootLinearLayout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.activity_main,null,false);
+        setContentView(rootLinearLayout);
         initDatas();
         initViews();
         getAllWeathers();
-
-        LA.d(TAG, Build.MODEL+"\n"+ Build.VERSION.SDK+"\n"+Build.VERSION.RELEASE);
     }
 
     private void getAllWeathers() {
@@ -95,7 +98,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         if (mFavoriteList.size() == 0) {
             mHashMapList.clear();
-            topBar_titleTv.setText("请添加城市");
+   //         topBar_titleTv.setText("请添加城市");
             mWeatherAdapter.notifyDataSetChanged();
             Toast toast = Toast.makeText(MainActivity.this,"请添加城市",Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER,0,0);
@@ -126,7 +129,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void initViews() {
         Resources resources = getResources();
-        findViewById(R.id.about_app).setOnClickListener(this);
         image_progress = (ImageView) findViewById(R.id.progress);
         drawable = (ClipDrawable) image_progress.getDrawable();
         drawable.setLevel(PROGRESS_ORIGINAL);//进度条初始值
@@ -143,27 +145,48 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
 
-        topBar_LeftBtn = (Button) findViewById(R.id.TopBarLeftBtnId);
-        topBar_rightBtn = (Button) findViewById(R.id.TopBarRightBtnId);
-        topBar_titleTv = (TextView) findViewById(R.id.TopBarTitleId);
-        topBar_LeftBtn.setOnClickListener(this);
-        topBar_rightBtn.setOnClickListener(this);
-        topBar_titleTv.setOnClickListener(this);
+
+
+        //标题栏
+        titleTv_left = (TextView) findViewById(R.id.title_tv_center);
+        titleTv_center = (TextView) findViewById(R.id.title_tv_center);
+        titleTv_right = (TextView) findViewById(R.id.title_tv_right);
+
+        titleTv_center.setText("Hefei");
+        titleTv_right.setText("···");
+        titleTv_right.setTextColor(Color.BLACK);
+        titleTv_right.setTextSize(35);
+        titleTv_right.setOnClickListener(this);
+        mPopupMenu = new PopupMenu(this,titleTv_right);
+        mPopupMenu.getMenuInflater().inflate(R.menu.activity_man_setting,mPopupMenu.getMenu());
+        mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.menu_main_setting:
+                        startActivity(new Intent(MainActivity.this,AboutActivity.class));
+                        overridePendingTransition(R.anim.activity_open,0);
+                        break;
+                    case R.id.menu_main_search:
+                        startActivity(new Intent(MainActivity.this,SearchActivity.class));
+                        overridePendingTransition(R.anim.activity_open,0);
+                        break;
+                    case R.id.menu_main_more:
+                        startActivity(new Intent(MainActivity.this,CallBackActivity.class));
+
+                        break;
+                }
+                return false;
+            }
+        });
+
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.TopBarLeftBtnId:
-                getAllWeathers();
-                break;
-            case R.id.TopBarRightBtnId:
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                break;
-            case R.id.TopBarTitleId:
-                break;
-            case R.id.about_app:
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+            case R.id.title_tv_right:
+                mPopupMenu.show();
                 break;
         }
     }
@@ -233,10 +256,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         weather_icon.setImageDrawable(
                 getResources().getDrawable(DataTransferTool.getIconFromWeatherDetail(weather_describe)));
         Weather_describe.setText(tv2);
-        topBar_titleTv.setText(city);
+        //topBar_titleTv.setText(city);
     }
-
-
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         WeatherInfo weatherInfo = mInfoArrayList.get(position);

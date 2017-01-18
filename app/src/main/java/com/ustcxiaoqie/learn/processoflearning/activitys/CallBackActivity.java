@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -98,5 +99,14 @@ public class CallBackActivity extends Activity implements View.OnClickListener {
                 Toast.makeText(CallBackActivity.this,"反馈已取消发送！",Toast.LENGTH_SHORT).show();
             }
         }*/
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            this.finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

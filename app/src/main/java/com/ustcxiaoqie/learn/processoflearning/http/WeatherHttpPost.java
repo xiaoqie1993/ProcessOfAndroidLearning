@@ -40,7 +40,7 @@ public class WeatherHttpPost {
         this.mCityList = cityList;
     }
     public void getWeatherInfo(PostInterface i, ProgressListener progressListener){
-        String hostUrl = Constant.getUrl;
+        String hostUrl = Constant.DAILY_URL;
         HttpAsyncTask task = new HttpAsyncTask(hostUrl,i,progressListener);
         task.execute("");
     }

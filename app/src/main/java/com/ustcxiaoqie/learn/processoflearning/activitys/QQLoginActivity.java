@@ -1,6 +1,5 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +21,7 @@ import org.json.JSONObject;
  * Created by Xiaoqie on 2017/1/5.
  */
 
-public class QQLoginActivity extends Activity {
+public class QQLoginActivity extends BaseActivity {
     private static final String TAG = "QQLoginActivity";
     private Tencent mTencent;
     private LoginListener listener;

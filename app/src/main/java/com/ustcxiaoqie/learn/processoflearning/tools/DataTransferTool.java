@@ -102,7 +102,7 @@ public class DataTransferTool {
      * @return  用于WeatherAdapter的MapList
      */
     public static List<HashMap<String,Object>> transferListToListMap(List<WeatherInfo> list){
-        if (null == list) return null;
+        if (null == list || list.size() == 0) return null;
         List<HashMap<String,Object>> mapList = new ArrayList<>();
         WeatherInfo info = list.get(0);
         List<WeatherDetail> list_detail = info.getList();

@@ -1,12 +1,12 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -40,7 +40,7 @@ import java.util.List;
 /**
  * Created by Xiaoqie on 2017/1/10.
  */
-public class WeatherOfCityActivity extends Activity implements View.OnClickListener {
+public class WeatherOfCityActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "WeatherOfCityActivity";
     private static final int LEVEL_STARED = 10;
     private static final int LEVEL_NOT_STARED = 0;
@@ -217,5 +217,15 @@ public class WeatherOfCityActivity extends Activity implements View.OnClickListe
             bv.destroy();
             bv = null;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode){
+            case KeyEvent.KEYCODE_BACK:
+                this.finish();
+                break;
+        }
+        return true;
     }
 }

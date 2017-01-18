@@ -1,9 +1,9 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -26,7 +26,7 @@ import static android.view.View.GONE;
  * Created by Xiaoqie on 2017/1/9.
  */
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends BaseActivity {
     private static final String TAG = "SearchActivity";
     private EditText mSearchEditText;
     private List<City> AllCitiesList;
@@ -109,4 +109,12 @@ public class SearchActivity extends Activity {
         LA.d(TAG,"huishou");
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            this.finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

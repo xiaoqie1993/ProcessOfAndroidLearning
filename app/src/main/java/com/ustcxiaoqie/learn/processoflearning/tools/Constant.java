@@ -7,7 +7,9 @@ package com.ustcxiaoqie.learn.processoflearning.tools;
 
 
 public class Constant {
-    public final static String getUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?APPID=bca92c96087fb0d353a55aaf8dcda512&units=metric&cnt=3&id=";
+    public final static String DAILY_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?APPID=bca92c96087fb0d353a55aaf8dcda512&units=metric&cnt=3&id=";
+    public final static String MORE_DAYS_URL = "http://api.openweathermap.org/data/2.5/forecast?&appid=bca92c96087fb0d353a55aaf8dcda512&units=metric&cnt=3&id=";
+
     public final static String GET_WEATHER_BY_CITYID =
             "http://openweathermap.org/city/";  //后  +  cityid
 

@@ -1,6 +1,5 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,7 +14,7 @@ import com.ustcxiaoqie.learn.processoflearning.javabeans.QQCallbackMsg;
  * Created by Xiaoqie on 2016/12/11.
  * Copyright (c) 2016 ${ORGANIZATION_NAME}. All rights reserved.
  */
-public class TestViewActivity extends Activity{
+public class TestViewActivity extends BaseActivity{
     private Tencent mTencent;
     private BaseUiListener listener;
     @Override
