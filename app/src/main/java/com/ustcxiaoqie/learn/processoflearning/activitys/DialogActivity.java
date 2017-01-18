@@ -14,12 +14,14 @@ import android.widget.Toast;
 
 import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
+import com.ustcxiaoqie.learn.processoflearning.tools.LA;
 
 /**
  * Created by Xiaoqie on 2017/1/5.
  */
 
 public class DialogActivity extends Activity {
+    private static final String TAG = "DialogActivity";
     private LocalBroadcastManager mLocalBroadcastManager;
     private CloseThisByBroadCastReceiver mReceiver;
     private TextView mTextView;  //进度提示文字
@@ -40,6 +42,7 @@ public class DialogActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             int progress = intent.getIntExtra(Constant.PROGRESS,0);
+            LA.d(TAG,"progress  "+progress);
             switch (progress){
                 case Constant.PROGRESS_START:
                     break;

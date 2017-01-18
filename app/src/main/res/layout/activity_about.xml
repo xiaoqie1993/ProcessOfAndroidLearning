@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:gravity="center"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-
+    <com.ustcxiaoqie.learn.processoflearning.views.TitleView
+        android:id="@+id/title_citymanager"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:centertext="关于"
+        />
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -21,7 +27,7 @@
         android:id="@+id/tv_about_app"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="150dp"/>
+        android:layout_height="100dp"/>
     <TextView
         android:id="@+id/checkUpdate"
         android:layout_width="200dp"
@@ -33,19 +39,25 @@
         android:background="@drawable/bg_callback_tv"
         android:text="检查更新"/>
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+    <TextView
         android:id="@+id/callback_activity_tv"
         android:layout_width="200dp"
         android:layout_height="40dp"
         android:gravity="center"
         android:textSize="@dimen/textview_textsize"
+        android:textColor="@android:color/black"
         android:background="@drawable/bg_callback_tv"
         android:text="问题反馈"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
         android:textSize="@dimen/textview_textsize"
-        android:background="@android:color/holo_green_light"
         android:text="关于作者"/>
 
 

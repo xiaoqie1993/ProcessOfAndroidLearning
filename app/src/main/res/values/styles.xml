@@ -55,6 +55,11 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <declare-styleable name="TitleView">
+        <attr name="lefttext" format="string"/>
+        <attr name="centertext" format="string"/>
+        <attr name="righttext" format="string"/>
+    </declare-styleable>
     <style name="DialogText">
         <item name="android:textColor">#FF000000</item>
         <item name="android:textSize">12sp</item>

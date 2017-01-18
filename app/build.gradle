@@ -15,8 +15,8 @@ android {
         applicationId "com.ustcxiaoqie.learn.processoflearning"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 7
-        versionName "v1.1 beta 2"
+        versionCode 8
+        versionName "v1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
     }

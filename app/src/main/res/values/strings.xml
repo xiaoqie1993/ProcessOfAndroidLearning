@@ -60,4 +60,14 @@
         <item name ="shanghai">1796231</item>
         <item name ="guangzhou">1809858</item>
     </integer-array>
+
+    <string-array name="weeks">
+        <item>Mon</item>
+        <item>Tues</item>
+        <item>Wed</item>
+        <item>Thus</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
 </resources>

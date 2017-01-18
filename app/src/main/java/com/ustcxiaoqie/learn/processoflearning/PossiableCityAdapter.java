@@ -79,7 +79,7 @@ public class PossiableCityAdapter extends BaseAdapter {
         });
         return view;
     }
-    private static class ViewHolder{
+    private class ViewHolder{
         private TextView mTextView;
         public ViewHolder(View view){
             mTextView = (TextView) view.findViewById(R.id.city_adapter_city);

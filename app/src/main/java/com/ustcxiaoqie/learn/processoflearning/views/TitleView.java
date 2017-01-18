@@ -1,6 +1,8 @@
 package com.ustcxiaoqie.learn.processoflearning.views;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,8 +17,15 @@ public class TitleView extends LinearLayout{
     public TextView leftTextView;
     public TextView centerTextView;
     public TextView rightTextView;
-    public TitleView(Context context) {
-        super(context);
+    private String lefttext;
+    private String centertext;
+    private String righttext;
+    public TitleView(Context context, AttributeSet attr) {
+        super(context,attr);
+        TypedArray typedArray = context.obtainStyledAttributes(attr,R.styleable.TitleView);
+        lefttext = typedArray.getString(R.styleable.TitleView_lefttext);
+        centertext = typedArray.getString(R.styleable.TitleView_centertext);
+        righttext = typedArray.getString(R.styleable.TitleView_righttext);
         initViews(context);
     }
 
@@ -25,6 +34,10 @@ public class TitleView extends LinearLayout{
         leftTextView = (TextView) ll.findViewById(R.id.title_tv_left);
         centerTextView = (TextView) ll.findViewById(R.id.title_tv_center);
         rightTextView = (TextView) ll.findViewById(R.id.title_tv_right);
+        leftTextView.setText(lefttext);
+        centerTextView.setText(centertext);
+        rightTextView.setText(righttext);
+        addView(ll, LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
     }
 
     public TextView getLeftTextView() {

@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private TextView titleTv_center;
     private TextView titleTv_right;
     private PopupMenu mPopupMenu; //右上角点击弹出的菜单
+    private ListView mListView_cities;
 
     private ImageView image_progress;
     private ImageView weather_icon;
@@ -145,14 +146,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
 
-
-
         //标题栏
         titleTv_left = (TextView) findViewById(R.id.title_tv_center);
         titleTv_center = (TextView) findViewById(R.id.title_tv_center);
         titleTv_right = (TextView) findViewById(R.id.title_tv_right);
 
         titleTv_center.setText("Hefei");
+        titleTv_center.setOnClickListener(this);
         titleTv_right.setText("···");
         titleTv_right.setTextColor(Color.BLACK);
         titleTv_right.setTextSize(35);
@@ -188,6 +188,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.title_tv_right:
                 mPopupMenu.show();
                 break;
+            case R.id.title_tv_center:
+                titleTv_center.setVisibility(View.GONE);
+                mListView_cities.setVisibility(View.VISIBLE);
         }
     }
 

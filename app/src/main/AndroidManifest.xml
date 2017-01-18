@@ -29,10 +29,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".activitys.MainActivity"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Light.NoTitleBar"
+        <activity android:name=".activitys.CityManagerActivity">
+        </activity>
+        <activity android:name=".activitys.StartActivity"
+                  android:launchMode="singleTask"
+                  android:screenOrientation="portrait"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -40,7 +41,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activitys.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            >
+
+        </activity>
+        <activity
             android:name=".activitys.ShareActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Panel"/>
         <activity android:name=".activitys.AboutActivity"
                   android:launchMode="singleTop"/>
@@ -49,7 +58,9 @@
             android:theme="@android:style/Animation.Dialog"/>
         <activity
             android:name=".activitys.DialogActivity"
-            android:theme="@style/MyDialogStyle"/>
+            android:theme="@style/MyDialogStyle"
+            android:screenOrientation="portrait"
+            />
         <activity android:name=".activitys.QQLoginActivity">
             <!--  <intent-filter>
                   <action android:name="android.intent.action.MAIN"/>
@@ -58,12 +69,14 @@
         </activity>
         <activity
             android:name=".activitys.SearchActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Transpanrent">
 
         </activity>
-        <activity android:name=".activitys.WeatherOfCityActivity"/>
-        <activity android:name=".activitys.TestViewActivity"/>
-        <activity android:name=".activitys.CallBackActivity"></activity>
+        <activity android:name=".activitys.WeatherOfCityActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".activitys.TestViewActivity" />
+        <activity android:name=".activitys.CallBackActivity"  android:screenOrientation="portrait"></activity>
 
         <activity
             android:name="com.tencent.connect.common.AssistActivity"

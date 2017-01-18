@@ -33,6 +33,7 @@ public class ShareActivity extends Activity implements View.OnClickListener{
     private Tencent mTencent;
     private ResultListener listener;
     private int flag = 0;
+    private int position;
     private final static int FLAG_SHARE_TO_QQ = 1;
     private final static int FLAG_SHARE_TO_QZONE = 2;
     @Override
@@ -56,6 +57,7 @@ public class ShareActivity extends Activity implements View.OnClickListener{
         if(null != i){
             try {
                 mWeatherInfo = (WeatherInfo) i.getSerializableExtra("weather");
+                position = i.getIntExtra("position",0);
                 share2qq.setEnabled(true);
                 share2qzone.setEnabled(true);
             }catch (Exception e){
@@ -92,7 +94,7 @@ public class ShareActivity extends Activity implements View.OnClickListener{
         this.overridePendingTransition(R.anim.activity_close,0);
     }
     private void share2Qzone() {
-        WeatherDetail detail = mWeatherInfo.getList().get(0);
+        WeatherDetail detail = mWeatherInfo.getList().get(position);
         Weather weather = detail.getWeather();
         Bundle bundle = new Bundle();
         bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL,Constant.GET_WEATHER_BY_CITYID+mWeatherInfo.getCity().getId());

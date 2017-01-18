@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <com.ustcxiaoqie.learn.processoflearning.views.TitleView
+        android:id="@+id/title_citymanager"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:centertext="意见反馈"
+        />
     <TextView
         android:id="@+id/deviceInfo_tv"
         android:layout_width="match_parent"
@@ -12,15 +19,24 @@
     <EditText
         android:id="@+id/callback_ev"
         android:hint="请描述问题.."
+        android:layout_gravity="center_horizontal"
+        android:layout_width="350dp"
+        android:layout_height="150dp"/>
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="100dp"/>
+        android:gravity="center"
+        android:textSize="@dimen/textview_textsize"
+        android:layout_height="80dp"/>
     <Button
         android:id="@+id/callback_btn"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:textSize="15sp"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:textSize="18sp"
         android:text="提交"
+        android:background="@drawable/bbuton_info_rounded"
         android:gravity="center"
+        android:layout_gravity="center_horizontal"
         />
 
 </LinearLayout>

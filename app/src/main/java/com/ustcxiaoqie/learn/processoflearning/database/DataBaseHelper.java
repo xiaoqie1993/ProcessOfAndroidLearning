@@ -159,6 +159,9 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     public void updateToFavoriteCity(SQLiteDatabase sb,ContentValues values,String whereClause,String[] whereArgs){
         sb.update(TABLE_NAME_FAVORATE_CITIES,values,whereClause,whereArgs);
     }
+    public void deleteFromFavoriteCity(SQLiteDatabase sb,String whereClause,String[] whereArgs){
+        sb.delete(TABLE_NAME_FAVORATE_CITIES,whereClause,whereArgs);
+    }
 
     public void clearDataBase(SQLiteDatabase db,boolean confime){
         if(confime){
