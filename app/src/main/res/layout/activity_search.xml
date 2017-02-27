@@ -6,7 +6,8 @@
     <EditText
         android:id="@+id/search_et"
         android:layout_width="match_parent"
-        android:hint="请输入城市名称"
+        android:hint="请输入城市名称(目前仅支持拼音搜索..)"
+        android:digits="abcdefghijklmnopqrstuvwxyz"
         android:layout_height="60dp"/>
     <ListView
         android:id="@+id/possiable_lv"

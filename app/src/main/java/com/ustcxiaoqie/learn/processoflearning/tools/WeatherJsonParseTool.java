@@ -52,10 +52,10 @@ public class WeatherJsonParseTool {
 
             Temp temp = new Temp();
             JSONObject tempJSon = detail.getJSONObject("temp");
-            temp.setDay((float) tempJSon.getDouble("day"));
-            temp.setMax((float) tempJSon.getDouble("max"));
-            temp.setMin((float) tempJSon.getDouble("min"));
-            temp.setNight((float) tempJSon.getDouble("night"));
+            temp.setDay(tempToInt((float) tempJSon.getDouble("day")));
+            temp.setMax(tempToInt((float) tempJSon.getDouble("max")));
+            temp.setMin(tempToInt((float) tempJSon.getDouble("min")));
+            temp.setNight(tempToInt((float) tempJSon.getDouble("night")));
             weatherDetail.setTemp(temp);
 
             Weather weather = new Weather();
@@ -83,5 +83,14 @@ public class WeatherJsonParseTool {
             e.printStackTrace();
         }
         return jsonObject;
+    }
+
+    /**
+     *
+     * @param temp
+     * @return
+     */
+    private int tempToInt(float temp){
+        return (int)(Math.floor(temp+0.5f));
     }
 }

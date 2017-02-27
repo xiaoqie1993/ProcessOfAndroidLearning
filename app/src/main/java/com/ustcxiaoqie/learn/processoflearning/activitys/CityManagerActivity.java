@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.database.DataBaseHelper;
 import com.ustcxiaoqie.learn.processoflearning.database.Table_Structure;
 import com.ustcxiaoqie.learn.processoflearning.tools.ADsConstants;
+import com.ustcxiaoqie.learn.processoflearning.tools.City;
 import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
 import com.ustcxiaoqie.learn.processoflearning.tools.LA;
 import com.ustcxiaoqie.learn.processoflearning.views.DeleteFromGridViewListener;
@@ -36,7 +38,8 @@ import java.util.List;
  */
 
 
-public class CityManagerActivity extends BaseActivity implements DeleteFromGridViewListener,View.OnClickListener{
+public class CityManagerActivity extends BaseActivity implements
+        DeleteFromGridViewListener,View.OnClickListener,AdapterView.OnItemClickListener {
     private static final String TAG = "CityManagerActivity";
     private GridView mGridView; //城市列表
     private TitleView mTitleView;
@@ -81,11 +84,27 @@ public class CityManagerActivity extends BaseActivity implements DeleteFromGridV
             @Override
             public void run() {
                 SQLiteDatabase db = helper.getWritableDatabase();
-                Cursor c = helper.queryFromFavoriteCity(db,new String[]{Table_Structure.TABLE_FAVORATE_CITIES.city_name},null,null,null,null,null);
-                while (c.moveToNext()){
+                Cursor c = helper.queryFromFavoriteCity(db,new String[]{Table_Structure.TABLE_FAVORATE_CITIES.city_name
+                ,Table_Structure.TABLE_FAVORATE_CITIES.city_id},null,null,null,null,null);
+               //跳出内存循环到外层  out  ---- continue out 配对
+                out:while (c.moveToNext()) {
+                    boolean next = false;
                     String cityname = c.getString(0);
+                    //若列表中已有城市则直接进入下一次循环
+                    for (HashMap<String, Object> m : data) {
+                        LA.d(TAG, "data:" + " " + m.get("cityname"));
+                        LA.d(TAG, "cityname:" + " " + cityname);
+                        if (null != m && m.get("cityname").equals(cityname)) {
+                          continue out;
+                           /* next = true;
+                            break;*/
+                        }
+                    }
+                    if(next)  continue;
+                    int cityid = c.getInt(1);
                     HashMap<String,Object> map = new HashMap<String, Object>();
                     map.put("cityname",cityname);
+                    map.put("cityid",cityid);
                     map.put("icon",R.mipmap.ic_launcher);
                     map.put("delete",1);
                     data.add(map);
@@ -109,14 +128,12 @@ public class CityManagerActivity extends BaseActivity implements DeleteFromGridV
         rightText.setOnClickListener(this);
         adapter = new CityGridViewAdapter(this, data,this);
         mGridView.setAdapter(adapter);
+        mGridView.setOnItemClickListener(this);
         fl = (FrameLayout) findViewById(R.id.banner_ad);
     }
 
     @Override
     public void delete(int position) {
-        //得到待删除对象的position
-
-
         //从数据库删除
         SQLiteDatabase db = helper.getWritableDatabase();
         helper.deleteFromFavoriteCity(db, Table_Structure.TABLE_FAVORATE_CITIES.city_name+"=?",new String[]{(String) data.get(position).get("cityname")});
@@ -164,6 +181,20 @@ public class CityManagerActivity extends BaseActivity implements DeleteFromGridV
                 break;
 
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        LA.d(TAG,"position="+position);
+        HashMap<String,Object> map =  data.get(position);
+        City city = new City();
+        city.setName((String) map.get("cityname"));
+        city.setId((int) map.get("cityid"));
+        Intent i = new Intent(CityManagerActivity.this,WeatherOfCityActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constant.KEY_BUNDLE_CITY_OBJECT,city);
+        i.putExtras(bundle);
+        startActivity(i);
     }
 
     private class dataHandler extends Handler{

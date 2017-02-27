@@ -53,6 +53,7 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
 
     //标题栏
     private TextView titleTv_center;
+    private TextView titleTv_left;
     private TextView titleTv_right;
     private PopupMenu mPopupMenu;
     //今日天气
@@ -97,15 +98,15 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
     private void initViews() {
 
         fl = (FrameLayout) findViewById(R.id.weatherofcity_banner);
-
+        titleTv_left = (TextView) findViewById(R.id.title_tv_left);
         titleTv_center = (TextView) findViewById(R.id.title_tv_center);
         titleTv_right = (TextView) findViewById(R.id.title_tv_right);
+        titleTv_left.setOnClickListener(this);
         titleTv_right.setOnClickListener(this);
         titleTv_center.setOnClickListener(this);
-        titleTv_right.setText("···");
+        titleTv_right.setText("●●●");
+        titleTv_left.setText("刷新");
         titleTv_right.setTextColor(Color.BLACK);
-        titleTv_right.setTextSize(35);
-        titleTv_right.setOnClickListener(this);
         mPopupMenu = new PopupMenu(this,titleTv_right);
         mPopupMenu.getMenuInflater().inflate(R.menu.activity_man_setting,mPopupMenu.getMenu());
         mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -116,13 +117,15 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
                         startActivity(new Intent(StartActivity.this,AboutActivity.class));
                         overridePendingTransition(R.anim.activity_open,0);
                         break;
+                    case R.id.menu_main_manage:
+                        startActivity(new Intent(StartActivity.this,CityManagerActivity.class));
+                        break;
                     case R.id.menu_main_search:
                         startActivity(new Intent(StartActivity.this,SearchActivity.class));
                         overridePendingTransition(R.anim.activity_open,0);
                         break;
                     case R.id.menu_main_more:
                         startActivity(new Intent(StartActivity.this,CallBackActivity.class));
-
                         break;
                 }
                 return false;
@@ -235,8 +238,9 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.title_tv_center:
-                startActivity(new Intent(StartActivity.this,CityManagerActivity.class));
+            case R.id.title_tv_left:
+                initDatas();
+      //          startActivity(new Intent(StartActivity.this,CityManagerActivity.class));
                 break;
             case R.id.title_tv_right:
                 mPopupMenu.show();

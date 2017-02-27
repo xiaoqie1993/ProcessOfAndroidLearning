@@ -33,7 +33,6 @@ public class DataBaseOfFavorateCity {
             city.setId(cursor.getInt(1));
             city.setName(cursor.getString(0));
             cityList.add(city);
-
         }
         helper.close();
         return cityList;

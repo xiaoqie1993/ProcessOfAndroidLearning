@@ -32,7 +32,6 @@ public class DialogActivity extends Activity {
         setContentView(R.layout.dialog_activity);
         mTextView = (TextView) findViewById(R.id.progress_text);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        mTextView.setText("正在加载...\n");
         IntentFilter filter = new IntentFilter(Constant.DIALOG_ACTIVITY_FINISH);
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(DialogActivity.this);
         mReceiver = new CloseThisByBroadCastReceiver();
@@ -47,10 +46,8 @@ public class DialogActivity extends Activity {
                 case Constant.PROGRESS_START:
                     break;
                 case Constant.PROGRESS_HALF:
-                    mTextView.setText("获取数据成功！解析中...");
                     break;
                 case Constant.PROGRESS_FINISH:
-                    mTextView.setText("解析完成！\n");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {

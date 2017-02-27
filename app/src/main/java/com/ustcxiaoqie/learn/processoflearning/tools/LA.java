@@ -10,8 +10,8 @@ import android.util.Log;
 
 
 public class LA {
-    private static boolean isDebug = false;
-
+    private static boolean isDebug = true;
+    //防止该类被实例化
     private LA(){
     }
     public static void i(String TAG,String msg) {

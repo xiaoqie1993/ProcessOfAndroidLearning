@@ -10,20 +10,24 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:background="@android:color/transparent"
+        android:textSize="@dimen/textsize_big"
         android:gravity="center"
         android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/title_tv_center"
         android:layout_width="0dp"
         android:layout_weight="3"
-        android:textSize="25sp"
+        android:textSize="@dimen/textsize_large"
         android:background="@android:color/transparent"
         android:gravity="center"
+        android:maxLines="1"
         android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/title_tv_right"
         android:layout_width="0dp"
         android:layout_weight="1"
+        android:ems="1"
+        android:textSize="@dimen/textsize_big"
         android:background="@android:color/transparent"
         android:gravity="center"
         android:layout_height="match_parent"/>

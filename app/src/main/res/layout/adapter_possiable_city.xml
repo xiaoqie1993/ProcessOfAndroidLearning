@@ -5,7 +5,7 @@
               android:layout_height="match_parent">
     <TextView
         android:id="@+id/city_adapter_city"
-        android:textSize="@dimen/textview_textsize"
+        android:textSize="@dimen/textsize_small"
         android:layout_width="match_parent"
         android:layout_height="60dp"/>
 </LinearLayout>

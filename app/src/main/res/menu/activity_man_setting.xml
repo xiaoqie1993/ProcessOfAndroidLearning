@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     >
-
-
     <item android:title="搜索"
           android:icon="@mipmap/ic_launcher"
         android:id="@+id/menu_main_search"/>
+    <item android:title="城市管理"
+          android:icon="@mipmap/ic_launcher"
+          android:id="@+id/menu_main_manage"/>
     <item android:title="关于"
           android:icon="@mipmap/ic_launcher"
           android:id="@+id/menu_main_setting"/>
