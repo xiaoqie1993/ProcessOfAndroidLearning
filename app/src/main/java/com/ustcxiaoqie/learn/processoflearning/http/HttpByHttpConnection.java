@@ -17,11 +17,11 @@ import java.net.URL;
 
 
 public class HttpByHttpConnection {
-    private static final int ERROR_CODE_SERVERERROR = 1;
-    private static final int ERROR_CODE_SUCCESS = 0;
-    private static final int ERROR_CODE_URLNOTILLEGAL = -1;
-    private static final int ERROR_CODE_OPENCONNFAILED = -2;
-    private static final int ERROR_CODE_GETRESPONSEFAILED= -3;
+    public static final int ERROR_CODE_SERVERERROR = 1;
+    public static final int ERROR_CODE_SUCCESS = 0;
+    public static final int ERROR_CODE_URLNOTILLEGAL = -1;
+    public static final int ERROR_CODE_OPENCONNFAILED = -2;
+    public static final int ERROR_CODE_GETRESPONSEFAILED= -3;
     private HttpConnectionInterface mHttpConnectionInterface;
     private String SeverUrl;
     public HttpByHttpConnection(HttpConnectionInterface httpClientMethodInterface, @NonNull String url){

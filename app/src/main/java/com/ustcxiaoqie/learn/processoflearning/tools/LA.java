@@ -24,6 +24,11 @@ public class LA {
             Log.d(TAG, msg);
         }
     }
+    public static void w(String TAG,String msg){
+        if(isDebug){
+            Log.w(TAG,msg);
+        }
+    }
     public static void e(String TAG,String msg){
         if(isDebug){
             Log.e(TAG,msg);

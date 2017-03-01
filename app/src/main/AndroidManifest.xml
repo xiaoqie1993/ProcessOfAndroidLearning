@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>    <!-- 如果需要精确定位的话请加上此权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-permission-sdk-23 android:name="android.permission.INTERNET"/>
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -31,10 +32,7 @@
                   android:launchMode="singleTask"
                   android:screenOrientation="portrait"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".activitys.MainActivity"
@@ -48,6 +46,12 @@
             android:theme="@android:style/Theme.Panel"/>
         <activity android:name=".activitys.AboutActivity"
                   android:launchMode="singleTop"/>
+        <activity android:name=".activitys.UpdateActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activitys.MoreWeatherActivity"
             android:theme="@android:style/Animation.Dialog"/>

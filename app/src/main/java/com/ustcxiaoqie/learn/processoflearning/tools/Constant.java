@@ -11,7 +11,8 @@ public class Constant {
     public final static String DAILY_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?APPID=bca92c96087fb0d353a55aaf8dcda512&units=metric&cnt=3&id=";
     public final static String MORE_DAYS_URL = "http://api.openweathermap.org/data/2.5/forecast?&appid=bca92c96087fb0d353a55aaf8dcda512&units=metric&cnt=3&id=";
     //APP更新地址
-    public final static String APP_UPDATE_URL = "http://bryant1993.vicp.io:8080/KuaWeb/app.apk";
+    public final static String APP_UPDATE_URL0 = "http://bryant1993.vicp.io:8080/KuaWeb/app.apk";
+    public final static String APP_UPDATE_URL = "http://202.38.71.174:8080/KuaWeb/app.apk";
     public final static String GET_WEATHER_BY_CITYID =
             "http://openweathermap.org/city/";  //后  +  cityid
 
@@ -27,5 +28,5 @@ public class Constant {
     public final static int PROGRESS_FAILED = -1;
     //版本控制
     public static final int DATABASE_VERSION = 2;
-    public static final String APP_VERSION = "v1.3";
+    public static final String APP_VERSION = "v1.3.1";
 }
