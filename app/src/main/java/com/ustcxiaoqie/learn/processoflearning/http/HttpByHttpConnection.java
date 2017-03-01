@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
+ * 该类主要通过httpConneciton获取数据的InputStream和对应的返回code
  * Created by Administrator on 2017/3/1 10:32.
  * Copyright (c) 2017-03-01 Bryant1993 All rights reserved.
  */
@@ -28,14 +29,10 @@ public class HttpByHttpConnection {
         this.SeverUrl = url;
     }
     public void connect(){
-
+        Async async = new Async();
+        async.execute();
     }
     private class Async extends AsyncTask<Void,Void,Object[]>{
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
         @Override
         protected Object[] doInBackground(Void... params) {
             Object[] objects = new Object[2];
@@ -67,10 +64,10 @@ public class HttpByHttpConnection {
                 InputStream is;
                 if(connection.getResponseCode() == 200){
                     is = connection.getInputStream();
-                    code = 0;
+                    code = ERROR_CODE_SUCCESS;
                 }else {
                     is = null;
-                    code = 1;
+                    code = ERROR_CODE_SERVERERROR;
                 }
                 objects[0] = new Integer(code);
                 objects[1] = is;
