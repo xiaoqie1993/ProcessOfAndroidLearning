@@ -28,5 +28,5 @@ public class Constant {
     public final static int PROGRESS_FAILED = -1;
     //版本控制
     public static final int DATABASE_VERSION = 2;
-    public static final String APP_VERSION = "v1.3.1";
+    public static final String APP_VERSION = "v1.3.3";
 }

@@ -6,8 +6,8 @@ package com.ustcxiaoqie.learn.processoflearning.http;
 
 public class DownloadAPKUtil {
     private HttpByHttpConnection mHttpByHttpConnection;
-    public DownloadAPKUtil(HttpConnectionInterface i,String url){
-        mHttpByHttpConnection = new HttpByHttpConnection(i,url);
+    public DownloadAPKUtil(HttpConnectionInterface i,String url,String savedPath){
+        mHttpByHttpConnection = new HttpByHttpConnection(i,url,savedPath);
     }
     public void download(){
         mHttpByHttpConnection.connect();

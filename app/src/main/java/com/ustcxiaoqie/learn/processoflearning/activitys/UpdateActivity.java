@@ -1,19 +1,12 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
 import android.os.Bundle;
-import android.os.Environment;
 
 import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.http.DownloadAPKUtil;
 import com.ustcxiaoqie.learn.processoflearning.http.HttpConnectionInterface;
 import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
 import com.ustcxiaoqie.learn.processoflearning.tools.LA;
-
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static com.ustcxiaoqie.learn.processoflearning.http.HttpByHttpConnection.ERROR_CODE_GETRESPONSEFAILED;
 import static com.ustcxiaoqie.learn.processoflearning.http.HttpByHttpConnection.ERROR_CODE_OPENCONNFAILED;
@@ -37,24 +30,18 @@ public class UpdateActivity extends BaseActivity implements HttpConnectionInterf
     }
 
     private void startDownload() {
-        DownloadAPKUtil util = new DownloadAPKUtil(this, Constant.APP_UPDATE_URL);
+        DownloadAPKUtil util = new DownloadAPKUtil(this, Constant.APP_UPDATE_URL,this.getFilesDir().getPath());
         util.download();
     }
 
     @Override
-    public void getInputStream(int code, Object inputStream) {
+    public void getInputStream(int code) {
         switch(code){
             case ERROR_CODE_SERVERERROR:
                 LA.w(TAG,"SERVERERROR");
               break;
             case ERROR_CODE_SUCCESS:
                 LA.i(TAG,"SUCCESS");
-                try {
-                    getAPKFile((InputStream)inputStream);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    LA.e(TAG,"Write to file failed!");
-                }
                 break;
             case ERROR_CODE_URLNOTILLEGAL:
                 LA.w(TAG,"URLNOTILLEGAL");
@@ -68,7 +55,7 @@ public class UpdateActivity extends BaseActivity implements HttpConnectionInterf
         }
     }
 
-    private void getAPKFile(InputStream inputStream) throws IOException {
+   /* private void getAPKFile(InputStream inputStream) throws IOException {
         File file0 = new File(Environment.getExternalStorageDirectory(),"/test/");
         if(!file0.exists()){
             file0.mkdirs();
@@ -88,5 +75,5 @@ public class UpdateActivity extends BaseActivity implements HttpConnectionInterf
         bos.close();
         fos.close();
         inputStream.close();
-    }
+    }*/
 }

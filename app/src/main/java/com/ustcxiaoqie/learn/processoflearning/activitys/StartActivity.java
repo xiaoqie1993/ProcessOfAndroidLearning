@@ -18,7 +18,11 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.qq.e.ads.banner.BannerView;
+import com.ustcxiaoqie.learn.processoflearning.CityLocationListener;
 import com.ustcxiaoqie.learn.processoflearning.ProgressListener;
 import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.WeatherAdapter;
@@ -46,6 +50,8 @@ import java.util.List;
 
 public class StartActivity extends BaseActivity implements View.OnClickListener,AdapterView.OnItemClickListener{
     private static final String TAG = "WeatherOfCityActivity";
+    private LocationClient mClient;
+    private BDLocationListener mListener;
     private static final int LEVEL_STARED = 10;
     private static final int LEVEL_NOT_STARED = 0;
     private City mCity;
@@ -78,6 +84,34 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
         this.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_start);
         initViews();
+        //获取当前城市
+        startGetLocation();
+        startService(new Intent(StartActivity.this,NoticeDailyService.class));
+    }
+
+    private void startGetLocation() {
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+        option.setCoorType("bd09ll");
+        //可选，默认gcj02，设置返回的定位结果坐标系
+        option.setIsNeedAddress(true);
+        //可选，设置是否需要地址信息，默认不需要
+        option.setOpenGps(true);
+        //可选，默认false,设置是否使用gps
+        option.setLocationNotify(true);
+        //可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
+        option.setIgnoreKillProcess(false);
+        //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+        option.SetIgnoreCacheException(false);
+        //可选，默认false，设置是否收集CRASH信息，默认收集
+        option.setEnableSimulateGps(false);
+        //可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
+        mClient.setLocOption(option);
+
+        mClient = new LocationClient(getApplicationContext());
+        mListener = new CityLocationListener();
+        mClient.registerLocationListener(mListener);
     }
 
     @Override

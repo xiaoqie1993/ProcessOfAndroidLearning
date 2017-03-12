@@ -10,7 +10,6 @@ public interface HttpConnectionInterface {
     /**
      *  HttpConnection请求返回值
      * @param code    请求返回码
-     * @param inputStream   null   or  InputStream
      */
-    void getInputStream(int code,Object inputStream);
+    void getInputStream(int code);
 }

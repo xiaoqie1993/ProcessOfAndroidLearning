@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ustcxiaoqie.learn.processoflearning"
-    >
+          package="com.ustcxiaoqie.learn.processoflearning">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>    <!-- 如果需要精确定位的话请加上此权限 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/> <!-- 如果需要精确定位的话请加上此权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
@@ -22,67 +21,59 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/sun"
+        android:icon="@drawable/weather"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="kGe5bkzNpl2r5XOA5vvLPjXIu1de2KsK" />       //key:开发者申请的Key
         <activity android:name=".activitys.CityManagerActivity">
         </activity>
-        <activity android:name=".activitys.StartActivity"
-                  android:launchMode="singleTask"
-                  android:screenOrientation="portrait"
-            >
-
-        </activity>
         <activity
-            android:name=".activitys.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar"
-            >
+            android:name=".activitys.StartActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".activitys.ShareActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Panel"/>
-        <activity android:name=".activitys.AboutActivity"
-                  android:launchMode="singleTop"/>
+        <activity
+            android:name=".activitys.AboutActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".activitys.UpdateActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".activitys.MoreWeatherActivity"
             android:theme="@android:style/Animation.Dialog"/>
         <activity
             android:name=".activitys.DialogActivity"
-            android:theme="@style/MyDialogStyle"
             android:screenOrientation="portrait"
-            />
-        <activity android:name=".activitys.QQLoginActivity">
-            <!--  <intent-filter>
-                  <action android:name="android.intent.action.MAIN"/>
-                  <category android:name="android.intent.category.LAUNCHER"/>
-              </intent-filter>-->
-        </activity>
+            android:theme="@style/MyDialogStyle"/>
+        <activity android:name=".activitys.QQLoginActivity"/>
         <activity
             android:name=".activitys.SearchActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Transpanrent">
-
-        </activity>
-        <activity android:name=".activitys.WeatherOfCityActivity"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".activitys.TestViewActivity" />
-        <activity android:name=".activitys.CallBackActivity"  android:screenOrientation="portrait"></activity>
-
+            android:theme="@style/Transpanrent"/>
+        <activity
+            android:name=".activitys.WeatherOfCityActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activitys.TestViewActivity"/>
+        <activity
+            android:name=".activitys.CallBackActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -95,14 +86,23 @@
             </intent-filter>
         </activity>
 
-        <!-- 插入广告-->
+        <!-- 插入广告 -->
         <service
             android:name="com.qq.e.comm.DownloadService"
             android:exported="false"/>
+
         <activity
             android:name="com.qq.e.ads.ADActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"/>
-    </application>
 
+        <service
+            android:name=".activitys.NoticeDailyService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+        <!-- 百度地图Service-->
+        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"/>
+
+    </application>
 
 </manifest>

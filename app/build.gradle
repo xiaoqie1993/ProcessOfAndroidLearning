@@ -15,8 +15,8 @@ android {
         applicationId "com.ustcxiaoqie.learn.processoflearning"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 14
-        versionName "v1.3.1"
+        versionCode 16
+        versionName "v1.3.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
     }
@@ -59,4 +59,5 @@ dependencies {
     compile files('libs/mta-sdk-1.6.2.jar')
     compile files('libs/open_sdk_r5778.jar')
     compile files('libs/GDTUnionSDK.4.9.542.min.jar')
+    compile files('libs/BaiduLBS_Android.jar')
 }
