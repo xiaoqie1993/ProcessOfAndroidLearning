@@ -85,7 +85,7 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
         setContentView(R.layout.activity_start);
         initViews();
         //获取当前城市
-        startGetLocation();
+   //     startGetLocation();
         startService(new Intent(StartActivity.this,NoticeDailyService.class));
     }
 
@@ -167,7 +167,7 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
         });
 
         current_temp = (TextView) findViewById(R.id.current_temp_tv);
-        current_range = (TextView) findViewById(R.id.current_range_tv);
+        current_range = (TextView) findViewById(R.id.range_temp_tv);
         icon = (ImageView) findViewById(R.id.icon_weather);
 
         mHashMapList = new ArrayList<>();
@@ -261,7 +261,7 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
         float temp_min = temp.getMin();
         float temp_max = temp.getMax();
         String weather_describe = detail.getWeather().getDesciption();
-        String tv2 = temp_min + "℃" + "~" + temp_max + "℃";
+        String tv2 = detail.getWeather().getDesciption();
         current_temp.setText(temp_day + "℃");
         icon.setImageDrawable(
                 getResources().getDrawable(DataTransferTool.getIconFromWeatherDetail(weather_describe)));

@@ -9,10 +9,9 @@ package com.ustcxiaoqie.learn.processoflearning.tools;
 public class Constant {
     //天气数据获取地址
     public final static String DAILY_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?APPID=bca92c96087fb0d353a55aaf8dcda512&units=metric&cnt=3&id=";
-    public final static String MORE_DAYS_URL = "http://api.openweathermap.org/data/2.5/forecast?&appid=bca92c96087fb0d353a55aaf8dcda512&units=metric&cnt=3&id=";
     //APP更新地址
-    public final static String APP_UPDATE_URL0 = "http://bryant1993.vicp.io:8080/KuaWeb/app.apk";
-    public final static String APP_UPDATE_URL = "http://202.38.71.174:8080/KuaWeb/app.apk";
+    public final static String APP_UPDATE_URL = "http://home.ustc.edu.cn/~zt9307/app.apk";
+    public final static String APP_UPDATE_LOG = "http://home.ustc.edu.cn/~zt9307/log.txt";
     public final static String GET_WEATHER_BY_CITYID =
             "http://openweathermap.org/city/";  //后  +  cityid
 
@@ -28,5 +27,10 @@ public class Constant {
     public final static int PROGRESS_FAILED = -1;
     //版本控制
     public static final int DATABASE_VERSION = 2;
-    public static final String APP_VERSION = "v1.3.3";
+    public static final String APP_VERSION = "v1.3.5";
+    public static final String UPDATE_LOG = "<center><font color = '#FF7F24'>Weather已为最新版本!</font></center><br>" +
+            "<center><font color = 'green'>当前版本:"+ APP_VERSION + "</font></center><br>"
+            + "<font color = '#DAA520'>更新日期:2017年3月15日<br>"+"</font><br>"
+            + "<font color = 'blue'>更新内容:<br>" + "1.修复已知问题<br>2.App更新测试<font><br>"
+            +"<font color = 'blue'>近期更新:<br>" + "1.App更新方式更新,可以在内部完成更新啦<br>2.修复同学反馈的部分问题<font>";
 }

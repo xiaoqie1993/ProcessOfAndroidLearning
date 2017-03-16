@@ -6,10 +6,10 @@ package com.ustcxiaoqie.learn.processoflearning.http;
  */
 
 
-public interface HttpConnectionInterface {
+public interface HttpResultInterface {
     /**
      *  HttpConnection请求返回值
      * @param code    请求返回码
      */
-    void getInputStream(int code);
+    void getResult(String rs);
 }

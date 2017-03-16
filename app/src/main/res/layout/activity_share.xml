@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:gravity="center"
-              android:background="@drawable/background"
+              android:background="@android:color/white"
               android:layout_width="match_parent"
-              android:layout_height="300dp">
+              android:layout_height="100dp">
     <RelativeLayout
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
@@ -13,35 +13,39 @@
         android:layout_height="match_parent">
     <ImageButton
         android:id="@+id/share_qq_Btn"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="fitXY"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/icon_qqshare"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         />
     <ImageButton
         android:id="@+id/share_qzone_Btn"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="fitXY"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/icon_qzoneshare"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         />
         <TextView
-            android:layout_width="80dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="@dimen/textsize_small"
             android:maxLines="1"
             android:layout_below="@id/share_qq_Btn"
             android:layout_alignStart="@id/share_qq_Btn"
+            android:layout_alignLeft="@id/share_qq_Btn"
             android:text="分享到QQ"/>
         <TextView
-            android:layout_width="80dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="@dimen/textsize_small"
             android:maxLines="1"
             android:layout_below="@id/share_qzone_Btn"
             android:layout_alignStart="@id/share_qzone_Btn"
+            android:layout_alignLeft="@id/share_qzone_Btn"
             android:text="分享到空间"/>
     </RelativeLayout>
 </LinearLayout>

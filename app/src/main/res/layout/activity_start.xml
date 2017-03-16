@@ -1,43 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-   <include layout="@layout/title"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"/>
+
+    <include
+        layout="@layout/title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"/>
 
     <LinearLayout
         android:id="@+id/weather_daily"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="100dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="100dp"
         android:orientation="horizontal"
         >
+
         <LinearLayout
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/current_temp_tv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:gravity="center"
                 android:layout_weight="1"
-                android:textSize="40sp"
+                android:gravity="center"
                 android:textColor="@android:color/black"
+                android:textSize="40sp"
                 />
             <TextView
-                android:id="@+id/current_range_tv"
+                android:id="@+id/range_temp_tv"
                 android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="18sp"
-                android:textColor="@android:color/holo_green_dark"
-                android:layout_height="20dp"/>
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/textsize_big"
+                />
         </LinearLayout>
+
         <ImageView
             android:id="@+id/icon_weather"
             android:layout_width="120dp"
@@ -46,27 +52,67 @@
             />
 
     </LinearLayout>
+
     <TextView
-        android:layout_marginTop="240dp"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:textSize="@dimen/textsize_small"
+        android:layout_height="25dp"
+        android:layout_marginTop="240dp"
         android:gravity="left|center_vertical"
         android:text="最近三天"
+        android:textSize="@dimen/textsize_big"
         />
-    <ListView
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
         android:layout_marginTop="270dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="日期"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textsize_big"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="天气"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textsize_big"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="温度"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textsize_big"
+            />
+    </LinearLayout>
+
+    <ListView
         android:id="@+id/moreweather_lv"
         android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="295dp"
         android:divider="#00000000"
         android:dividerHeight="10dp"
-        android:layout_height="300dp"
         />
 
     <FrameLayout
         android:id="@+id/weatherofcity_banner"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

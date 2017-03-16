@@ -2,9 +2,7 @@ package com.ustcxiaoqie.learn.processoflearning.activitys;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -18,7 +16,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.qq.e.ads.banner.ADSize;
 import com.qq.e.ads.banner.AbstractBannerADListener;
@@ -26,7 +23,7 @@ import com.qq.e.ads.banner.BannerView;
 import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.tools.ADsConstants;
 import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
-import com.ustcxiaoqie.learn.processoflearning.views.CustomDialog;
+
 
 /**
  * Created by Xiaoqie on 2017/1/8.
@@ -103,16 +100,19 @@ public class AboutActivity extends Activity implements View.OnClickListener {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode){
             case KeyEvent.KEYCODE_BACK:
-                if(System.currentTimeMillis() - time >2000){
-                    if(mWebView.canGoBack()){
-                        mWebView.goBack();
-                    }else{
-                        Toast.makeText(AboutActivity.this,"再按一次返回键返回！",Toast.LENGTH_SHORT).show();
-                    }
-                    time = System.currentTimeMillis();
-                }else {
-                    AboutActivity.this.finish();
-                }
+     /*           if (System.currentTimeMillis() - time > 2000) {
+                        if (mWebView.canGoBack()) {
+                            mWebView.goBack();
+                        } else {
+                            Toast.makeText(AboutActivity.this, "再按一次返回键返回！", Toast.LENGTH_SHORT).show();
+                        }
+                        time = System.currentTimeMillis();
+                    } else {
+                        AboutActivity.this.finish();
+                    }*/
+
+                    this.finish();
+
                 break;
         }
         return  true;
@@ -134,7 +134,7 @@ public class AboutActivity extends Activity implements View.OnClickListener {
     }
 
     private void showUpdateDialog(Context context) {
-        StringBuilder sb = new StringBuilder();
+  /*      StringBuilder sb = new StringBuilder();
         sb.append("由于当前缺乏稳定的服务器来存放apk安装包和后台下载程序,");
         sb.append("目前更新依赖于【应用宝】更新接口,");
         sb.append("请下载应用宝点击软件更新来下载(推荐)\n");
@@ -162,6 +162,7 @@ public class AboutActivity extends Activity implements View.OnClickListener {
                     }
                 })
                 .create();
-        dialog.show();
+        dialog.show();*/
+        startActivity(new Intent(AboutActivity.this,UpdateActivity.class));
     }
 }

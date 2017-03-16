@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+              android:layout_margin="@dimen/padding"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-
+    <TextView
+        android:id="@+id/updateTitle"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textColor="@android:color/holo_blue_bright"
+        android:textSize="@dimen/textsize_large"
+        android:text="@string/update"
+        />
+    <TextView
+        android:id="@+id/updateMessage"
+        android:lineSpacingExtra="5dp"
+        android:layout_weight="1"
+        android:textSize="@dimen/textsize_big"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+    <Button
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/update_btn"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="@dimen/textsize_big"
+        android:background="@drawable/btnbg"
+        />
 </LinearLayout>

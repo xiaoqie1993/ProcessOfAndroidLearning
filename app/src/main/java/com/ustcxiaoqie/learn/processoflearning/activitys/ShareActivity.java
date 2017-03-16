@@ -2,9 +2,12 @@ package com.ustcxiaoqie.learn.processoflearning.activitys;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -40,10 +43,14 @@ public class ShareActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WindowManager.LayoutParams params  = getWindow().getAttributes();
-        params.width  = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.MATCH_PARENT/2;
+        Display d = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        d.getSize(size);
+        params.width  = size.x;
+        params.height = (int) ((size.y)*0.3);
         params.gravity = Gravity.BOTTOM;
         getWindow().setAttributes(params);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_share);
         ImageButton share2qq = (ImageButton) findViewById(R.id.share_qq_Btn);
         share2qq.setOnClickListener(this);

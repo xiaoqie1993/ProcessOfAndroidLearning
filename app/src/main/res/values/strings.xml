@@ -26,6 +26,7 @@
     <string name="version_2">1.01</string>
     <string name="about">关于</string>
     <string name="Hello">Hello！</string>
+    <string name="update">应用更新</string>
 
     <string-array name="cities" >
         <item>@string/hefei</item>
