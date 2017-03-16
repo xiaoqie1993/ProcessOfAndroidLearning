@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.ustcxiaoqie.learn.processoflearning">
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -18,7 +19,6 @@
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/weather"
@@ -27,7 +27,8 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="kGe5bkzNpl2r5XOA5vvLPjXIu1de2KsK" />       //key:开发者申请的Key
+            android:value="kGe5bkzNpl2r5XOA5vvLPjXIu1de2KsK"/>
+        //key:开发者申请的Key
         <activity android:name=".activitys.CityManagerActivity">
         </activity>
         <activity
@@ -43,8 +44,7 @@
         <activity
             android:name=".activitys.ShareActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Dialog"
-          />
+            android:theme="@android:style/Theme.Dialog"/>
         <activity
             android:name=".activitys.AboutActivity"
             android:launchMode="singleTop"/>
@@ -67,25 +67,23 @@
         <activity
             android:name=".activitys.CallBackActivity"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".activitys.UpdateActivity">
-
         </activity>
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-
-
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
+
                 <data android:scheme="tencent101372267"/>
             </intent-filter>
         </activity>
@@ -99,15 +97,21 @@
             android:name="com.qq.e.ads.ADActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"/>
 
-
         <service
             android:name=".activitys.NoticeDailyService"
             android:enabled="true"
             android:exported="true">
         </service>
-        <!-- 百度地图Service-->
-        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"/>
-
+        <!-- 百度地图Service -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"/>
+        <service
+            android:name=".services.UpdateService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
     </application>
 
 </manifest>

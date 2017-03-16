@@ -8,7 +8,6 @@ package com.ustcxiaoqie.learn.processoflearning.database;
 
 public class Table_Structure {
     //数据表 TABLE_FAVORATE_CITIES 字段名
-
     public static class TABLE_FAVORATE_CITIES{
         public static int _id;   //自动递增
         public static String city_name = "city_name"; //城市名称
@@ -33,9 +32,13 @@ public class Table_Structure {
 
 
     //**********************************************************************************
-    private  class TABLE_CITIES_Version_1 {
 
-        private String city_name;
-        private int city_id;
+    /**
+     * 此表用来保存更新提示
+     */
+    public static class TABLE_UPDATE_NOTICE {
+        public static int versionCode; //新的版本号
+        public static String versionName; //新的版本名称
+        public static int notice; //这个新的版本时候继续提示更新  0 不提示  1提示
     }
 }

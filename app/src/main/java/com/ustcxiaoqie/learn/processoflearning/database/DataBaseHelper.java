@@ -19,8 +19,18 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     private static final String TAG = "DataBaseHelper";
     public final static String DB_NAME = "weather.db";
     public final static String TABLE_NAME_FAVORATE_CITIES = "CITY_FAVORITE";
-    public final static String TABLE_CITIES = "CITIES";
+    public final static String TABLE_NAME_APPUPDATE_NOTICE = "APP_UPDATE_NOTICE";
     private final static int version = 1;
+    private final static String CREAT_TABLE_NAME_FAVORATE_CITIES ="create table "+TABLE_NAME_FAVORATE_CITIES+
+            " (_id integer primary key autoincrement, " +
+            Table_Structure.TABLE_FAVORATE_CITIES.city_name
+            +","+ Table_Structure.TABLE_FAVORATE_CITIES.city_id+","
+            + Table_Structure.TABLE_FAVORATE_CITIES.time_favorite+")";
+    private final static String CREAT_TABLE_NAME_APPUPDATE_NOTICE = "create table "+TABLE_NAME_APPUPDATE_NOTICE+
+            " (_id integer primary key autoincrement, " +
+            Table_Structure.TABLE_UPDATE_NOTICE.versionCode
+            +","+ Table_Structure.TABLE_UPDATE_NOTICE.versionName+","
+            + Table_Structure.TABLE_UPDATE_NOTICE.notice+")";
 
     private String db_name;
 
@@ -83,11 +93,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         */
         //Version 3
 
-        sqLiteDatabase.execSQL("create table "+TABLE_NAME_FAVORATE_CITIES+
-                " (_id integer primary key autoincrement, " +
-                Table_Structure.TABLE_FAVORATE_CITIES.city_name
-                +","+ Table_Structure.TABLE_FAVORATE_CITIES.city_id+","
-                + Table_Structure.TABLE_FAVORATE_CITIES.time_favorite+")");
+        sqLiteDatabase.execSQL(CREAT_TABLE_NAME_FAVORATE_CITIES);
         ContentValues values = new ContentValues();
         values.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name,"Hefei");
         values.put(Table_Structure.TABLE_FAVORATE_CITIES.city_id,1808722);
@@ -100,11 +106,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         values0.put(Table_Structure.TABLE_FAVORATE_CITIES.time_favorite,new Date().toString());
         insertIntoFavoriteCity(sqLiteDatabase,null,values0,true);
 
-        ContentValues values1 = new ContentValues();
-        values1.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name,"Wuhan");
-        values1.put(Table_Structure.TABLE_FAVORATE_CITIES.city_id,1791247);
-        values1.put(Table_Structure.TABLE_FAVORATE_CITIES.time_favorite,new Date().toString());
-        insertIntoFavoriteCity(sqLiteDatabase,null,values1,true);
+        /**
+         * 创建保存版本记录的表
+         */
+         sqLiteDatabase.execSQL(CREAT_TABLE_NAME_APPUPDATE_NOTICE);
+
 
     }
     @Override
@@ -128,9 +134,15 @@ public class DataBaseHelper extends SQLiteOpenHelper{
                     sqLiteDatabase.execSQL(sql);
                     break;
                 case 2:
-                    //负责版本2升到3
-                    String sql2 = "";
-                    sqLiteDatabase.execSQL(sql2);
+                    /**
+                     * 增加提示更新的表，用于决定是否不再提示本版本的更新
+                     */
+                    sqLiteDatabase.execSQL(CREAT_TABLE_NAME_APPUPDATE_NOTICE);
+                    break;
+                case 3:
+                    /**
+                     *
+                     */
                     break;
             }
        }
