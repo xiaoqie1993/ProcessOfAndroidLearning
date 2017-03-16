@@ -179,4 +179,12 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         if(confime){
         }
     }
+
+    public void insertIntoAPPUPDATENOPTICE(SQLiteDatabase db,ContentValues values){
+        //  isOverWrite 是否覆盖之前的城市数据
+        db.insert(TABLE_NAME_APPUPDATE_NOTICE,null,values);
+    }
+    public Cursor queryFromAPPUPDATENOPTICE(SQLiteDatabase db,String[] columns,String selection,String[] selectionArgs,String groupBy,String having,String orderBy){
+        return db.query(TABLE_NAME_APPUPDATE_NOTICE,columns,selection,selectionArgs,groupBy,having,orderBy);
+    }
 }

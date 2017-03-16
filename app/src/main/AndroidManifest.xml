@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/> <!-- 如果需要精确定位的话请加上此权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <uses-permission-sdk-23 android:name="android.permission.INTERNET"/>
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -100,8 +101,8 @@
         <service
             android:name=".activitys.NoticeDailyService"
             android:enabled="true"
-            android:exported="true">
-        </service>
+            android:exported="true"/>
+
         <!-- 百度地图Service -->
         <service
             android:name="com.baidu.location.f"

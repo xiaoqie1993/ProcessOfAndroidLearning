@@ -26,7 +26,7 @@ public class Constant {
     public final static int PROGRESS_FINISH = 100;
     public final static int PROGRESS_FAILED = -1;
     //版本控制
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String APP_VERSION = "v1.3.5";
     public static final String UPDATE_LOG = "<center><font color = '#FF7F24'>Weather已为最新版本!</font></center><br>" +
             "<center><font color = 'green'>当前版本:"+ APP_VERSION + "</font></center><br>"

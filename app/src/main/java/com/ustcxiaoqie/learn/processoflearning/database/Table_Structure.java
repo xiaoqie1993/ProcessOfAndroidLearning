@@ -37,8 +37,11 @@ public class Table_Structure {
      * 此表用来保存更新提示
      */
     public static class TABLE_UPDATE_NOTICE {
-        public static int versionCode; //新的版本号
-        public static String versionName; //新的版本名称
-        public static int notice; //这个新的版本时候继续提示更新  0 不提示  1提示
+        public static String versionCode  = "VERSION_CODE"; //新的版本号
+        public static String versionName = "VERSION_NAME"; //新的版本名称
+        public static String notice = "NOTICE"; //这个新的版本时候继续提示更新  0 不提示  1提示
+        //notice变量的取值
+        public static int SHOW = 0;
+        public static int NOT_SHOW = 0;
     }
 }

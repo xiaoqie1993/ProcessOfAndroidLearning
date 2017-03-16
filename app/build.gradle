@@ -15,7 +15,7 @@ android {
         applicationId "com.ustcxiaoqie.learn.processoflearning"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 18
+        versionCode 17
         versionName "v1.3.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
@@ -31,6 +31,7 @@ android {
     }
     sourceSets {
         main {
+            jniLibs.srcDirs = ['libs']
             res.srcDirs = ['src/main/res', 'src/main/res/mycolors']
         }
     }
@@ -60,4 +61,5 @@ dependencies {
     compile files('libs/open_sdk_r5778.jar')
     compile files('libs/GDTUnionSDK.4.9.542.min.jar')
     compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/pinyin4j-2.5.0.jar')
 }

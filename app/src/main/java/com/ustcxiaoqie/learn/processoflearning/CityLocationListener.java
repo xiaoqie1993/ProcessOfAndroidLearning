@@ -1,10 +1,15 @@
 package com.ustcxiaoqie.learn.processoflearning;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.Poi;
+import com.ustcxiaoqie.learn.processoflearning.tools.ChineseToPinyin;
+import com.ustcxiaoqie.learn.processoflearning.tools.City;
+import com.ustcxiaoqie.learn.processoflearning.tools.CityDatas;
+import com.ustcxiaoqie.learn.processoflearning.tools.LA;
 
 import java.util.List;
 
@@ -16,8 +21,14 @@ import java.util.List;
 
 public class CityLocationListener implements BDLocationListener {
     private static final String TAG = "CityLocationListener";
+    private Context mContext;
+    public CityLocationListener(Context context){
+        this.mContext = context;
+    }
     @Override
     public void onReceiveLocation(BDLocation location) {
+        String city = null;
+        LA.d(TAG,"OK!");
         //获取定位结果
         StringBuffer sb = new StringBuffer(256);
 
@@ -56,6 +67,7 @@ public class CityLocationListener implements BDLocationListener {
             sb.append(location.getCity());
             sb.append("\ndescribe : ");
             sb.append("gps定位成功");
+            city = ChineseToPinyin.getPingYin(location.getCity());
 
         } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
 
@@ -64,17 +76,21 @@ public class CityLocationListener implements BDLocationListener {
             sb.append(location.getAddrStr());    //获取地址信息
 
             sb.append("\noperationers : ");
-            sb.append(location.getOperators());    //获取运营商信息
-            sb.append(location.getCity());
+            sb.append(location.getOperators()+"\n");    //获取运营商信息
+            sb.append(location.getProvince()+"\n");
+            sb.append(location.getCity()+"\n");
+            sb.append(ChineseToPinyin.getPingYin(location.getCity())+"\n");
+            sb.append(location.getCityCode()+"\n");
             sb.append("\ndescribe : ");
             sb.append("网络定位成功");
-
+            city = ChineseToPinyin.getPingYin(location.getCity());
         } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {
 
             // 离线定位结果
             sb.append("\ndescribe : ");
             sb.append("离线定位成功，离线定位结果也是有效的");
-            sb.append(location.getCity());
+            sb.append(location.getCityCode());
+            city = ChineseToPinyin.getPingYin(location.getCity());
         } else if (location.getLocType() == BDLocation.TypeServerError) {
 
             sb.append("\ndescribe : ");
@@ -102,6 +118,16 @@ public class CityLocationListener implements BDLocationListener {
         }
 
         Log.i(TAG, sb.toString());
+
+        if(null != city){
+            //定位成功！
+            List<City> list1  = CityDatas.findPossiableCity(mContext,city);
+            for (City m:list1){
+                LA.d(TAG,m.toString());
+            }
+        }else{
+            //失败
+        }
     }
     @Override
     public void onConnectHotSpotMessage(String s, int i) {

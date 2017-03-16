@@ -30,6 +30,7 @@ import com.ustcxiaoqie.learn.processoflearning.database.DataBaseHelper;
 import com.ustcxiaoqie.learn.processoflearning.database.Table_Structure;
 import com.ustcxiaoqie.learn.processoflearning.http.PostInterface;
 import com.ustcxiaoqie.learn.processoflearning.http.WeatherHttpPost;
+import com.ustcxiaoqie.learn.processoflearning.services.UpdateService;
 import com.ustcxiaoqie.learn.processoflearning.tools.City;
 import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
 import com.ustcxiaoqie.learn.processoflearning.tools.DataTransferTool;
@@ -87,9 +88,11 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
         //获取当前城市
    //     startGetLocation();
         startService(new Intent(StartActivity.this,NoticeDailyService.class));
+        startService(new Intent(StartActivity.this,UpdateService.class));
     }
 
     private void startGetLocation() {
+        mClient = new LocationClient(getApplicationContext());
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
@@ -109,9 +112,10 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
         //可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
         mClient.setLocOption(option);
 
-        mClient = new LocationClient(getApplicationContext());
-        mListener = new CityLocationListener();
+
+        mListener = new CityLocationListener(this);
         mClient.registerLocationListener(mListener);
+        mClient.start();
     }
 
     @Override
