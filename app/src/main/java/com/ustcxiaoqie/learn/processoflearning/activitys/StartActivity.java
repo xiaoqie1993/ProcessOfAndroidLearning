@@ -1,7 +1,11 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
+import android.content.BroadcastReceiver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -12,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -21,7 +24,6 @@ import android.widget.TextView;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.qq.e.ads.banner.BannerView;
 import com.ustcxiaoqie.learn.processoflearning.CityLocationListener;
 import com.ustcxiaoqie.learn.processoflearning.ProgressListener;
 import com.ustcxiaoqie.learn.processoflearning.R;
@@ -31,9 +33,11 @@ import com.ustcxiaoqie.learn.processoflearning.database.Table_Structure;
 import com.ustcxiaoqie.learn.processoflearning.http.PostInterface;
 import com.ustcxiaoqie.learn.processoflearning.http.WeatherHttpPost;
 import com.ustcxiaoqie.learn.processoflearning.services.UpdateService;
+import com.ustcxiaoqie.learn.processoflearning.tools.AppUpdateUtil;
 import com.ustcxiaoqie.learn.processoflearning.tools.City;
 import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
 import com.ustcxiaoqie.learn.processoflearning.tools.DataTransferTool;
+import com.ustcxiaoqie.learn.processoflearning.tools.LA;
 import com.ustcxiaoqie.learn.processoflearning.tools.Temp;
 import com.ustcxiaoqie.learn.processoflearning.tools.WeatherDetail;
 import com.ustcxiaoqie.learn.processoflearning.tools.WeatherInfo;
@@ -43,6 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 /**
  * Created by Administrator on 2017/1/18 18:50.
  * Copyright (c) 2017-01-18 Bryant1993 All rights reserved.
@@ -50,7 +55,7 @@ import java.util.List;
 
 
 public class StartActivity extends BaseActivity implements View.OnClickListener,AdapterView.OnItemClickListener{
-    private static final String TAG = "WeatherOfCityActivity";
+    private static final String TAG = "StartActivity";
     private LocationClient mClient;
     private BDLocationListener mListener;
     private static final int LEVEL_STARED = 10;
@@ -72,12 +77,12 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
     private List<HashMap<String,Object>> mHashMapList;
     private WeatherAdapter mAdapter;
     private SQLiteDatabase mSQLiteDatabase;
-    private BannerView bv;
-    private FrameLayout fl; //广告位
 
     private boolean isResume = true;
     private List<WeatherInfo> mWeatherInfoList = new ArrayList<>();
     private LocalBroadcastManager mLocalBroadcastManager;
+
+    private UpdateReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,11 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
         //获取当前城市
    //     startGetLocation();
         startService(new Intent(StartActivity.this,NoticeDailyService.class));
+
+        receiver = new UpdateReceiver();
+        IntentFilter filter = new IntentFilter(Constant.UPDATE_BROADCAST_FILTER);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver,filter);
+
         startService(new Intent(StartActivity.this,UpdateService.class));
     }
 
@@ -134,8 +144,6 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void initViews() {
-
-        fl = (FrameLayout) findViewById(R.id.weatherofcity_banner);
         titleTv_left = (TextView) findViewById(R.id.title_tv_left);
         titleTv_center = (TextView) findViewById(R.id.title_tv_center);
         titleTv_right = (TextView) findViewById(R.id.title_tv_right);
@@ -268,7 +276,7 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
         String tv2 = detail.getWeather().getDesciption();
         current_temp.setText(temp_day + "℃");
         icon.setImageDrawable(
-                getResources().getDrawable(DataTransferTool.getIconFromWeatherDetail(weather_describe)));
+                getResources().getDrawable(DataTransferTool.getIconFromWeatherDetail(weather_describe,true)));
         current_range.setText(tv2);
         titleTv_center.setText(weatherInfo.getCity().getName());
     }
@@ -286,16 +294,6 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
         }
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(null != bv){
-            bv.destroy();
-            bv = null;
-        }
-    }
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         WeatherInfo weatherInfo = mWeatherInfoList.get(0);
@@ -307,5 +305,69 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
         i.putExtras(bundle);
         startActivity(i);
         this.overridePendingTransition(R.anim.activity_open, 0);
+    }
+
+
+    private class UpdateReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(Constant.UPDATE_BROADCAST_FILTER.equals(action)){
+                update(intent.getIntExtra("code",0),intent.getStringExtra("codename"));
+            }
+        }
+    }
+    private void update(final int versionCode ,final String versionName){
+        LA.d(TAG,"code="+versionCode+"\n"+versionName);
+        final DataBaseHelper helper = new DataBaseHelper(this,Constant.DATABASE_VERSION);
+        final SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor cursor = helper.queryFromAPPUPDATENOPTICE(db
+                ,new String[]{Table_Structure.TABLE_UPDATE_NOTICE.notice}
+                ,Table_Structure.TABLE_UPDATE_NOTICE.versionName+"=?"
+                ,new String[]{String.valueOf(versionName)}
+                ,null,null,null);
+        boolean show =true;
+        if (cursor.moveToNext()){
+            //查询这个版本的信息
+            show = (cursor.getInt(0) == Table_Structure.TABLE_UPDATE_NOTICE.SHOW);
+        }
+        cursor.close();
+        LA.d(TAG,""+show);
+        if(!show){
+            helper.close();
+            return;
+        }
+        CustomDialog.Builder builder =new CustomDialog.Builder(this);
+        builder.setTitle("检测到新版本")
+                .setMessage("新版本"+versionName+"可用")
+                .setPositiveButton("立即下载", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        new AppUpdateUtil(StartActivity.this).downFile(Constant.APP_UPDATE_URL);
+                    }
+                })
+                .setNegativeButton("不再提醒", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        ContentValues values = new ContentValues();
+                        values.put(Table_Structure.TABLE_UPDATE_NOTICE.versionCode,versionCode);
+                        values.put(Table_Structure.TABLE_UPDATE_NOTICE.versionName,versionName);
+                        values.put(Table_Structure.TABLE_UPDATE_NOTICE.notice,Table_Structure.TABLE_UPDATE_NOTICE.NOT_SHOW);
+                        helper.insertIntoAPPUPDATENOPTICE(db,values);
+                        helper.close();
+                    }
+                });
+        final CustomDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(null != receiver)
+            unregisterReceiver(receiver);
     }
 }

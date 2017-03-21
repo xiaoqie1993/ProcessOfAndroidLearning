@@ -22,7 +22,7 @@ import java.io.InputStream;
  * Created by USER on 2016-03-10.
  */
 public class AppUpdateUtil {
-    private static final String TAG = "AppUpdate";
+    private static final String TAG = "AppUpdateUtil";
     private ProgressDialog Progress;
     private Context context;
 
@@ -53,7 +53,12 @@ public class AppUpdateUtil {
                     InputStream is = entity.getContent();
                     FileOutputStream fileOutputStream = null;
                     if (is != null) {
-                        File file = new File(Environment.getExternalStorageDirectory(), "USTCCAD.apk");
+                        String path = context.getApplicationContext().getFilesDir().getAbsolutePath();
+                   //     File file = new File(Environment.getExternalStorageDirectory(), "Weather.apk");
+                        File file = new File(path, "Weather.apk");
+                        if(!file.exists()){
+                            file.createNewFile();
+                        }
                         fileOutputStream = new FileOutputStream(file);
                         byte[] buf = new byte[1024]; // 缓冲区
                         int ch = -1;
@@ -63,7 +68,6 @@ public class AppUpdateUtil {
                             process += ch;
                             Progress.setProgress(process); // 这里就是关键的实时更新进度了！
                         }
-
                     }
                     fileOutputStream.flush();
                     if (fileOutputStream != null) {
@@ -72,9 +76,11 @@ public class AppUpdateUtil {
                     Progress.cancel();
                     update();
                 } catch (ClientProtocolException e) {
+                    LA.d(TAG,"ClientProtocolException");
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    LA.d(TAG,"ClientProtocolException");
                 }
             }
 

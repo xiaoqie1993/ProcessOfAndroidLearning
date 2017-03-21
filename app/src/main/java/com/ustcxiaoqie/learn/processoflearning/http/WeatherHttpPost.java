@@ -1,6 +1,7 @@
 package com.ustcxiaoqie.learn.processoflearning.http;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.ustcxiaoqie.learn.processoflearning.ProgressListener;
@@ -39,7 +40,7 @@ public class WeatherHttpPost {
     public WeatherHttpPost(List<City> cityList){
         this.mCityList = cityList;
     }
-    public void getWeatherInfo(PostInterface i, ProgressListener progressListener){
+    public void getWeatherInfo(@NonNull PostInterface i,@NonNull ProgressListener progressListener){
         String hostUrl = Constant.DAILY_URL;
         HttpAsyncTask task = new HttpAsyncTask(hostUrl,i,progressListener);
         task.execute("");
@@ -50,7 +51,7 @@ public class WeatherHttpPost {
         private PostInterface i;
         private List<WeatherInfo> mWeatherInfoList;  //返回的天气数据集合
         private ProgressListener mProgressListener;
-        public HttpAsyncTask(String hostUrl,PostInterface i,ProgressListener progressListener) {
+        public HttpAsyncTask(String hostUrl,PostInterface i, ProgressListener progressListener) {
             this.hostUrl = hostUrl;
             this.i = i;
             this.mProgressListener = progressListener;

@@ -27,10 +27,14 @@ public class Constant {
     public final static int PROGRESS_FAILED = -1;
     //版本控制
     public static final int DATABASE_VERSION = 3;
-    public static final String APP_VERSION = "v1.3.5";
+    public static final String APP_VERSION = "1.3.6";
     public static final String UPDATE_LOG = "<center><font color = '#FF7F24'>Weather已为最新版本!</font></center><br>" +
             "<center><font color = 'green'>当前版本:"+ APP_VERSION + "</font></center><br>"
-            + "<font color = '#DAA520'>更新日期:2017年3月15日<br>"+"</font><br>"
-            + "<font color = 'blue'>更新内容:<br>" + "1.修复已知问题<br>2.App更新测试<font><br>"
-            +"<font color = 'blue'>近期更新:<br>" + "1.App更新方式更新,可以在内部完成更新啦<br>2.修复同学反馈的部分问题<font>";
+            + "<font color = '#DAA520'>更新日期:2017年3月21日<br>"+"</font><br>"
+            + "<font color = 'blue'>更新内容:<br>" + "1.修复一些小问题<br>2.App更新测试<font><br>"
+            + "<font color = 'blue'>近期更新:<br>" + "1.修复一些小问题<br>2.App更新测试<font><br>"
+            +"<font color = 'blue'>" + "3.App更新方式更新,可以在内部完成更新啦<br>4.修复同学反馈的部分问题<font>";
+
+    //IntentFilter值
+    public final static String UPDATE_BROADCAST_FILTER = "UPDATE_BROADCAST_FILTER";
 }

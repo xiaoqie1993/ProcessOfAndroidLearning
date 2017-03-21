@@ -16,6 +16,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,13 +27,31 @@ import java.util.List;
 public class DataTransferTool {
     private static final String TAG = "DataTransferTool";
     private static int[] icons = new int[]{R.drawable.na,R.drawable.sun,
-            R.drawable.snow,R.drawable.rain,R.drawable.rain_small,R.drawable.rain_heavy,
-            R.drawable.rain_thunder,R.drawable.cloud,R.drawable.cloudy,R.drawable.fog};
-    public static int getIconFromWeatherDetail(String weatherDetail){
+            R.drawable.snow,R.drawable.rain,R.drawable.rain_small
+            ,R.drawable.rain_heavy
+            , R.drawable.rain_thunder,R.drawable.cloud
+            ,R.drawable.cloudy,R.drawable.fog
+            ,R.drawable.sun_night};
+    private static Calendar mCalendar = Calendar.getInstance();
+
+    /**
+     *
+     * @param weatherDetail  天气详情
+     * @param showNightIcon  是否展示晚上的图标
+     * @return
+     */
+    public static int getIconFromWeatherDetail(String weatherDetail , boolean showNightIcon){
         if(null == weatherDetail) return icons[0];
-        LA.d(TAG,weatherDetail+"wwwww");
         if(weatherDetail.contains("sun")||weatherDetail.contains("clear sky")||
                 weatherDetail.contains("sky is clear")){
+            if(!showNightIcon){
+                return icons[1];
+            }
+            int hour = mCalendar.get(Calendar.HOUR_OF_DAY) ;
+            if(hour > 18 || hour<6){
+                //认为是晚上
+                return icons[10];
+            }
             return icons[1];
         }else if(weatherDetail.contains("rain")){
             if(weatherDetail.contains("thunder")){
@@ -101,7 +120,7 @@ public class DataTransferTool {
 
     /**
      *
-     * @param list  多个城市的天气数据列表
+     * @param list  每个城市的多气数据列表
      * @return  用于WeatherAdapter的MapList
      */
     public static List<HashMap<String,Object>> transferListToListMap(List<WeatherInfo> list){
@@ -114,10 +133,31 @@ public class DataTransferTool {
             HashMap<String, Object> map = new HashMap<String, Object>();
             //显示温度范围
             map.put("temp", detail.getTemp().getMin()+"℃"+"~"+detail.getTemp().getMax()+"℃");
-            map.put("icon", DataTransferTool.getIconFromWeatherDetail(detail.getWeather().getDesciption()));
+            map.put("icon", DataTransferTool.getIconFromWeatherDetail(detail.getWeather().getDesciption(),false));
             map.put("detail", detail.getWeather().getDesciption());
             mapList.add(map);
         }
       return mapList;
+    }
+    /**
+     *
+     * @param list  多个城市的一天天气数据列表
+     * @return  用于WeatherAdapter的MapList
+     */
+    public static List<HashMap<String,Object>> transferListToListMap2(List<WeatherInfo> list){
+        if (null == list || list.size() == 0) return null;
+        List<HashMap<String,Object>> mapList = new ArrayList<>();
+        for (int s = 0; s < list.size(); s++) {
+            WeatherInfo info = list.get(s);
+            List<WeatherDetail> list_detail = info.getList();
+            WeatherDetail detail = list_detail.get(0);
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            //显示温度范围
+            map.put("temp", detail.getTemp().getMin()+"℃"+"~"+detail.getTemp().getMax()+"℃");
+            map.put("icon", DataTransferTool.getIconFromWeatherDetail(detail.getWeather().getDesciption(),false));
+            map.put("detail", detail.getWeather().getDesciption());
+            mapList.add(map);
+        }
+        return mapList;
     }
 }

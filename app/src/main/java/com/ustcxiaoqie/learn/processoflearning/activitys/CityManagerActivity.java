@@ -1,11 +1,13 @@
 package com.ustcxiaoqie.learn.processoflearning.activitys;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Process;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,18 +20,25 @@ import com.qq.e.ads.banner.ADSize;
 import com.qq.e.ads.banner.AbstractBannerADListener;
 import com.qq.e.ads.banner.BannerView;
 import com.ustcxiaoqie.learn.processoflearning.CityGridViewAdapter;
+import com.ustcxiaoqie.learn.processoflearning.ProgressListener;
 import com.ustcxiaoqie.learn.processoflearning.R;
 import com.ustcxiaoqie.learn.processoflearning.database.DataBaseHelper;
 import com.ustcxiaoqie.learn.processoflearning.database.Table_Structure;
+import com.ustcxiaoqie.learn.processoflearning.http.PostInterface;
+import com.ustcxiaoqie.learn.processoflearning.http.WeatherHttpPost;
 import com.ustcxiaoqie.learn.processoflearning.tools.ADsConstants;
 import com.ustcxiaoqie.learn.processoflearning.tools.City;
 import com.ustcxiaoqie.learn.processoflearning.tools.Constant;
+import com.ustcxiaoqie.learn.processoflearning.tools.DataTransferTool;
 import com.ustcxiaoqie.learn.processoflearning.tools.LA;
+import com.ustcxiaoqie.learn.processoflearning.tools.WeatherInfo;
+import com.ustcxiaoqie.learn.processoflearning.views.CustomDialog;
 import com.ustcxiaoqie.learn.processoflearning.views.DeleteFromGridViewListener;
 import com.ustcxiaoqie.learn.processoflearning.views.TitleView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -136,7 +145,8 @@ public class CityManagerActivity extends BaseActivity implements
     public void delete(int position) {
         //从数据库删除
         SQLiteDatabase db = helper.getWritableDatabase();
-        helper.deleteFromFavoriteCity(db, Table_Structure.TABLE_FAVORATE_CITIES.city_name+"=?",new String[]{(String) data.get(position).get("cityname")});
+        helper.deleteFromFavoriteCity(db, Table_Structure.TABLE_FAVORATE_CITIES.city_name+"=?",
+                new String[]{(String) data.get(position).get("cityname")});
         helper.close();
         //从列表删除
         data.remove(position);
@@ -203,6 +213,7 @@ public class CityManagerActivity extends BaseActivity implements
             switch (msg.what){
                 case 0:
                     changerightTextViewState();
+                    updateCityIcon();
                     adapter.notifyDataSetChanged();
                     break;
             }
@@ -255,5 +266,63 @@ public class CityManagerActivity extends BaseActivity implements
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    //用当日天气图标来更新已收藏城市的图标
+    private void updateCityIcon(){
+        List<City> cityList = new ArrayList<>();
+        for(Iterator<HashMap<String,Object>> iterator = data.iterator(); iterator.hasNext();){
+            City city = new City();
+            HashMap<String,Object> map = iterator.next();
+            city.setName((String) map.get("cityname"));
+            city.setId((int) map.get("cityid"));
+            cityList.add(city);
+        }
+        WeatherHttpPost post = new WeatherHttpPost(cityList);
+        post.getWeatherInfo(new PostInterface() {
+            @Override
+            public void getResponse(List<WeatherInfo> list) {
+                if (null == list || list.size() == 0) {
+                    CustomDialog.Builder builder = new CustomDialog.Builder(CityManagerActivity.this);
+                    CustomDialog dialog = builder.setTitle("无网络连接")
+                            .setMessage("请连接到互联网")
+                            .setNegativeButton(null, null)
+                            .setPositiveButton("退出", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Process.killProcess(Process.myPid());
+                                }
+                            })
+                            .create();
+                    dialog.setCancelable(false);
+                    dialog.show();
+                    return;
+                }
+                //天气信息转换为图标
+                List<HashMap<String, Object>> list1 = DataTransferTool.transferListToListMap2(list);
+                LA.e(TAG,"list.size=  "+list.size()+"");
+                if (null == list1 || list1.size() == 0 || data.size() != list1.size()) {
+                    LA.e(TAG,"error:");
+                    try{
+                        LA.e(TAG,"date.size=  "+data.size()+"");
+                        LA.e(TAG,"list1= null? "+ (null == list1));
+                        LA.e(TAG,"list1.size=  "+list1.size()+"");
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+                for (int i = 0; i < list1.size(); i++) {
+                    HashMap<String, Object> map = data.get(i);
+                    map.put("icon", (Integer) list1.get(i).get("icon"));
+                }
+                adapter.notifyDataSetChanged();
+            }
+        }, new ProgressListener() {
+            @Override
+            public void setLoadProgress(int progress) {
+
+            }
+        });
     }
 }

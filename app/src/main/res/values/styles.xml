@@ -17,7 +17,6 @@
 
     <style name="ButtonStyle">
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/textbg</item>
         <item name="android:textSize">@dimen/textsize_small</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>

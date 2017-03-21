@@ -15,7 +15,7 @@
     <ImageView
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:id="@+id/list_item_icon"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:src="@drawable/na"

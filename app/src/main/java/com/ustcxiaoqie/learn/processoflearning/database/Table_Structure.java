@@ -41,7 +41,7 @@ public class Table_Structure {
         public static String versionName = "VERSION_NAME"; //新的版本名称
         public static String notice = "NOTICE"; //这个新的版本时候继续提示更新  0 不提示  1提示
         //notice变量的取值
-        public static int SHOW = 0;
+        public static int SHOW = 1;
         public static int NOT_SHOW = 0;
     }
 }
