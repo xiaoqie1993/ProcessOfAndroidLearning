@@ -23,9 +23,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     private final static int version = 1;
     private final static String CREAT_TABLE_NAME_FAVORATE_CITIES ="create table "+TABLE_NAME_FAVORATE_CITIES+
             " (_id integer primary key autoincrement, " +
-            Table_Structure.TABLE_FAVORATE_CITIES.city_name
-            +","+ Table_Structure.TABLE_FAVORATE_CITIES.city_id+","
-            + Table_Structure.TABLE_FAVORATE_CITIES.time_favorite+")";
+            Table_Structure.TABLE_FAVORATE_CITIES.city_name +","
+            + Table_Structure.TABLE_FAVORATE_CITIES.city_id+","
+            + Table_Structure.TABLE_FAVORATE_CITIES.time_favorite+","
+            +Table_Structure.TABLE_FAVORATE_CITIES.defaultCity
+            + ")";
     private final static String CREAT_TABLE_NAME_APPUPDATE_NOTICE = "create table "+TABLE_NAME_APPUPDATE_NOTICE+
             " (_id integer primary key autoincrement, " +
             Table_Structure.TABLE_UPDATE_NOTICE.versionCode
@@ -93,23 +95,44 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         */
         //Version 3
 
+//        sqLiteDatabase.execSQL(CREAT_TABLE_NAME_FAVORATE_CITIES);
+//        ContentValues values = new ContentValues();
+//        values.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name,"Hefei");
+//        values.put(Table_Structure.TABLE_FAVORATE_CITIES.city_id,1808722);
+//        values.put(Table_Structure.TABLE_FAVORATE_CITIES.time_favorite,new Date().toString());
+//        insertIntoFavoriteCity(sqLiteDatabase,null,values,true);
+//
+//        ContentValues values0 = new ContentValues();
+//        values0.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name,"Wuhan");
+//        values0.put(Table_Structure.TABLE_FAVORATE_CITIES.city_id,1791247);
+//        values0.put(Table_Structure.TABLE_FAVORATE_CITIES.time_favorite,new Date().toString());
+//        insertIntoFavoriteCity(sqLiteDatabase,null,values0,true);
+//
+//        /**
+//         * 创建保存版本记录的表
+//         */
+//         sqLiteDatabase.execSQL(CREAT_TABLE_NAME_APPUPDATE_NOTICE);
+        //Version 4
+
         sqLiteDatabase.execSQL(CREAT_TABLE_NAME_FAVORATE_CITIES);
         ContentValues values = new ContentValues();
         values.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name,"Hefei");
         values.put(Table_Structure.TABLE_FAVORATE_CITIES.city_id,1808722);
         values.put(Table_Structure.TABLE_FAVORATE_CITIES.time_favorite,new Date().toString());
+        values.put(Table_Structure.TABLE_FAVORATE_CITIES.defaultCity,1);
         insertIntoFavoriteCity(sqLiteDatabase,null,values,true);
 
         ContentValues values0 = new ContentValues();
         values0.put(Table_Structure.TABLE_FAVORATE_CITIES.city_name,"Wuhan");
         values0.put(Table_Structure.TABLE_FAVORATE_CITIES.city_id,1791247);
         values0.put(Table_Structure.TABLE_FAVORATE_CITIES.time_favorite,new Date().toString());
+        values.put(Table_Structure.TABLE_FAVORATE_CITIES.defaultCity,0);
         insertIntoFavoriteCity(sqLiteDatabase,null,values0,true);
 
         /**
          * 创建保存版本记录的表
          */
-         sqLiteDatabase.execSQL(CREAT_TABLE_NAME_APPUPDATE_NOTICE);
+        sqLiteDatabase.execSQL(CREAT_TABLE_NAME_APPUPDATE_NOTICE);
 
 
     }
@@ -140,6 +163,16 @@ public class DataBaseHelper extends SQLiteOpenHelper{
                     sqLiteDatabase.execSQL(CREAT_TABLE_NAME_APPUPDATE_NOTICE);
                     break;
                 case 3:
+                    //增加默认城市column
+                    String sql1 = "alter table "+TABLE_NAME_FAVORATE_CITIES +" add column"+
+                            Table_Structure.TABLE_FAVORATE_CITIES.defaultCity+
+                            " default '0'";
+                    sqLiteDatabase.execSQL(sql1);
+
+                    //设置合肥为默认城市
+                    ContentValues v = new ContentValues();
+                    v.put(Table_Structure.TABLE_FAVORATE_CITIES.defaultCity,1);
+                    updateToFavoriteCity(sqLiteDatabase,v, Table_Structure.TABLE_FAVORATE_CITIES.city_name+"=?",new String[]{"Hefei"});
                     /**
                      *
                      */
@@ -188,4 +221,5 @@ public class DataBaseHelper extends SQLiteOpenHelper{
             , String[] selectionArgs,String groupBy,String having,String orderBy){
         return db.query(TABLE_NAME_APPUPDATE_NOTICE,columns,selection,selectionArgs,groupBy,having,orderBy);
     }
+
 }

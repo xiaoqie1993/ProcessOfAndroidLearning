@@ -13,6 +13,7 @@ public class Table_Structure {
         public static String city_name = "city_name"; //城市名称
         public static String city_id = "city_id";      //城市id
         public static String time_favorite = "time_favorite";  //收藏时间
+        public static String defaultCity = "default_city";
     }
 
 
