@@ -10,7 +10,7 @@ import android.util.Log;
 
 
 public class LA {
-    private static boolean isDebug = true;
+    private static boolean isDebug = Constant.ISDEBUG;
     //防止该类被实例化
     private LA(){
     }

@@ -25,6 +25,7 @@ public class AppUpdateUtil {
     private static final String TAG = "AppUpdateUtil";
     private ProgressDialog Progress;
     private Context context;
+    private File mFile;
 
     public AppUpdateUtil() {
     }
@@ -53,13 +54,16 @@ public class AppUpdateUtil {
                     InputStream is = entity.getContent();
                     FileOutputStream fileOutputStream = null;
                     if (is != null) {
-                        String path = context.getApplicationContext().getFilesDir().getAbsolutePath();
-                   //     File file = new File(Environment.getExternalStorageDirectory(), "Weather.apk");
-                        File file = new File(path, "Weather.apk");
-                        if(!file.exists()){
-                            file.createNewFile();
+                //        String path = context.getApplicationContext().getFilesDir().getAbsolutePath();
+                        String path = Environment.getExternalStorageDirectory().getPath();
+                        mFile = new File(path, "weather.apk");
+                        if(!mFile.exists()){
+                            mFile.createNewFile();
+                        }else {
+                            mFile.delete();
+                            mFile.createNewFile();
                         }
-                        fileOutputStream = new FileOutputStream(file);
+                        fileOutputStream = new FileOutputStream(mFile);
                         byte[] buf = new byte[1024]; // 缓冲区
                         int ch = -1;
                         int process = 0;
@@ -72,6 +76,7 @@ public class AppUpdateUtil {
                     fileOutputStream.flush();
                     if (fileOutputStream != null) {
                         fileOutputStream.close();
+                        is.close();
                     }
                     Progress.cancel();
                     update();
@@ -89,13 +94,13 @@ public class AppUpdateUtil {
 
     // 安装文件，一般固定写法
     private void update() {
-        String filepath = Environment.getExternalStorageDirectory() + "/USTCCAD.apk";
+        String path = context.getApplicationContext().getFilesDir().getAbsolutePath();
         String type = "application/vnd.android.package-archive";
-        File file = new File(filepath);
+       // File file = new File(path,"Weather.apk");
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setDataAndType(Uri.fromFile(file), type);
+        intent.setDataAndType(Uri.fromFile(mFile), type);
         context.startActivity(intent);
     }
 }

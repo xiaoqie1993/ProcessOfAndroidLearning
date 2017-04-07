@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.tencent.stat.StatService;
 import com.ustcxiaoqie.learn.processoflearning.CityLocationListener;
 import com.ustcxiaoqie.learn.processoflearning.ProgressListener;
 import com.ustcxiaoqie.learn.processoflearning.R;
@@ -46,6 +47,8 @@ import com.ustcxiaoqie.learn.processoflearning.views.CustomDialog;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+
 
 
 /**
@@ -89,6 +92,7 @@ public class StartActivity extends BaseActivity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         this.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_start);
+        StatService.trackCustomEvent(this, "onCreate", "");
         initViews();
         //获取当前城市
    //     startGetLocation();

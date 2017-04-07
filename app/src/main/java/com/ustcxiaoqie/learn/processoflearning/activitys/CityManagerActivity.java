@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qq.e.ads.banner.ADSize;
@@ -48,12 +47,10 @@ import java.util.List;
 
 
 public class CityManagerActivity extends BaseActivity implements
-        DeleteFromGridViewListener,View.OnClickListener,AdapterView.OnItemClickListener {
+        DeleteFromGridViewListener,View.OnClickListener,AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener{
     private static final String TAG = "CityManagerActivity";
     private GridView mGridView; //城市列表
     private TitleView mTitleView;
-    private TextView leftText;
-    private TextView rightText;
     private DataBaseHelper helper;
     private List<HashMap<String, Object>> data = new ArrayList<>();
     private CityGridViewAdapter adapter;
@@ -104,6 +101,7 @@ public class CityManagerActivity extends BaseActivity implements
                         LA.d(TAG, "data:" + " " + m.get("cityname"));
                         LA.d(TAG, "cityname:" + " " + cityname);
                         if (null != m && m.get("cityname").equals(cityname)) {
+                            m.put("delete",1); //删除城市打开时候添加城市成功返回时，去掉其他城市上面的删除符号
                           continue out;
                            /* next = true;
                             break;*/
@@ -131,13 +129,10 @@ public class CityManagerActivity extends BaseActivity implements
     private void initViews() {
         mGridView = (GridView) findViewById(R.id.cities_gridview);
         mTitleView = (TitleView) findViewById(R.id.title_citymanager);
-        leftText = mTitleView.getLeftTextView();
-        rightText = mTitleView.getRightTextView();
-        leftText.setOnClickListener(this);
-        rightText.setOnClickListener(this);
         adapter = new CityGridViewAdapter(this, data,this);
         mGridView.setAdapter(adapter);
         mGridView.setOnItemClickListener(this);
+        mGridView.setOnItemLongClickListener(this);
         fl = (FrameLayout) findViewById(R.id.banner_ad);
     }
 
@@ -151,51 +146,26 @@ public class CityManagerActivity extends BaseActivity implements
         //从列表删除
         data.remove(position);
         adapter.notifyDataSetChanged();
-        if(data.size() == 0){
-            rightText.setText("添加");
-            rightText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(CityManagerActivity.this,SearchActivity.class));
-                }
-            });
-        }else{
-            rightText.setText("编辑");
-            rightText.setOnClickListener(CityManagerActivity.this);
-        }
         Toast.makeText(CityManagerActivity.this,"删除成功！",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.title_tv_right:
-                if(data.size() == 0) {
-                    changerightTextViewState();
-                    Toast.makeText(CityManagerActivity.this,"无收藏城市！",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                    for (HashMap<String, Object> map : data) {
-                        if (time_righttext_pressed % 2 == 0) {
-                            map.put("delete", 0);
-                        } else {
-                            map.put("delete", 1);
-                        }
-                    }
-                time_righttext_pressed++;
-                adapter.notifyDataSetChanged();
-                break;
             case R.id.title_tv_left:
                 this.finish();
                 break;
-
         }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         LA.d(TAG,"position="+position);
+        if(position == 0){
+            //添加城市图标
+            startActivity(new Intent(CityManagerActivity.this,SearchActivity.class));
+            return;
+        }
         HashMap<String,Object> map =  data.get(position);
         City city = new City();
         city.setName((String) map.get("cityname"));
@@ -207,12 +177,28 @@ public class CityManagerActivity extends BaseActivity implements
         startActivity(i);
     }
 
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        LA.d(TAG,"pressed"+position);
+        if(position == 0) return false;
+        boolean isFirst = true;
+        for (HashMap<String, Object> map : data) {
+            if(isFirst){
+                isFirst = false;
+                continue;
+            }
+            map.put("delete", 0);
+        }
+        adapter.notifyDataSetChanged();
+        return true;
+    }
+
+
     private class dataHandler extends Handler{
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0:
-                    changerightTextViewState();
                     updateCityIcon();
                     adapter.notifyDataSetChanged();
                     break;
@@ -220,20 +206,6 @@ public class CityManagerActivity extends BaseActivity implements
         }
     }
 
-    private void changerightTextViewState(){
-        if(data.size() == 0){
-            rightText.setText("添加");
-            rightText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(CityManagerActivity.this,SearchActivity.class));
-                }
-            });
-        }else{
-            rightText.setText("编辑");
-            rightText.setOnClickListener(CityManagerActivity.this);
-        }
-    }
 
     private void loadBanner() {
         if(null == bv){
@@ -271,13 +243,26 @@ public class CityManagerActivity extends BaseActivity implements
     //用当日天气图标来更新已收藏城市的图标
     private void updateCityIcon(){
         List<City> cityList = new ArrayList<>();
+       /* if(data.size() == 1) {
+            //只有一个添加城市图标
+
+        }*/
+       boolean setAddIcon = true;
         for(Iterator<HashMap<String,Object>> iterator = data.iterator(); iterator.hasNext();){
+            //跳过第一个添加城市图标
+            if(setAddIcon){
+                iterator.next();
+                setAddIcon = false;
+                continue;
+            }
             City city = new City();
             HashMap<String,Object> map = iterator.next();
             city.setName((String) map.get("cityname"));
             city.setId((int) map.get("cityid"));
             cityList.add(city);
         }
+        LA.d(TAG,"soze= "+cityList.size());
+        if(cityList.size() == 0) return;
         WeatherHttpPost post = new WeatherHttpPost(cityList);
         post.getWeatherInfo(new PostInterface() {
             @Override
@@ -301,7 +286,7 @@ public class CityManagerActivity extends BaseActivity implements
                 //天气信息转换为图标
                 List<HashMap<String, Object>> list1 = DataTransferTool.transferListToListMap2(list);
                 LA.e(TAG,"list.size=  "+list.size()+"");
-                if (null == list1 || list1.size() == 0 || data.size() != list1.size()) {
+                if (null == list1 || list1.size() == 0 || data.size() != list1.size()+1) {
                     LA.e(TAG,"error:");
                     try{
                         LA.e(TAG,"date.size=  "+data.size()+"");
@@ -313,7 +298,7 @@ public class CityManagerActivity extends BaseActivity implements
                     return;
                 }
                 for (int i = 0; i < list1.size(); i++) {
-                    HashMap<String, Object> map = data.get(i);
+                    HashMap<String, Object> map = data.get(i+1);
                     map.put("icon", (Integer) list1.get(i).get("icon"));
                 }
                 adapter.notifyDataSetChanged();

@@ -8,9 +8,7 @@
         android:id="@+id/title_citymanager"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:lefttext="返回"
         app:centertext="管理城市"
-        app:righttext="编辑"
         />
     <TextView
         android:layout_width="match_parent"

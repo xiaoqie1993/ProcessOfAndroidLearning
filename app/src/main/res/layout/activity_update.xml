@@ -13,6 +13,13 @@
         android:textSize="@dimen/textsize_large"
         android:text="@string/update"
         />
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitXY"
+        android:src="@drawable/app_icon"
+        />
     <TextView
         android:id="@+id/updateMessage"
         android:lineSpacingExtra="5dp"

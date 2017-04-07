@@ -19,12 +19,18 @@ import java.util.List;
  */
 
 
-public class CityGridViewAdapter extends BaseAdapter {
+public class CityGridViewAdapter extends BaseAdapter{
     private Context context;
     private List<HashMap<String, Object>> list;
     private DeleteFromGridViewListener mListener;
     public CityGridViewAdapter(Context context, List<HashMap<String, Object>> list, DeleteFromGridViewListener listener) {
-        this.list = list;
+        //添加最后面的添加城市图标
+        HashMap<String,Object> maps = new HashMap<>();
+        maps.put("cityname","添加城市");
+        maps.put("icon",R.drawable.add);
+        maps.put("delete",1);
+        list.add(0,maps);
+        this.list =list;
         this.context = context;
         this.mListener = listener;
     }
@@ -68,6 +74,7 @@ public class CityGridViewAdapter extends BaseAdapter {
         }
         return convertView;
     }
+
     private  class ViewHolder {
         private TextView mCityname;
         private ImageView mIcon;
